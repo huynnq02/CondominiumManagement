@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/register_provider.dart';
@@ -39,26 +40,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             children: [
               const SizedBox(
-                height: 57,
+                height: 44,
               ),
-              Image.asset(
-                'assets/logo.png',
-                width: 328,
-                height: 81,
-              ),
+              // Image.asset(
+              //   'assets/logo.png',
+              //   width: 328,
+              //   height: 81,
+              // ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 23),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Đăng Ký Tài Khoản Mới',
-                      style: AppTextStyle.nunitoSize13.copyWith(
-                          color: AppColors.Blue,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800),
-                    ),
+                    Text('ĐĂNG KÝ',
+                        style: GoogleFonts.lato(
+                            fontSize: 31,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 4)
+                            ],
+                            foreground: Paint()
+                              ..shader = const LinearGradient(
+                                colors: <Color>[
+                                  Color.fromRGBO(0, 28, 68, 1),
+                                  Color.fromRGBO(0, 28, 68, 0.76)
+                                ],
+                              ).createShader(
+                                  const Rect.fromLTWH(0.0, 0.0, 114.0, 37.0)))),
                     const SizedBox(
                       height: 15,
                     ),
