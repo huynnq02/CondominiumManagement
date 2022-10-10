@@ -9,8 +9,7 @@ class RegisterTextField extends StatefulWidget {
   final String labelText;
   final TextFieldType? type;
 
-  const RegisterTextField(
-      {Key? key, required this.labelText, this.type})
+  const RegisterTextField({Key? key, required this.labelText, this.type})
       : super(key: key);
 
   @override
@@ -25,7 +24,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(text:getDateString(selectedDate));
+    controller = TextEditingController(text: getDateString(selectedDate));
   }
 
   String getDateString(DateTime date) => DateFormat('dd/MM/yyyy').format(date);

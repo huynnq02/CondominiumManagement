@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/register_provider.dart';
-import 'package:intl/intl.dart';
+import 'dart:io';
 import '../../../utils/app_constant/app_colors.dart';
 import '../../widget/register_textfield.dart';
 
@@ -20,13 +23,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   RegisterProvider? provider;
   MDUser mdUser = MDUser();
   String? password;
+  String dropdownValue = genderList.first;
+  File? avatar;
+
   @override
   void initState() {
     super.initState();
     provider = Provider.of<RegisterProvider>(context, listen: false);
   }
-
-  String dropdownValue = genderList.first;
 
   void dropdownCallback(String? selectedValue) {
     if (selectedValue is String) {
@@ -34,6 +38,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
         dropdownValue = selectedValue;
       });
     }
+  }
+
+  Future<void> pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      //Crop image
+      File? tempImage = File(image.path);
+      tempImage = await cropImage(imageFile: tempImage);
+
+      setState(() {
+        avatar = tempImage;
+      });
+    }
+    on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<File?> cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imageFile.path, aspectRatio: const CropAspectRatio(ratioX: 105, ratioY: 106));
+    if (croppedImage == null) return null;
+    return File(croppedImage.path);
   }
 
   @override
@@ -44,6 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       color: AppColors.White,
       child: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,6 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 32,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Expanded(
                           flex: 2,
@@ -186,7 +216,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 22,
                     ),
-                    Image.asset('assets/register_avatar.png'),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                      Column(
+                        children: [
+                          const SizedBox(height: 2),
+                          Image.asset('assets/register_avatar.png'),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () => pickImage(),
+                        child: Container(
+                          width: 105,
+                          height: 106,
+                          color: Colors.white,
+                          child: avatar != null ? Image.file(avatar!) : const Center(
+                            child: Text('Bấm để chọn ảnh đại diện',style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 8,
+                              color: Color(0xff636363)
+                            ),)
+                          ),
+                        ),
+                      )
+                      ]),
                     const SizedBox(
                       height: 22,
                     )
