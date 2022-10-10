@@ -20,11 +20,24 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   bool _obscureText = true;
   TextEditingController? controller;
   DateTime selectedDate = DateTime.now();
+  final GlobalKey _textformfieldkey = GlobalKey();
+  double? width;
+  double? height;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
     controller = TextEditingController(text: getDateString(selectedDate));
+  }
+
+  getSize() {
+    RenderBox _cardBox =
+        _textformfieldkey.currentContext?.findRenderObject() as RenderBox;
+    final inputSize = _cardBox.size;
+    width = inputSize.width;
+    height = inputSize.height;
+    setState(() {});
   }
 
   String getDateString(DateTime date) => DateFormat('dd/MM/yyyy').format(date);
@@ -58,11 +71,24 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _selectDate(context),
-      child: Material(
-        borderRadius: BorderRadius.circular(25),
-        elevation: 4,
-        shadowColor: Colors.black,
-        child: TextFormField(
+      child: Stack(children: [
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color:const Color(0xFFFAFAFA),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(56),
+                blurRadius: 4,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
+        TextFormField(
+          key: _textformfieldkey,
           controller: widget.type == TextFieldType.date ? controller : null,
           enabled: !(widget.type == TextFieldType.date),
           keyboardType: widget.type == TextFieldType.email
@@ -110,8 +136,8 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                       )
                     : null,
           ),
-        ),
-      ),
+        )
+      ]),
     );
   }
 }
