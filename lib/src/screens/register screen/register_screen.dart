@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/register_provider.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import '../../../utils/app_constant/app_colors.dart';
 import '../../widget/register_textfield.dart';
@@ -25,6 +26,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? password;
   String dropdownValue = genderList.first;
   File? avatar;
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController dateController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
 
   @override
   void initState() {
@@ -52,14 +59,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         avatar = tempImage;
       });
-    }
-    on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
 
   Future<File?> cropImage({required File imageFile}) async {
-    CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imageFile.path, aspectRatio: const CropAspectRatio(ratioX: 105, ratioY: 106));
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        aspectRatio: const CropAspectRatio(ratioX: 105, ratioY: 106));
     if (croppedImage == null) return null;
     return File(croppedImage.path);
   }
@@ -72,7 +80,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       color: AppColors.White,
       child: Form(
         key: _formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,11 +134,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                        Expanded(
                           flex: 2,
                           child: RegisterTextField(
                             labelText: 'Email',
                             type: TextFieldType.email,
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.isEmpty) return 'Vui lòng nhập email';
+                                String pattern =
+                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@gmail.com$';
+                                RegExp regExp = RegExp(pattern);
+                                return regExp.hasMatch(value)
+                                    ? null
+                                    : 'Email phải ở dạng @gmail.com';
+                              }
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -152,10 +170,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         color: Colors.black.withOpacity(0.56))),
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 10.5, horizontal: 18),
-                                // labelText: 'Giới tính',
-                                // labelStyle: const TextStyle(
-                                //   color: Color.fromRGBO(99, 99, 99, 1),
-                                // ),
+                                labelText: 'Giới tính',
+                                labelStyle: const TextStyle(
+                                  color: Color.fromRGBO(99, 99, 99, 1),
+                                  fontSize: 12
+                                ),
                               ),
                               items: genderList
                                   .map<DropdownMenuItem<String>>((value) =>
@@ -176,39 +195,93 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 22,
                     ),
-                    const RegisterTextField(
+                    RegisterTextField(
                       labelText: 'Nhập mật khẩu',
                       type: TextFieldType.password,
+                      controller: passwordController,
+                      maxLength: 20,
+                      validator: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return 'Vui lòng nhập mật khẩu';
+                          }
+                          if (value.length < 6) {
+                          return 'Tối thiểu 6 ký tự';
+                          }
+                        }
+                        return null;
+                      }
                     ),
                     const SizedBox(
                       height: 22,
                     ),
-                    const RegisterTextField(
+                    RegisterTextField(
                       labelText: 'Nhập lại mật khẩu',
                       type: TextFieldType.password,
+                      validator: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return 'Vui lòng xác nhận mật khẩu';
+                          }
+                          if (value != passwordController.text) {
+                          return 'Mật khẩu không trùng khớp';
+                        }
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(
                       height: 22,
                     ),
-                    const RegisterTextField(labelText: 'Nhập Họ và Tên'),
+                    RegisterTextField(
+                      labelText: 'Nhập Họ và Tên',
+                      type: TextFieldType.name,
+                      controller: nameController,
+                      maxLength: 50,
+                      validator: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return 'Vui lòng nhập họ tên';
+                          }
+                          RegExp exp = RegExp(r"[^a-z ]", caseSensitive: false);
+                          if (exp.allMatches(value).isNotEmpty) {
+                            return 'Chỉ được bao gồm ký tự chữ';
+                          } else if (value.split(' ').length < 2) {
+                            return 'Tối thiểu 2 từ đơn';
+                          }
+                          return null;
+                        }
+                      },
+                    ),
                     const SizedBox(
                       height: 22,
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Expanded(
-                            child: RegisterTextField(
-                              labelText: 'Ngày sinh',
-                              type: TextFieldType.date,
-                            ),
+                          child: RegisterTextField(
+                            labelText: 'Ngày sinh',
+                            type: TextFieldType.date,
+                            controller: dateController,
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 16,
                         ),
                         Expanded(
                           child: RegisterTextField(
                             labelText: 'Số CCCD/CMND',
                             type: TextFieldType.number,
+                            maxLength: 12,
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.isNotEmpty &&
+                                    (value.length != 9 || value.length != 12)) {
+                                  return 'Giá trị không hợp lệ.';
+                                }
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -216,9 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 22,
                     ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
+                    Stack(alignment: Alignment.center, children: [
                       Column(
                         children: [
                           const SizedBox(height: 2),
@@ -231,16 +302,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           width: 105,
                           height: 106,
                           color: Colors.white,
-                          child: avatar != null ? Image.file(avatar!) : const Center(
-                            child: Text('Bấm để chọn ảnh đại diện',style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 8,
-                              color: Color(0xff636363)
-                            ),)
-                          ),
+                          child: avatar != null
+                              ? Image.file(avatar!)
+                              : const Center(
+                                  child: Text(
+                                  'Bấm để chọn ảnh đại diện',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 8,
+                                      color: Color(0xff636363)),
+                                )),
                         ),
                       )
-                      ]),
+                    ]),
                     const SizedBox(
                       height: 22,
                     )

@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import '../../utils/app_constant/app_colors.dart';
 
-enum TextFieldType { email, password, number, date }
+enum TextFieldType { email, password, number, date, name }
 
 class RegisterTextField extends StatefulWidget {
   final String labelText;
   final TextFieldType? type;
+  final String? Function(String?)? validator;
+  final TextEditingController? controller;
+  final int? maxLength;
+  final AutovalidateMode? autovalidateMode;
 
-  const RegisterTextField({Key? key, required this.labelText, this.type})
+  const RegisterTextField(
+      {Key? key,
+      required this.labelText,
+      this.type,
+      this.validator,
+      this.controller,
+      this.maxLength,
+      this.autovalidateMode})
       : super(key: key);
 
   @override
@@ -18,7 +30,6 @@ class RegisterTextField extends StatefulWidget {
 
 class _RegisterTextFieldState extends State<RegisterTextField> {
   bool _obscureText = true;
-  TextEditingController? controller;
   DateTime selectedDate = DateTime.now();
   final GlobalKey _textformfieldkey = GlobalKey();
   double? width;
@@ -28,7 +39,6 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
-    controller = TextEditingController(text: getDateString(selectedDate));
   }
 
   getSize() {
@@ -55,7 +65,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        controller?.text = getDateString(selectedDate);
+        widget.controller?.text = getDateString(selectedDate);
       });
     }
   }
@@ -67,6 +77,18 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     });
   }
 
+  String formatedName(String value) {
+    var splitStr = value.split(' ');
+    for (var i = 0; i < splitStr.length; i++) {
+      if (splitStr[i].isNotEmpty) {
+        splitStr[i] =
+            '${splitStr[i][0].toUpperCase()}${splitStr[i].substring(1).toLowerCase()}';
+      }
+    }
+    String result = splitStr.join(' ');
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -76,7 +98,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color:const Color(0xFFFAFAFA),
+            color: const Color(0xFFFAFAFA),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withAlpha(56),
@@ -89,8 +111,15 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
         ),
         TextFormField(
           key: _textformfieldkey,
-          controller: widget.type == TextFieldType.date ? controller : null,
+          autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
+          validator: widget.validator != null
+              ? (value) => widget.validator!(value)
+              : null,
+          controller: widget.controller,
           enabled: !(widget.type == TextFieldType.date),
+          textCapitalization: widget.type == TextFieldType.name
+              ? TextCapitalization.words
+              : TextCapitalization.none,
           keyboardType: widget.type == TextFieldType.email
               ? TextInputType.emailAddress
               : widget.type == TextFieldType.number
@@ -99,6 +128,17 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           obscureText:
               widget.type == TextFieldType.password ? _obscureText : false,
           obscuringCharacter: '*',
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(widget.maxLength)
+          ],
+          onChanged: (value) {
+            if (widget.type != TextFieldType.name) return;
+            final controller = widget.controller;
+            if (controller != null) {
+              controller.value = TextEditingValue(
+                  text: formatedName(value), selection: controller.selection);
+            }
+          },
           style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
             border: OutlineInputBorder(
