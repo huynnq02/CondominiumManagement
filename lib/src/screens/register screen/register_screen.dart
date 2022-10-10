@@ -257,6 +257,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 22,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: RegisterTextField(

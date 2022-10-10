@@ -129,7 +129,8 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
               widget.type == TextFieldType.password ? _obscureText : false,
           obscuringCharacter: '*',
           inputFormatters: [
-            LengthLimitingTextInputFormatter(widget.maxLength)
+            LengthLimitingTextInputFormatter(widget.maxLength),
+            if(widget.type == TextFieldType.number) FilteringTextInputFormatter.digitsOnly
           ],
           onChanged: (value) {
             if (widget.type != TextFieldType.name) return;
