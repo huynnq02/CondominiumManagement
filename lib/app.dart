@@ -10,7 +10,7 @@ import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 
 class App extends StatelessWidget {
@@ -24,6 +24,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     removeToken();
+    GoogleFonts.config.allowRuntimeFetching = false;
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -74,6 +75,9 @@ class App extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            textTheme: GoogleFonts.latoTextTheme(),
+          ),
           home: Scaffold(
               body: MainScreen(
             checkScreen: false,

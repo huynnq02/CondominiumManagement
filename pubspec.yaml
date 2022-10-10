@@ -46,6 +46,7 @@ dependencies:
   syncfusion_flutter_charts: ^19.4.56
   url_launcher: ^6.0.20
   shared_preferences: ^2.0.13
+  dropdown_button2: ^1.8.4
   
   
 dev_dependencies:
