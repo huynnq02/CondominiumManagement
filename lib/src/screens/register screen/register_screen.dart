@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled/src/screens/register%20screen/confirm_register_screen.dart';
 import 'dart:io';
 import '../../../utils/app_constant/app_colors.dart';
 import '../../widget/register_textfield.dart';
@@ -22,10 +23,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   RegisterProvider? provider;
-  MDUser mdUser = MDUser();
   String? password;
   String dropdownValue = genderList.first;
   File? avatar;
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
@@ -139,6 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: RegisterTextField(
                             labelText: 'Email',
                             type: TextFieldType.email,
+                            controller: emailController,
                             validator: (value) {
                               if (value != null) {
                                 if (value.isEmpty) return 'Vui lòng nhập email';
@@ -172,9 +174,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     vertical: 10.5, horizontal: 18),
                                 labelText: 'Giới tính',
                                 labelStyle: const TextStyle(
-                                  color: Color.fromRGBO(99, 99, 99, 1),
-                                  fontSize: 12
-                                ),
+                                    color: Color.fromRGBO(99, 99, 99, 1),
+                                    fontSize: 12),
                               ),
                               items: genderList
                                   .map<DropdownMenuItem<String>>((value) =>
@@ -196,36 +197,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 22,
                     ),
                     RegisterTextField(
-                      labelText: 'Nhập mật khẩu',
-                      type: TextFieldType.password,
-                      controller: passwordController,
-                      maxLength: 20,
-                      validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return 'Vui lòng nhập mật khẩu';
+                        labelText: 'Nhập mật khẩu',
+                        type: TextFieldType.password,
+                        controller: passwordController,
+                        maxLength: 20,
+                        validator: (value) {
+                          if (value != null) {
+                            if (value.isEmpty) {
+                              return 'Vui lòng nhập mật khẩu';
+                            }
+                            if (value.length < 6) {
+                              return 'Tối thiểu 6 ký tự';
+                            }
                           }
-                          if (value.length < 6) {
-                          return 'Tối thiểu 6 ký tự';
-                          }
-                        }
-                        return null;
-                      }
-                    ),
+                          return null;
+                        }),
                     const SizedBox(
                       height: 22,
                     ),
                     RegisterTextField(
                       labelText: 'Nhập lại mật khẩu',
                       type: TextFieldType.password,
+                      controller: confirmPasswordController,
+                      autovalidateMode: AutovalidateMode.disabled,
                       validator: (value) {
                         if (value != null) {
                           if (value.isEmpty) {
                             return 'Vui lòng xác nhận mật khẩu';
                           }
                           if (value != passwordController.text) {
-                          return 'Mật khẩu không trùng khớp';
-                        }
+                            return 'Mật khẩu không trùng khớp';
+                          }
                         }
                         return null;
                       },
@@ -328,10 +330,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 22,
                     ),
-                    Image.asset('assets/clouds.png'),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Image.asset('assets/clouds.png', fit: BoxFit.fitWidth,)),
                   ],
                 ),
-                Image.asset('assets/register_otp_button.png')
+                GestureDetector(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        String password = passwordController.text;
+                        if (password == confirmPasswordController.text) {
+                          var splittedName = nameController.text.split(' ');
+                          String name = splittedName.removeLast();
+                          String surname = splittedName.join('');
+                          String email = emailController.text;
+                          MDUser mdUser = MDUser(
+                              name: name,
+                              surname: surname,
+                              email: email,
+                              password: password);
+                          //provider!.register(mdUser, context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => ConfirmRegisterScreen(mdUser: mdUser,))));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Mật khẩu không hợp lệ')));
+                        }
+                      }
+                    },
+                    child: Image.asset('assets/register_otp_button.png'))
               ])
             ],
           ),

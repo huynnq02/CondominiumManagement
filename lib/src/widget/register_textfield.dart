@@ -13,6 +13,7 @@ class RegisterTextField extends StatefulWidget {
   final TextEditingController? controller;
   final int? maxLength;
   final AutovalidateMode? autovalidateMode;
+  final bool? isCenter;
 
   const RegisterTextField(
       {Key? key,
@@ -21,7 +22,8 @@ class RegisterTextField extends StatefulWidget {
       this.validator,
       this.controller,
       this.maxLength,
-      this.autovalidateMode})
+      this.autovalidateMode,
+      this.isCenter})
       : super(key: key);
 
   @override
@@ -106,17 +108,22 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                 offset: const Offset(0, 4),
               ),
             ],
+            border: Border.all(color: Colors.black.withOpacity(0.56)),
             borderRadius: BorderRadius.circular(25),
           ),
         ),
         TextFormField(
           key: _textformfieldkey,
-          autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
+          autovalidateMode:
+              widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
           validator: widget.validator != null
               ? (value) => widget.validator!(value)
               : null,
           controller: widget.controller,
           enabled: !(widget.type == TextFieldType.date),
+          textAlign: (widget.isCenter != null && widget.isCenter == true)
+              ? TextAlign.center
+              : TextAlign.start,
           textCapitalization: widget.type == TextFieldType.name
               ? TextCapitalization.words
               : TextCapitalization.none,
@@ -130,7 +137,8 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           obscuringCharacter: '*',
           inputFormatters: [
             LengthLimitingTextInputFormatter(widget.maxLength),
-            if(widget.type == TextFieldType.number) FilteringTextInputFormatter.digitsOnly
+            if (widget.type == TextFieldType.number)
+              FilteringTextInputFormatter.digitsOnly
           ],
           onChanged: (value) {
             if (widget.type != TextFieldType.name) return;
@@ -142,13 +150,14 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           },
           style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-                borderSide: BorderSide(color: Colors.black.withOpacity(0.56))),
+            border: InputBorder.none,
             labelText: widget.labelText,
             labelStyle: const TextStyle(
               color: Color.fromRGBO(99, 99, 99, 1),
             ),
+            floatingLabelAlignment: (widget.isCenter != null && widget.isCenter == true)
+              ? FloatingLabelAlignment.center
+              : FloatingLabelAlignment.start,
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
             suffixIcon: widget.type == TextFieldType.password
