@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -52,7 +53,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: ((value) => value!.isEmpty ? 'Vui lòng nhập mật khẩu' : null),
+      validator: ((value) =>
+          value!.isEmpty ? '     Vui lòng nhập mật khẩu' : null),
       controller: controller,
       onChanged: (value) {
         setState(() {
@@ -64,19 +66,18 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       style: TextStyle(fontSize: 14),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(top: 12, bottom: 12),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            width: 1,
-            color: AppColors.MidGrey,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: AppColors.MidGrey,
-            width: 1,
-          ),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        focusedBorder: _buildBorder(AppColors.Blue),
+        enabledBorder: _buildBorder(AppColors.MidGrey),
+        focusedErrorBorder: _buildBorder(AppColors.Red),
+        border: _buildBorder(AppColors.MidGrey),
+        errorBorder: _buildBorder(AppColors.Red),
+        label: Text(
+          'Mật khẩu',
+          style: AppTextStyle.nunitoSize13.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: AppColors.MidGrey),
         ),
         hintText: "Nhập mật khẩu...",
         hintStyle: AppTextStyle.nunitoSize13.copyWith(
@@ -86,24 +87,38 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         ),
         prefixIcon: Padding(
           padding: const EdgeInsets.only(
+            top: 7,
+            bottom: 14,
             left: 17,
             right: 10,
           ),
-          child: SvgPicture.asset(
-            'assets/password.svg',
+          child: Icon(
+            Icons.lock,
+            color: AppColors.Black,
+            size: 22,
           ),
         ),
         suffixIcon: Padding(
-          padding: const EdgeInsets.only(top: 14, bottom: 14, right: 17),
-          child: GestureDetector(
-            onTap: _toggle,
-            child: SvgPicture.asset(
-              'assets/eye.svg',
-              width: 17,
-              height: 17,
+          padding: const EdgeInsets.only(top: 0, bottom: 0, right: 17),
+          child: IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility : Icons.visibility_off,
+              size: 20,
+              color: AppColors.Black,
             ),
+            onPressed: _toggle,
           ),
         ),
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildBorder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25),
+      borderSide: BorderSide(
+        width: 1.5,
+        color: color,
       ),
     );
   }
