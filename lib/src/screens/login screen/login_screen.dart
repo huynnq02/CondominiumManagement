@@ -33,6 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
     return Scaffold(
         body: GestureDetector(
@@ -151,12 +153,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           AppTextStyle.nunitoBoldSize14.copyWith(fontSize: 12),
                     ),
                     TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: ((context) {
-                            return RegisterScreen();
-                          })));
-                        },
+                        // onPressed: () {
+                        //   Navigator.of(context)
+                        //       .push(MaterialPageRoute(builder: ((context) {
+                        //     return RegisterScreen();
+                        //   })));
+                        // },
+                        onPressed: () => showLogoutConfirmPopupDialog(
+                            context, height, width),
                         child: Text('Đăng kí',
                             style: AppTextStyle.nunitoBoldSize14
                                 .copyWith(fontSize: 12, color: AppColors.Blue)))
@@ -170,4 +174,92 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     ));
   }
+
+  void showLogoutConfirmPopupDialog(BuildContext context, height, width) =>
+      showDialog(
+        context: context,
+        builder: ((context) => Dialog(
+              backgroundColor: Colors.transparent,
+              child: Container(
+                color: Colors.transparent,
+                height: height * 0.18,
+                width: width * 0.8,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Bạn có chắc chắn không?",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.023,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.LogoutButtonColor,
+                                fixedSize: Size(
+                                  width * 0.25,
+                                  height * 0.04,
+                                ),
+                                // minimumSize: Size(width * 0.2, height * 0.035),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(14)),
+                                ),
+                              ),
+                              child: Text(
+                                "Đăng xuất",
+                                style: TextStyle(
+                                    color: AppColors.White, fontSize: 14),
+                              ),
+                            ),
+                            SizedBox(
+                              width: width * 0.08,
+                            ),
+                            ElevatedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.Black,
+                                fixedSize: Size(
+                                  width * 0.25,
+                                  height * 0.04,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(14)),
+                                ),
+                              ),
+                              child: Text(
+                                "Hủy",
+                                style: TextStyle(
+                                    color: AppColors.White, fontSize: 14),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )),
+      );
 }
