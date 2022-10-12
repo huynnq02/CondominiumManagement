@@ -303,6 +303,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelText: 'Số CCCD/CMND',
                             type: TextFieldType.number,
                             maxLength: 12,
+                            autovalidateMode: AutovalidateMode.disabled,
                             validator: (value) {
                               if (value != null) {
                                 if (value.isNotEmpty &&
