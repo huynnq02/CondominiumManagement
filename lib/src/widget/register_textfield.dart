@@ -49,7 +49,6 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     final inputSize = _cardBox.size;
     width = inputSize.width;
     height = inputSize.height;
-    setState(() {});
   }
 
   String getDateString(DateTime date) => DateFormat('dd/MM/yyyy').format(date);
@@ -100,7 +99,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: const Color(0xFFFAFAFA),
+            color: Colors.white,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withAlpha(56),
@@ -148,18 +147,20 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                   text: formatedName(value), selection: controller.selection);
             }
           },
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 14),
           decoration: InputDecoration(
             border: InputBorder.none,
             labelText: widget.labelText,
             labelStyle: const TextStyle(
               color: Color.fromRGBO(99, 99, 99, 1),
             ),
-            floatingLabelAlignment: (widget.isCenter != null && widget.isCenter == true)
-              ? FloatingLabelAlignment.center
-              : FloatingLabelAlignment.start,
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
+            floatingLabelAlignment:
+                (widget.isCenter != null && widget.isCenter == true)
+                    ? FloatingLabelAlignment.center
+                    : FloatingLabelAlignment.start,
+            contentPadding: widget.type == TextFieldType.date
+                ? const EdgeInsets.only(top: 10.5,bottom: 10.5,left: 24)
+                : const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
             suffixIcon: widget.type == TextFieldType.password
                 ? Padding(
                     padding:

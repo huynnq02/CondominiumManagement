@@ -132,66 +132,93 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 32,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: RegisterTextField(
-                            labelText: 'Email',
-                            type: TextFieldType.email,
-                            controller: emailController,
-                            validator: (value) {
-                              if (value != null) {
-                                if (value.isEmpty) return 'Vui lòng nhập email';
-                                String pattern =
-                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@gmail.com$';
-                                RegExp regExp = RegExp(pattern);
-                                return regExp.hasMatch(value)
-                                    ? null
-                                    : 'Email phải ở dạng @gmail.com';
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          child: Material(
-                            borderRadius: BorderRadius.circular(25),
-                            elevation: 4,
-                            shadowColor: Colors.black,
-                            child: DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(25),
-                              value: dropdownValue,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                    borderSide: BorderSide(
-                                        color: Colors.black.withOpacity(0.56))),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10.5, horizontal: 18),
-                                labelText: 'Giới tính',
-                                labelStyle: const TextStyle(
-                                    color: Color.fromRGBO(99, 99, 99, 1),
-                                    fontSize: 12),
-                              ),
-                              items: genderList
-                                  .map<DropdownMenuItem<String>>((value) =>
-                                      DropdownMenuItem(
-                                        child: Text(
-                                          value,
-                                          style: const TextStyle(fontSize: 12),
-                                        ),
-                                        value: value,
-                                      ))
-                                  .toList(),
-                              onChanged: dropdownCallback,
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: RegisterTextField(
+                              labelText: 'Email',
+                              type: TextFieldType.email,
+                              controller: emailController,
+                              validator: (value) {
+                                if (value != null) {
+                                  if (value.isEmpty) {
+                                    return 'Vui lòng nhập email';
+                                  }
+                                  String pattern =
+                                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@gmail.com$';
+                                  RegExp regExp = RegExp(pattern);
+                                  return regExp.hasMatch(value)
+                                      ? null
+                                      : 'Email phải ở dạng @gmail.com';
+                                }
+                              },
                             ),
                           ),
-                        )
-                      ],
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 52,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.black.withOpacity(0.56)),
+                                  borderRadius: BorderRadius.circular(25),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.25),
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 4)
+                                  ]),
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  canvasColor: Colors.white,
+                                ),
+                                child: ButtonTheme(
+                                  alignedDropdown: true,
+                                  child: DropdownButtonFormField(
+                                    borderRadius: BorderRadius.circular(25),
+                                    value: dropdownValue,
+                                    iconSize: 0,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      suffixIcon: Image.asset(
+                                        'assets/dropdown.png',
+                                        width: 7.18,
+                                      ),
+                                      contentPadding: const EdgeInsets.only(
+                                          top: 10.5, bottom: 10.5, left: 2),
+                                      label: const Padding(
+                                        padding: EdgeInsets.only(left: 22),
+                                        child: Text('Giới tính'),
+                                      ),
+                                      labelStyle: const TextStyle(
+                                          color: Color.fromRGBO(99, 99, 99, 1),
+                                          fontSize: 12),
+                                    ),
+                                    items: genderList
+                                        .map<DropdownMenuItem<String>>(
+                                            (value) => DropdownMenuItem(
+                                                  child: Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                  ),
+                                                  value: value,
+                                                ))
+                                        .toList(),
+                                    onChanged: dropdownCallback,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 22,
@@ -279,7 +306,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: (value) {
                               if (value != null) {
                                 if (value.isNotEmpty &&
-                                    (value.length != 9 || value.length != 12)) {
+                                    (value.length != 9 && value.length != 12)) {
                                   return 'Giá trị không hợp lệ.';
                                 }
                               }
@@ -331,8 +358,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 22,
                     ),
                     SizedBox(
-                      width: double.infinity,
-                      child: Image.asset('assets/clouds.png', fit: BoxFit.fitWidth,)),
+                        width: double.infinity,
+                        child: Image.asset(
+                          'assets/clouds.png',
+                          fit: BoxFit.fitWidth,
+                        )),
                   ],
                 ),
                 GestureDetector(
@@ -351,7 +381,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               password: password);
                           //provider!.register(mdUser, context);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: ((context) => ConfirmRegisterScreen(mdUser: mdUser,))));
+                              builder: ((context) => ConfirmRegisterScreen(
+                                    mdUser: mdUser,
+                                  ))));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
