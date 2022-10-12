@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -86,12 +85,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           color: AppColors.MidGrey,
         ),
         prefixIcon: Padding(
-          padding: const EdgeInsets.only(
-            top: 7,
-            bottom: 14,
-            left: 17,
-            right: 10,
-          ),
+          padding:
+              const EdgeInsets.only(left: 17, right: 10, top: 12, bottom: 14),
           child: Icon(
             Icons.lock,
             color: AppColors.Black,
@@ -102,7 +97,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           padding: const EdgeInsets.only(top: 0, bottom: 0, right: 17),
           child: IconButton(
             icon: Icon(
-              _obscureText ? Icons.visibility : Icons.visibility_off,
+              _obscureText ? Icons.visibility_off : Icons.visibility,
               size: 20,
               color: AppColors.Black,
             ),
