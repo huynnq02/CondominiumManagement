@@ -49,6 +49,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     final inputSize = _cardBox.size;
     width = inputSize.width;
     height = inputSize.height;
+    setState(() {});
   }
 
   String getDateString(DateTime date) => DateFormat('dd/MM/yyyy').format(date);
