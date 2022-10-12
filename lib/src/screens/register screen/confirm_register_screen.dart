@@ -15,6 +15,7 @@ class ConfirmRegisterScreen extends StatefulWidget {
 
 class _ConfirmRegisterScreenState extends State<ConfirmRegisterScreen> {
   RegisterProvider? provider;
+  final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -28,6 +29,7 @@ class _ConfirmRegisterScreenState extends State<ConfirmRegisterScreen> {
             child: Container(
       color: AppColors.White,
       child: Form(
+        key: _otpFormKey,
         child: Column(
           children: [
             const SizedBox(
@@ -113,7 +115,9 @@ class _ConfirmRegisterScreenState extends State<ConfirmRegisterScreen> {
                 ],
               ),
               GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _otpFormKey.currentState!.validate();
+                  },
                   child: Image.asset('assets/register_button.png'))
             ])
           ],
