@@ -370,26 +370,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         String password = passwordController.text;
-                        if (password == confirmPasswordController.text) {
-                          var splittedName = nameController.text.split(' ');
-                          String name = splittedName.removeLast();
-                          String surname = splittedName.join('');
-                          String email = emailController.text;
-                          MDUser mdUser = MDUser(
-                              name: name,
-                              surname: surname,
-                              email: email,
-                              password: password);
-                          //provider!.register(mdUser, context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: ((context) => ConfirmRegisterScreen(
-                                    mdUser: mdUser,
-                                  ))));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Mật khẩu không hợp lệ')));
-                        }
+                        var splittedName = nameController.text.split(' ');
+                        String name = splittedName.removeLast();
+                        String surname = splittedName.join('');
+                        String email = emailController.text;
+                        MDUser mdUser = MDUser(
+                            name: name,
+                            surname: surname,
+                            email: email,
+                            password: password);
+                        //provider!.register(mdUser, context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => ConfirmRegisterScreen(
+                                  mdUser: mdUser,
+                                ))));
                       }
                     },
                     child: Image.asset('assets/register_otp_button.png'))
