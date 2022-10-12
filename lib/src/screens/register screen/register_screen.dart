@@ -85,50 +85,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 44,
-              ),
-              Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Positioned(
-                    child: Text('ĐĂNG KÝ',
-                        style: TextStyle(
-                            fontSize: 31,
-                            fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 4)
-                            ],
-                            foreground: Paint()
-                              ..shader = const LinearGradient(
-                                colors: <Color>[
-                                  Color.fromRGBO(0, 28, 68, 1),
-                                  Color.fromRGBO(0, 28, 68, 0.76)
-                                ],
-                              ).createShader(
-                                  const Rect.fromLTWH(0.0, 0.0, 114.0, 37.0)))),
-                  ),
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 23,
-                      ),
-                      Image.asset(
-                        'assets/register_logo.png',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 23),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const SizedBox(
+                      height: 44,
+                    ),
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Positioned(
+                          child: Text('ĐĂNG KÝ',
+                              style: TextStyle(
+                                  fontSize: 31,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black.withOpacity(0.25),
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 4)
+                                  ],
+                                  foreground: Paint()
+                                    ..shader = const LinearGradient(
+                                      colors: <Color>[
+                                        Color.fromRGBO(0, 28, 68, 1),
+                                        Color.fromRGBO(0, 28, 68, 0.76)
+                                      ],
+                                    ).createShader(const Rect.fromLTWH(
+                                        0.0, 0.0, 114.0, 37.0)))),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(
+                              height: 23,
+                            ),
+                            Image.asset(
+                              'assets/register_logo.png',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 32,
                     ),
