@@ -148,7 +148,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                   text: formatedName(value), selection: controller.selection);
             }
           },
-          style: const TextStyle(fontSize: 14),
+          style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
             border: InputBorder.none,
             labelText: widget.labelText,

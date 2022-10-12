@@ -25,104 +25,105 @@ class _ConfirmRegisterScreenState extends State<ConfirmRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
             child: Container(
-      color: AppColors.White,
-      child: Form(
-        key: _otpFormKey,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 44,
-            ),
-            Stack(
-              alignment: Alignment.topCenter,
+          color: AppColors.White,
+          child: Form(
+            key: _otpFormKey,
+            child: Column(
               children: [
-                Positioned(
-                  child: Text('ĐĂNG KÝ',
-                      style: TextStyle(
-                          fontSize: 31,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                                color: Colors.black.withOpacity(0.25),
-                                offset: const Offset(0, 4),
-                                blurRadius: 4)
-                          ],
-                          foreground: Paint()
-                            ..shader = const LinearGradient(
-                              colors: <Color>[
-                                Color.fromRGBO(0, 28, 68, 1),
-                                Color.fromRGBO(0, 28, 68, 0.76)
-                              ],
-                            ).createShader(
-                                const Rect.fromLTWH(0.0, 0.0, 114.0, 37.0)))),
+                const SizedBox(
+                  height: 44,
                 ),
-                Column(
+                Stack(
+                  alignment: Alignment.topCenter,
                   children: [
-                    const SizedBox(
-                      height: 23,
+                    Positioned(
+                      child: Text('ĐĂNG KÝ',
+                          style: TextStyle(
+                              fontSize: 31,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black.withOpacity(0.25),
+                                    offset: const Offset(0, 4),
+                                    blurRadius: 4)
+                              ],
+                              foreground: Paint()
+                                ..shader = const LinearGradient(
+                                  colors: <Color>[
+                                    Color.fromRGBO(0, 28, 68, 1),
+                                    Color.fromRGBO(0, 28, 68, 0.76)
+                                  ],
+                                ).createShader(const Rect.fromLTWH(
+                                    0.0, 0.0, 114.0, 37.0)))),
                     ),
-                    Image.asset(
-                      'assets/register_logo.png',
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 23,
+                        ),
+                        Image.asset(
+                          'assets/register_logo.png',
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 21),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Hãy kiểm tra thiết bị của bạn để nhập mã OTP',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 16),
+                          ),
+                          const SizedBox(height: 30),
+                          RegisterTextField(
+                            labelText: 'Nhập mã OTP',
+                            type: TextFieldType.number,
+                            maxLength: 6,
+                            isCenter: true,
+                            autovalidateMode: AutovalidateMode.disabled,
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.length < 6) {
+                                  return 'Vui lòng nhập đủ 6 ký tự';
+                                }
+                              }
+                              return null;
+                            },
+                          )
+                        ]),
+                  ),
+                ),
+                Stack(alignment: Alignment.topCenter, children: [
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      SizedBox(
+                          width: double.infinity,
+                          child: Image.asset(
+                            'assets/clouds.png',
+                            fit: BoxFit.fitWidth,
+                          )),
+                    ],
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        _otpFormKey.currentState!.validate();
+                      },
+                      child: Image.asset('assets/register_button.png'))
+                ])
               ],
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 21),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Hãy kiểm tra thiết bị của bạn để nhập mã OTP',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                      ),
-                      const SizedBox(height: 30),
-                      RegisterTextField(
-                        labelText: 'Nhập mã OTP',
-                        type: TextFieldType.number,
-                        maxLength: 6,
-                        isCenter: true,
-                        autovalidateMode: AutovalidateMode.disabled,
-                        validator: (value) {
-                          if (value != null) {
-                            if (value.length < 6) {
-                              return 'Vui lòng nhập đủ 6 ký tự';
-                            }
-                          }
-                          return null;
-                        },
-                      )
-                    ]),
-              ),
-            ),
-            Stack(alignment: Alignment.topCenter, children: [
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 22,
-                  ),
-                  SizedBox(
-                      width: double.infinity,
-                      child: Image.asset(
-                        'assets/clouds.png',
-                        fit: BoxFit.fitWidth,
-                      )),
-                ],
-              ),
-              GestureDetector(
-                  onTap: () {
-                    _otpFormKey.currentState!.validate();
-                  },
-                  child: Image.asset('assets/register_button.png'))
-            ])
-          ],
-        ),
-      ),
-    )));
+          ),
+        )));
   }
 }

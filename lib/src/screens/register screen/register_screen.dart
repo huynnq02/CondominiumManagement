@@ -163,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           Expanded(
                             child: Container(
-                              height: 52,
+                              height: 48,
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(
@@ -179,41 +179,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 data: Theme.of(context).copyWith(
                                   canvasColor: Colors.white,
                                 ),
-                                child: ButtonTheme(
-                                  alignedDropdown: true,
-                                  child: DropdownButtonFormField(
-                                    borderRadius: BorderRadius.circular(25),
-                                    value: dropdownValue,
-                                    iconSize: 0,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      suffixIcon: Image.asset(
-                                        'assets/dropdown.png',
-                                        width: 7.18,
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                          top: 10.5, bottom: 10.5, left: 2),
-                                      label: const Padding(
-                                        padding: EdgeInsets.only(left: 22),
-                                        child: Text('Giới tính'),
-                                      ),
-                                      labelStyle: const TextStyle(
-                                          color: Color.fromRGBO(99, 99, 99, 1),
-                                          fontSize: 12),
+                                child: DropdownButtonFormField(
+                                  borderRadius: BorderRadius.circular(25),
+                                  value: dropdownValue,
+                                  iconSize: 0,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    suffixIcon: Image.asset(
+                                      'assets/dropdown.png',
+                                      width: 7.18,
                                     ),
-                                    items: genderList
-                                        .map<DropdownMenuItem<String>>(
-                                            (value) => DropdownMenuItem(
-                                                  child: Text(
-                                                    value,
-                                                    style: const TextStyle(
-                                                        fontSize: 12),
-                                                  ),
-                                                  value: value,
-                                                ))
-                                        .toList(),
-                                    onChanged: dropdownCallback,
+                                    contentPadding: const EdgeInsets.only(
+                                        top: 10.5, bottom: 10.5, left: 18),
+                                    labelText: 'Giới tính',
+                                    labelStyle: const TextStyle(
+                                        color: Color.fromRGBO(99, 99, 99, 1),
+                                        fontSize: 12),
                                   ),
+                                  items: genderList
+                                      .map<DropdownMenuItem<String>>(
+                                          (value) => DropdownMenuItem(
+                                                child: Text(
+                                                  value,
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                                value: value,
+                                              ))
+                                      .toList(),
+                                  onChanged: dropdownCallback,
                                 ),
                               ),
                             ),
