@@ -6,10 +6,12 @@ import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/screens/login%20screen/widget/checkbox.dart';
 import 'package:untitled/src/screens/login%20screen/widget/email_textfield.dart';
 import 'package:untitled/src/screens/login%20screen/widget/password_textfield.dart';
+import 'package:untitled/src/screens/logout%20screen/logout_screen.dart';
 import 'package:untitled/src/screens/register%20screen/register_screen.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import '../../../utils/app_constant/app_colors.dart';
 import '../../../utils/helper/app_preference.dart';
+import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -128,6 +130,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                       valuePassword.toString(),
                                       checkSave,
                                       context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LogoutTemp()),
+                                  );
                                 }
                               },
                               child: Text(
