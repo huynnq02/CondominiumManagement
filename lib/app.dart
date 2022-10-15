@@ -73,14 +73,13 @@ class App extends StatelessWidget {
             },
           ),
         ],
-        child: const MaterialApp(
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          theme: ThemeData(fontFamily: 'Lato'),
           home: Scaffold(
-            //     body: MainScreen(
-            //   checkScreen: false,
-            // )
-            body: LogoutTemp(),
-          ),
+              body: MainScreen(
+            checkScreen: false,
+          )),
         ));
   }
 }
