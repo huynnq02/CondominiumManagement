@@ -12,10 +12,11 @@ class AppColors {
   static const White = Color(0xffffffff);
   static const Orange = Color(0xffEE992A);
   static const LightGrey = Color(0xffE7E7E7);
-  static const LightGrey1 = Color(0xffF3F3F3);
+  static const LightGrey1 = Color(0xffF3F3);
   static const Green = Color(0xff0FBA9B);
   static const Yellow = Color(0xffF7C620);
   static const Red = Color(0xffED581F);
   static const Black = Color(0xff000000);
   static const ButtonLoginColor = Color(0xFF5DFEFE);
+  static const LogoutButtonColor = Color(0xFF21A1E9);
 }
