@@ -7,7 +7,7 @@ import 'package:untitled/src/screens/dashboard/change_password_screen.dart';
 import 'package:untitled/src/screens/dashboard/dashboard_screen%20copy.dart';
 import 'package:untitled/src/screens/dashboard/dashboard_screen.dart';
 import 'package:untitled/src/screens/dashboard/product_manage/dashboard_product_manage_screen.dart';
-import 'package:untitled/src/screens/dashboard/widget/menu_item.dart';
+import 'package:untitled/src/screens/dashboard/widget/menu_item.dart' as menu;
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/src/screens/register%20screen/setting_account_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
@@ -73,7 +73,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                           (Route<dynamic> route) => false,
                         );
                       },
-                      child: MenuItem(
+                      child: menu.MenuItem(
                         title: 'Trang chủ',
                         icon: Icons.home,
                       )),
@@ -84,7 +84,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                             MaterialPageRoute(
                                 builder: (context) => DashboardScreen()));
                       },
-                      child: MenuItem(
+                      child: menu.MenuItem(
                         title: 'Dashboard 1',
                         icon: Icons.dashboard,
                       )),
@@ -95,7 +95,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                             MaterialPageRoute(
                                 builder: (context) => DashboardScreen2()));
                       },
-                      child: MenuItem(
+                      child: menu.MenuItem(
                         title: 'Dashboard 2',
                         icon: Icons.dashboard,
                       )),
@@ -107,12 +107,12 @@ class _MenuDashboardState extends State<MenuDashboard> {
                           ),
                         ));
                       }),
-                      child: MenuItem(
+                      child: menu.MenuItem(
                         title: 'Quản lý',
                         icon: Icons.manage_accounts,
                       )),
                   InkWell(
-                    child: MenuItem(
+                    child: menu.MenuItem(
                       title: 'Đổi mật khẩu',
                       icon: Icons.key,
                     ),
@@ -135,7 +135,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                         ),
                       );
                     },
-                    child: MenuItem(
+                    child: menu.MenuItem(
                       title: 'Cài đặt tài khoản',
                       icon: Icons.settings,
                     ),
@@ -150,7 +150,7 @@ class _MenuDashboardState extends State<MenuDashboard> {
                         ),
                       ));
                     }),
-                    child: MenuItem(
+                    child: menu.MenuItem(
                       title: 'Đăng xuất',
                       icon: Icons.logout,
                     ),
