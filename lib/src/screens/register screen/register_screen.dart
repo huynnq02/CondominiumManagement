@@ -212,6 +212,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.8),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.grey.withOpacity(0.2),
+                          //     blurRadius: 4,
+                          //     offset: const Offset(0, 4), // changes position of shadow
+                          //   ),
+                          // ],
                           borderRadius: BorderRadius.circular(12)),
                       child: ButtonTheme(
                         alignedDropdown: true,
@@ -277,6 +284,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                     : () {
                         if (_formKey.currentState!.validate()) {
+                          // Call api:
+                          // Chưa có api
                           setState(() {
                             isValid = true;
                             _isButtonDisabled = true;
@@ -417,14 +426,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       labelText: 'Đăng kí',
                       onPressed: (() {
                         if (_otpFormKey.currentState!.validate()) {
+                          // Call api:
+                          // Chưa có api
                           setState(() {});
                           if (checkBoxValue == false) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Vui lòng chấp nhận điều khoản.')));
-                          }
-                          else {
-                          }
+                                const SnackBar(
+                                    content: Text(
+                                        'Vui lòng chấp nhận điều khoản.')));
+                          } else {}
                         }
                       }),
                     ),
