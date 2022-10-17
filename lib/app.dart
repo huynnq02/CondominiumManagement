@@ -10,6 +10,8 @@ import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
+import 'package:untitled/src/screens/logout%20screen/logout_screen.dart';
+
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 
 class App extends StatelessWidget {
@@ -73,9 +75,7 @@ class App extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: 'Lato'
-          ),
+          theme: ThemeData(fontFamily: 'Lato'),
           home: Scaffold(
               body: MainScreen(
             checkScreen: false,
