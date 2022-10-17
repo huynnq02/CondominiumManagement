@@ -158,22 +158,6 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                     contentPadding: widget.type != TextFieldType.date
                         ? const EdgeInsets.symmetric(horizontal: 10)
                         : EdgeInsets.zero,
-                    // suffixIcon: widget.type == TextFieldType.password
-                    //     ? GestureDetector(
-                    //       onTap: _toggle,
-                    //       child: _obscureText == true
-                    //           ? SvgPicture.asset(
-                    //               'assets/eye.svg',
-                    //               width: 17,
-                    //               height: 17,
-                    //             )
-                    //           : const Icon(
-                    //               Icons.visibility_off,
-                    //               size: 20,
-                    //               color: AppColors.Black,
-                    //             ),
-                    //     )
-                    //     : null,
                   ),
                 ),
               ),
@@ -205,6 +189,10 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                       ),
               ),
             )
+            else if (widget.type == TextFieldType.email) Positioned(
+              right: 0,
+              bottom: 0,
+              child: Text('@gmail.com',style: TextStyle(fontSize: 19, color: Colors.black.withOpacity(0.2)),))
         ]),
       ),
     );

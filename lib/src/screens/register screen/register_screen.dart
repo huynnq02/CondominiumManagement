@@ -156,6 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       topLeft: Radius.circular(12.0),
                       topRight: Radius.circular(12.0),
                     ),
+                    
                   ),
                   RegisterTextField(
                     labelText: 'Mật khẩu',
