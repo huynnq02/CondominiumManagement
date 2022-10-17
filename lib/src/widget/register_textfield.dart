@@ -16,6 +16,7 @@ class RegisterTextField extends StatefulWidget {
   final AutovalidateMode? autovalidateMode;
   final bool? isCenter;
   final BorderRadiusGeometry? border;
+  final bool isDisabled;
 
   RegisterTextField({
     Key? key,
@@ -27,6 +28,7 @@ class RegisterTextField extends StatefulWidget {
     this.autovalidateMode,
     this.isCenter,
     this.border,
+    this.isDisabled=false
   }) : super(key: key);
 
   @override
@@ -49,7 +51,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   String getDateString(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   Future<void> _selectDate(BuildContext context) async {
-    if (!(widget.type == TextFieldType.date)) {
+    if (!(widget.type == TextFieldType.date) || widget.isDisabled==true) {
       return;
     }
     final DateTime? picked = await showDatePicker(
@@ -121,13 +123,17 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Chỉ được bao gồm ký tự chữ';
             return '';
           } else if (value.split(' ').length < 2) {
-            errorText = 'Tối thiểu 2 từ đơn';
+            errorText = 'Họ tên phải có ít nhất 2 từ';
             return '';
           }
           break;
         case TextFieldType.number:
-          if (value.isNotEmpty && (value.length != 9 && value.length != 12)) {
-            errorText = 'Giá trị không hợp lệ';
+          if (value.isEmpty) {
+            errorText = 'Vui lòng nhập thông tin';
+            return '';
+          }
+          else if (value.length != 9 && value.length != 12) {
+            errorText = 'Số CMND / CCCD không hợp lệ';
             return '';
           }
       }
@@ -170,7 +176,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                     key: _textformfieldkey,
                     validator: ((value) => getValidator(value, widget.type)),
                     controller: widget.controller,
-                    enabled: !(widget.type == TextFieldType.date),
+                    enabled: (widget.type == TextFieldType.date) ? false : !widget.isDisabled,
                     textAlign:
                         (widget.isCenter != null && widget.isCenter == true)
                             ? TextAlign.center
@@ -239,7 +245,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                         )
                       : const Icon(
                           Icons.visibility_off,
-                          size: 20,
+                          size: 17,
                           color: AppColors.Black,
                         ),
                 ),

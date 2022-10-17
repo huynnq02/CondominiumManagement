@@ -39,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool? showError = false;
   bool? isValid = false;
   bool? validOTP;
+  bool _isButtonDisabled = false;
 
   @override
   void initState() {
@@ -157,6 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   RegisterTextField(
                     labelText: 'Email',
                     type: TextFieldType.email,
+                    isDisabled: _isButtonDisabled,
                     border: const BorderRadius.only(
                       topLeft: Radius.circular(12.0),
                       topRight: Radius.circular(12.0),
@@ -166,6 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   RegisterTextField(
                     labelText: 'Mật khẩu',
                     type: TextFieldType.password,
+                    isDisabled: _isButtonDisabled,
                     controller: passwordController,
                     maxLength: 20,
                     // validator: (value) {
@@ -184,6 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   RegisterTextField(
                     labelText: 'Họ và tên',
                     type: TextFieldType.name,
+                    isDisabled: _isButtonDisabled,
                     controller: nameController,
                     maxLength: 50,
                   ),
@@ -194,6 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       bottomRight: Radius.circular(12.0),
                     ),
                     type: TextFieldType.number,
+                    isDisabled: _isButtonDisabled,
                     maxLength: 12,
                   ),
                 ],
@@ -239,7 +244,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         value: value,
                                       ))
                               .toList(),
-                          onChanged: dropdownCallback,
+                          onChanged:
+                              _isButtonDisabled ? null : dropdownCallback,
                         ),
                       ),
                     ),
@@ -251,6 +257,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: RegisterTextField(
                       labelText: 'Ngày sinh',
                       type: TextFieldType.date,
+                      isDisabled: _isButtonDisabled,
                       controller: dateController,
                       border: BorderRadius.circular(12),
                     ),
@@ -262,31 +269,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               WidgetButton(
                 labelText: 'Gửi mã OTP',
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      isValid = true;
-                    });
-                    // String password = passwordController.text;
-                    // var splittedName = nameController.text.split(' ');
-                    // String name = splittedName.removeLast();
-                    // String surname = splittedName.join('');
-                    // String email = emailController.text;
-                    // MDUser mdUser = MDUser(
-                    //     name: name,
-                    //     surname: surname,
-                    //     email: email,
-                    //     password: password);
-                    //provider!.register(mdUser, context);
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: ((context) => ConfirmRegisterScreen(
-                    //           mdUser: mdUser,
-                    //         ))));
-                  } else
-                    setState(() {
-                      isValid = false;
-                    });
-                },
+                onPressed: _isButtonDisabled
+                    ? () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Hệ thống đã gửi OTP')));
+                      }
+                    : () {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            isValid = true;
+                            _isButtonDisabled = true;
+                          });
+                          // String password = passwordController.text;
+                          // var splittedName = nameController.text.split(' ');
+                          // String name = splittedName.removeLast();
+                          // String surname = splittedName.join('');
+                          // String email = emailController.text;
+                          // MDUser mdUser = MDUser(
+                          //     name: name,
+                          //     surname: surname,
+                          //     email: email,
+                          //     password: password);
+                          //provider!.register(mdUser, context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: ((context) => ConfirmRegisterScreen(
+                          //           mdUser: mdUser,
+                          //         ))));
+                        } else
+                          setState(() {
+                            isValid = false;
+                          });
+                      },
               ),
               if (isValid == true)
                 Column(
@@ -402,8 +416,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     WidgetButton(
                       labelText: 'Đăng kí',
                       onPressed: (() {
-                        if (_otpFormKey.currentState!.validate() && checkBoxValue==true) {
+                        if (_otpFormKey.currentState!.validate()) {
                           setState(() {});
+                          if (checkBoxValue == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Vui lòng chấp nhận điều khoản.')));
+                          }
+                          else {
+                          }
                         }
                       }),
                     ),
