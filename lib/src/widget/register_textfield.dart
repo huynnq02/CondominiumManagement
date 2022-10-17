@@ -14,6 +14,7 @@ class RegisterTextField extends StatefulWidget {
   final int? maxLength;
   final AutovalidateMode? autovalidateMode;
   final bool? isCenter;
+  final BorderRadiusGeometry? border;
 
   const RegisterTextField(
       {Key? key,
@@ -23,7 +24,8 @@ class RegisterTextField extends StatefulWidget {
       this.controller,
       this.maxLength,
       this.autovalidateMode,
-      this.isCenter})
+      this.isCenter,
+      this.border})
       : super(key: key);
 
   @override
@@ -40,19 +42,9 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
   }
 
-  getSize() {
-    RenderBox _cardBox =
-        _textformfieldkey.currentContext?.findRenderObject() as RenderBox;
-    final inputSize = _cardBox.size;
-    width = inputSize.width;
-    height = inputSize.height;
-    setState(() {});
-  }
-
-  String getDateString(DateTime date) => DateFormat('dd/MM/yyyy').format(date);
+  String getDateString(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   Future<void> _selectDate(BuildContext context) async {
     if (!(widget.type == TextFieldType.date)) {
@@ -95,101 +87,126 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _selectDate(context),
-      child: Stack(children: [
-        Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(56),
-                blurRadius: 4,
-                offset: const Offset(0, 4),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8), borderRadius: widget.border),
+        child: Stack(alignment: Alignment.center, children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                // color: Colors.yellow,
+                child: Text(
+                  widget.labelText,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Container(
+                // color: Colors.red,
+                child: TextFormField(
+                  key: _textformfieldkey,
+                  autovalidateMode: widget.autovalidateMode ??
+                      AutovalidateMode.onUserInteraction,
+                  validator: widget.validator != null
+                      ? (value) => widget.validator!(value)
+                      : null,
+                  controller: widget.controller,
+                  enabled: !(widget.type == TextFieldType.date),
+                  textAlign:
+                      (widget.isCenter != null && widget.isCenter == true)
+                          ? TextAlign.center
+                          : TextAlign.start,
+                  textCapitalization: widget.type == TextFieldType.name
+                      ? TextCapitalization.words
+                      : TextCapitalization.none,
+                  keyboardType: widget.type == TextFieldType.email
+                      ? TextInputType.emailAddress
+                      : widget.type == TextFieldType.number
+                          ? TextInputType.number
+                          : TextInputType.text,
+                  obscureText: widget.type == TextFieldType.password
+                      ? _obscureText
+                      : false,
+                  obscuringCharacter: '*',
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(widget.maxLength),
+                    if (widget.type == TextFieldType.number)
+                      FilteringTextInputFormatter.digitsOnly
+                  ],
+                  onChanged: (value) {
+                    if (widget.type != TextFieldType.name) return;
+                    final controller = widget.controller;
+                    if (controller != null) {
+                      controller.value = TextEditingValue(
+                          text: formatedName(value),
+                          selection: controller.selection);
+                    }
+                  },
+                  style: const TextStyle(fontSize: 18),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    floatingLabelAlignment:
+                        (widget.isCenter != null && widget.isCenter == true)
+                            ? FloatingLabelAlignment.center
+                            : FloatingLabelAlignment.start,
+                    contentPadding: widget.type != TextFieldType.date
+                        ? const EdgeInsets.symmetric(horizontal: 10)
+                        : EdgeInsets.zero,
+                    // suffixIcon: widget.type == TextFieldType.password
+                    //     ? GestureDetector(
+                    //       onTap: _toggle,
+                    //       child: _obscureText == true
+                    //           ? SvgPicture.asset(
+                    //               'assets/eye.svg',
+                    //               width: 17,
+                    //               height: 17,
+                    //             )
+                    //           : const Icon(
+                    //               Icons.visibility_off,
+                    //               size: 20,
+                    //               color: AppColors.Black,
+                    //             ),
+                    //     )
+                    //     : null,
+                  ),
+                ),
               ),
             ],
-            border: Border.all(color: Colors.black.withOpacity(0.56)),
-            borderRadius: BorderRadius.circular(25),
           ),
-        ),
-        TextFormField(
-          key: _textformfieldkey,
-          autovalidateMode:
-              widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
-          validator: widget.validator != null
-              ? (value) => widget.validator!(value)
-              : null,
-          controller: widget.controller,
-          enabled: !(widget.type == TextFieldType.date),
-          textAlign: (widget.isCenter != null && widget.isCenter == true)
-              ? TextAlign.center
-              : TextAlign.start,
-          textCapitalization: widget.type == TextFieldType.name
-              ? TextCapitalization.words
-              : TextCapitalization.none,
-          keyboardType: widget.type == TextFieldType.email
-              ? TextInputType.emailAddress
-              : widget.type == TextFieldType.number
-                  ? TextInputType.number
-                  : TextInputType.text,
-          obscureText:
-              widget.type == TextFieldType.password ? _obscureText : false,
-          obscuringCharacter: '*',
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(widget.maxLength),
-            if (widget.type == TextFieldType.number)
-              FilteringTextInputFormatter.digitsOnly
-          ],
-          onChanged: (value) {
-            if (widget.type != TextFieldType.name) return;
-            final controller = widget.controller;
-            if (controller != null) {
-              controller.value = TextEditingValue(
-                  text: formatedName(value), selection: controller.selection);
-            }
-          },
-          style: const TextStyle(fontSize: 12),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: widget.labelText,
-            labelStyle: const TextStyle(
-              color: Color.fromRGBO(99, 99, 99, 1),
-            ),
-            floatingLabelAlignment:
-                (widget.isCenter != null && widget.isCenter == true)
-                    ? FloatingLabelAlignment.center
-                    : FloatingLabelAlignment.start,
-            contentPadding: widget.type == TextFieldType.date
-                ? const EdgeInsets.only(top: 10.5,bottom: 10.5,left: 24)
-                : const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
-            suffixIcon: widget.type == TextFieldType.password
-                ? Padding(
-                    padding:
-                        const EdgeInsets.only(top: 14, bottom: 14, right: 17),
-                    child: GestureDetector(
-                      onTap: _toggle,
-                      child: _obscureText == true
-                          ? SvgPicture.asset(
-                              'assets/eye.svg',
-                              width: 17,
-                              height: 17,
-                            )
-                          : const Icon(
-                              Icons.visibility_off,
-                              size: 20,
-                              color: AppColors.Black,
-                            ),
-                    ),
-                  )
-                : widget.type == TextFieldType.date
-                    ? Image.asset(
-                        'assets/dropdown.png',
-                        width: 7.18,
+          if (widget.type == TextFieldType.date)
+            Positioned(
+                right: 0,
+                child: Image.asset(
+                  'assets/dropdown.png',
+                  width: 7.18,
+                ))
+          else if (widget.type == TextFieldType.password)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: GestureDetector(
+                onTap: _toggle,
+                child: _obscureText == true
+                    ? SvgPicture.asset(
+                        'assets/eye.svg',
+                        width: 17,
+                        height: 17,
                       )
-                    : null,
-          ),
-        )
-      ]),
+                    : const Icon(
+                        Icons.visibility_off,
+                        size: 20,
+                        color: AppColors.Black,
+                      ),
+              ),
+            )
+        ]),
+      ),
     );
   }
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/src/screens/register%20screen/confirm_register_screen.dart';
 import 'dart:io';
-import '../../../utils/app_constant/app_colors.dart';
 import '../../widget/register_textfield.dart';
+import 'widget/widget_button.dart';
 
 const List<String> genderList = <String>['Nam', 'Nữ', 'Khác'];
 
@@ -33,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateController = TextEditingController(
       text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+  bool? checkBoxValue = false;
 
   @override
   void initState() {
@@ -78,311 +79,239 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
         body: SafeArea(
             child: Container(
-      color: AppColors.White,
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 42),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/register_bg.jpg"),
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.topCenter),
+      ),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 23),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 44,
+              const SizedBox(height: 53),
+              Stack(
+                children: <Widget>[
+                  // Stroked text as border.
+                  Text(
+                    'Đăng kí',
+                    style: GoogleFonts.tomorrow(
+                      fontSize: 48,
+                      shadows: [
+                        Shadow(
+                            color: Colors.black.withOpacity(0.25),
+                            offset: const Offset(0, 4),
+                            blurRadius: 4)
+                      ],
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 1
+                        ..color = Colors.black,
                     ),
-                    Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        Positioned(
-                          child: Text('ĐĂNG KÝ',
-                              style: TextStyle(
-                                  fontSize: 31,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                        color: Colors.black.withOpacity(0.25),
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 4)
-                                  ],
-                                  foreground: Paint()
-                                    ..shader = const LinearGradient(
-                                      colors: <Color>[
-                                        Color.fromRGBO(0, 28, 68, 1),
-                                        Color.fromRGBO(0, 28, 68, 0.76)
-                                      ],
-                                    ).createShader(const Rect.fromLTWH(
-                                        0.0, 0.0, 114.0, 37.0)))),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const SizedBox(
-                              height: 23,
-                            ),
-                            Image.asset(
-                              'assets/register_logo.png',
-                            ),
-                          ],
-                        ),
+                  ),
+                  // Solid text as fill.
+                  Text(
+                    'Đăng kí',
+                    style: GoogleFonts.tomorrow(
+                      fontSize: 48,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 13,
+                  ),
+                  Text(
+                    'Hãy điền thông tin cần thiết',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      shadows: [
+                        Shadow(
+                            color: Colors.black.withOpacity(0.25),
+                            offset: const Offset(0, 4),
+                            blurRadius: 4)
                       ],
                     ),
-                    const SizedBox(
-                      height: 32,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 46),
+              Column(
+                children: [
+                  RegisterTextField(
+                    labelText: 'Email',
+                    type: TextFieldType.email,
+                    border: const BorderRadius.only(
+                      topLeft: Radius.circular(12.0),
+                      topRight: Radius.circular(12.0),
                     ),
-                    IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: RegisterTextField(
-                              labelText: 'Email',
-                              type: TextFieldType.email,
-                              controller: emailController,
-                              validator: (value) {
-                                if (value != null) {
-                                  if (value.isEmpty) {
-                                    return 'Vui lòng nhập email';
-                                  }
-                                  String pattern =
-                                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@gmail.com$';
-                                  RegExp regExp = RegExp(pattern);
-                                  return regExp.hasMatch(value)
-                                      ? null
-                                      : 'Email phải ở dạng @gmail.com';
-                                }
-                              },
+                  ),
+                  RegisterTextField(
+                    labelText: 'Mật khẩu',
+                    type: TextFieldType.password,
+                  ),
+                  RegisterTextField(
+                    labelText: 'Họ và tên',
+                  ),
+                  RegisterTextField(
+                    labelText: 'CMND/CCCD',
+                    border: const BorderRadius.only(
+                      bottomLeft: Radius.circular(12.0),
+                      bottomRight: Radius.circular(12.0),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButtonFormField(
+                          borderRadius: BorderRadius.circular(12),
+                          value: dropdownValue,
+                          iconSize: 0,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: InputBorder.none,
+                            suffixIcon: Image.asset(
+                              'assets/dropdown.png',
+                              width: 7.18,
                             ),
+                            contentPadding: const EdgeInsets.only(
+                                top: 14, bottom: 14, left: 18),
+                            labelText: 'Giới tính',
+                            labelStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300),
                           ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 48,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.black.withOpacity(0.56)),
-                                  borderRadius: BorderRadius.circular(25),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.25),
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 4)
-                                  ]),
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  canvasColor: Colors.white,
-                                ),
-                                child: DropdownButtonFormField(
-                                  borderRadius: BorderRadius.circular(25),
-                                  value: dropdownValue,
-                                  iconSize: 0,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    suffixIcon: Image.asset(
-                                      'assets/dropdown.png',
-                                      width: 7.18,
-                                    ),
-                                    contentPadding: const EdgeInsets.only(
-                                        top: 10.5, bottom: 10.5, left: 18),
-                                    labelText: 'Giới tính',
-                                    labelStyle: const TextStyle(
-                                        color: Color.fromRGBO(99, 99, 99, 1),
-                                        fontSize: 12),
-                                  ),
-                                  items: genderList
-                                      .map<DropdownMenuItem<String>>(
-                                          (value) => DropdownMenuItem(
-                                                child: Text(
-                                                  value,
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ),
-                                                value: value,
-                                              ))
-                                      .toList(),
-                                  onChanged: dropdownCallback,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                          items: genderList
+                              .map<DropdownMenuItem<String>>(
+                                  (value) => DropdownMenuItem(
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                        value: value,
+                                      ))
+                              .toList(),
+                          onChanged: dropdownCallback,
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    RegisterTextField(
-                        labelText: 'Nhập mật khẩu',
-                        type: TextFieldType.password,
-                        controller: passwordController,
-                        maxLength: 20,
-                        validator: (value) {
-                          if (value != null) {
-                            if (value.isEmpty) {
-                              return 'Vui lòng nhập mật khẩu';
-                            }
-                            if (value.length < 6) {
-                              return 'Tối thiểu 6 ký tự';
-                            }
-                          }
-                          return null;
-                        }),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    RegisterTextField(
-                      labelText: 'Nhập lại mật khẩu',
-                      type: TextFieldType.password,
-                      controller: confirmPasswordController,
-                      autovalidateMode: AutovalidateMode.disabled,
-                      validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return 'Vui lòng xác nhận mật khẩu';
-                          }
-                          if (value != passwordController.text) {
-                            return 'Mật khẩu không trùng khớp';
-                          }
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    RegisterTextField(
-                      labelText: 'Nhập Họ và Tên',
-                      type: TextFieldType.name,
-                      controller: nameController,
-                      maxLength: 50,
-                      validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return 'Vui lòng nhập họ tên';
-                          }
-                          RegExp exp = RegExp(r"[^a-z ]", caseSensitive: false);
-                          if (exp.allMatches(value).isNotEmpty) {
-                            return 'Chỉ được bao gồm ký tự chữ';
-                          } else if (value.split(' ').length < 2) {
-                            return 'Tối thiểu 2 từ đơn';
-                          }
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: RegisterTextField(
-                            labelText: 'Ngày sinh',
-                            type: TextFieldType.date,
-                            controller: dateController,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          child: RegisterTextField(
-                            labelText: 'Số CCCD/CMND',
-                            type: TextFieldType.number,
-                            maxLength: 12,
-                            autovalidateMode: AutovalidateMode.disabled,
-                            validator: (value) {
-                              if (value != null) {
-                                if (value.isNotEmpty &&
-                                    (value.length != 9 && value.length != 12)) {
-                                  return 'Giá trị không hợp lệ.';
-                                }
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    Stack(alignment: Alignment.center, children: [
-                      Column(
-                        children: [
-                          const SizedBox(height: 2),
-                          Image.asset('assets/register_avatar.png'),
-                        ],
+                  ),
+                  const SizedBox(
+                    width: 19,
+                  ),
+                  Expanded(
+                      child: RegisterTextField(
+                        labelText: 'Ngày sinh',
+                        type: TextFieldType.date,
+                        controller: dateController,
+                        border: BorderRadius.circular(12),
                       ),
-                      GestureDetector(
-                        onTap: () => pickImage(),
-                        child: Container(
-                          width: 105,
-                          height: 106,
-                          color: Colors.white,
-                          child: avatar != null
-                              ? Image.file(avatar!)
-                              : const Center(
-                                  child: Text(
-                                  'Bấm để chọn ảnh đại diện',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 8,
-                                      color: Color(0xff636363)),
-                                )),
-                        ),
-                      )
-                    ]),
-                    const SizedBox(
-                      height: 22,
-                    )
-                  ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 17,
+              ),
+              const WidgetButton(
+                labelText: 'Gửi mã OTP',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 35),
+                child: Text(
+                  'Đã gửi OTP, vui lòng check trong hộp thư của bạn và điền mã OTP vào ô dưới đây',
+                  style: TextStyle(color: Color(0xFF0038FF), fontSize: 13),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              Stack(alignment: Alignment.topCenter, children: [
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    SizedBox(
-                        width: double.infinity,
-                        child: Image.asset(
-                          'assets/clouds.png',
-                          fit: BoxFit.fitWidth,
-                        )),
-                  ],
-                ),
-                GestureDetector(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        String password = passwordController.text;
-                        var splittedName = nameController.text.split(' ');
-                        String name = splittedName.removeLast();
-                        String surname = splittedName.join('');
-                        String email = emailController.text;
-                        MDUser mdUser = MDUser(
-                            name: name,
-                            surname: surname,
-                            email: email,
-                            password: password);
-                        //provider!.register(mdUser, context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => ConfirmRegisterScreen(
-                                  mdUser: mdUser,
-                                ))));
-                      }
-                    },
-                    child: Image.asset('assets/register_otp_button.png'))
-              ])
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.8),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.black.withOpacity(0.25),
+                    //     blurRadius: 4,
+                    //     offset: const Offset(0, 4),
+                    //   ),
+                    // ],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const TextField(
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(26)))),
+              const SizedBox(
+                height: 53,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Checkbox(
+                        activeColor: Colors.black,
+                        value: checkBoxValue,
+                        onChanged: ((value) {
+                          setState(() {
+                            checkBoxValue = value;
+                          });
+                        })),
+                  ),
+                  const SizedBox(
+                    width: 6,
+                  ),
+                  Expanded(
+                      flex: 15,
+                      child: RichText(
+                        text: const TextSpan(
+                          text:
+                              'Bằng việc sử dụng Apato, bạn đồng ý rằng bạn đã đọc và chấp nhận ',
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'điều khoản',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  decoration: TextDecoration.underline,
+                                )),
+                            TextSpan(text: ' của chúng tôi'),
+                          ],
+                        ),
+                      ))
+                ],
+              ),
+              const SizedBox(height: 53),
+              const WidgetButton(labelText: 'Đăng kí'),
+              const SizedBox(height: 53),
             ],
           ),
         ),
