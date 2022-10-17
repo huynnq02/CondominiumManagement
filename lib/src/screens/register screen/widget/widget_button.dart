@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 class WidgetButton extends StatelessWidget {
   final String labelText;
+  final void Function()? onPressed;
   const WidgetButton({
     Key? key,
-    required this.labelText
+    required this.labelText,
+    this.onPressed
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class WidgetButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             color: Colors.white,
-            onPressed: (() {}),
+            onPressed: onPressed,
             child: Container(
               padding: const EdgeInsets.symmetric(
                   horizontal: 30, vertical: 14),
