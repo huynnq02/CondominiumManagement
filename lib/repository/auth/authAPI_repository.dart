@@ -21,20 +21,49 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
-  Future<Response> register({MDUser? mdUser}) async {
+  Future<Response> register({MDUser? mdUser,String? otp}) async {
     try {
       var client = init();
 
       final authRespone = await client.post(
         '/api/services/app/Account/Register',
         data: {
-          "name": mdUser!.name,
-          "surname": mdUser.email,
-          "userName": mdUser.email,
+          "clientType": 1,
+          "fullName": mdUser!.fullName,
           "emailAddress": mdUser.email,
+          "gender": mdUser.gender,
+          "idNumber": mdUser.idNumber,
+          "birthDate": mdUser.birthDate,
           "password": mdUser.password,
+          "otp": otp
         },
       );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response?> sendOTP({MDUser? mdUser}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+          '/api/services/app/Account/SendEmailActivationOTP',
+          data: {
+            "clientType": 1,
+            "fullName": mdUser!.fullName,
+            "emailAddress": mdUser.email,
+            "gender": mdUser.gender,
+            "idNumber": mdUser.idNumber,
+            "birthDate": mdUser.birthDate,
+            "password": mdUser.password
+          },
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }));
 
       return authRespone;
     } on DioError catch (error) {

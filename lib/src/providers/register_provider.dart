@@ -8,8 +8,8 @@ import '../screens/login screen/login_screen.dart';
 class RegisterProvider extends ChangeNotifier {
   var success;
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
-  Future register(MDUser mdUser, BuildContext context) async {
-    success = await authAPIProvider.register(mdUser: mdUser);
+  Future register(MDUser mdUser,String otp, BuildContext context) async {
+    success = await authAPIProvider.register(mdUser: mdUser,otp: otp);
     // kiểm tra reponse từ api
     if (success == true) {
       //đăng kí thành công chuyển về đăng nhập
