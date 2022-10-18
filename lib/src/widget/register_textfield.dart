@@ -17,6 +17,7 @@ class RegisterTextField extends StatefulWidget {
   final bool? isCenter;
   final BorderRadiusGeometry? border;
   final bool isDisabled;
+  final void Function(BuildContext context)? onTap;
 
   RegisterTextField({
     Key? key,
@@ -28,7 +29,8 @@ class RegisterTextField extends StatefulWidget {
     this.autovalidateMode,
     this.isCenter,
     this.border,
-    this.isDisabled=false
+    this.isDisabled=false,
+    this.onTap
   }) : super(key: key);
 
   @override
@@ -37,7 +39,6 @@ class RegisterTextField extends StatefulWidget {
 
 class _RegisterTextFieldState extends State<RegisterTextField> {
   bool _obscureText = true;
-  DateTime selectedDate = DateTime.now();
   final GlobalKey _textformfieldkey = GlobalKey();
   double? width;
   double? height;
@@ -46,26 +47,6 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   @override
   void initState() {
     super.initState();
-  }
-
-  String getDateString(DateTime date) => DateFormat('d/M/yyyy').format(date);
-
-  Future<void> _selectDate(BuildContext context) async {
-    if (!(widget.type == TextFieldType.date) || widget.isDisabled==true) {
-      return;
-    }
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        widget.controller?.text = getDateString(selectedDate);
-      });
-    }
   }
 
   // Toggles the password show status
@@ -145,7 +126,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _selectDate(context),
+      onTap: (widget.onTap != null) ? () => widget.onTap!(context) : null,
       child: Stack(alignment: Alignment.center, children: [
         Container(
           width: double.infinity,

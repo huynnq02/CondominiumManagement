@@ -6,6 +6,7 @@ import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
 import 'package:untitled/src/providers/favorite_provider.dart';
 import 'package:untitled/src/providers/filter_provider.dart';
+import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
@@ -70,6 +71,11 @@ class App extends StatelessWidget {
           ChangeNotifierProvider(
             create: (BuildContext context) {
               return RegisterProvider();
+            },
+          ),
+          ChangeNotifierProvider(
+            create: (BuildContext context) {
+              return OTPProvider();
             },
           ),
         ],
