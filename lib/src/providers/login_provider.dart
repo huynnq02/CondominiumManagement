@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
+import 'package:untitled/src/screens/login%20screen/widget/login_error_dialog.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
 
@@ -47,11 +48,18 @@ class LoginProvider extends ChangeNotifier {
         ? Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => MainScreen(
-                      checkScreen: true,
-                    )))
-        : ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message == null ? '' : message)));
+              builder: (context) => MainScreen(
+                checkScreen: true,
+              ),
+            ),
+          )
+        : showDialog(
+            context: context,
+            builder: ((context) => const LoginErrorDialog()),
+          );
+
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text(message == null ? '' : message)));
   }
 
 // lấy email, password từ SharePreference
