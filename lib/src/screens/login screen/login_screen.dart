@@ -39,69 +39,71 @@ class _LoginScreenState extends State<LoginScreen> {
     final width = MediaQuery.of(context).size.width;
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
     return Scaffold(
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: SizedBox.expand(
-            child: Form(
-              key: _formKey,
-              child: Container(
-                color: Colors.white,
-                child: Stack(
-                  fit: StackFit.loose,
-                  children: [
-                    Positioned(
-                      top: 0,
-                      child: Container(
-                        height: height,
-                        width: width,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                'assets/login-screen-background.png'),
-                            fit: BoxFit.cover,
-                          ),
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SizedBox.expand(
+          child: Form(
+            key: _formKey,
+            child: Container(
+              color: Colors.white,
+              child: Stack(
+                fit: StackFit.loose,
+                children: [
+                  Positioned(
+                    top: 0,
+                    child: Container(
+                      height: height,
+                      width: width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image:
+                              AssetImage('assets/login-screen-background.png'),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    Positioned(
-                        child: Image.asset('assets/apato-logo.png'),
-                        top: height * 0.23),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     image: DecorationImage(
+                  ),
+                  Positioned(
+                      child: Image.asset('assets/apato-logo.png'),
+                      top: height * 0.23),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     image: DecorationImage(
 
-                    //     ),
-                    //   ),
-                    // ),
-                    // Positioned(
-                    //   bottom: 0,
-                    //   child: Image.asset('assets/city.png'),
-                    // ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   child: Image.asset('assets/city.png'),
+                  // ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(left: 21, right: 10),
-                      child: Column(
-                        children: [
-                          const Spacer(
-                            flex: 1,
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Đăng nhập",
-                              style:
-                                  AppTextStyle.tomorrow.copyWith(fontSize: 25),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 21, right: 10),
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: height,
+                        child: Column(
+                          children: [
+                            const Spacer(
+                              flex: 1,
                             ),
-                          ),
-                          SizedBox(height: height * 0.1),
-                          Expanded(
-                            flex: 6,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.05),
-                              child: SingleChildScrollView(
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Đăng nhập",
+                                style: AppTextStyle.tomorrow
+                                    .copyWith(fontSize: 25),
+                              ),
+                            ),
+                            SizedBox(height: height * 0.1),
+                            Expanded(
+                              flex: 6,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.05),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     SizedBox(
                                       height: height * 0.01,
@@ -222,6 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ],
                                       ),
                                     ),
+                                    SizedBox(height: height * 0.08),
                                     Align(
                                         alignment: Alignment.bottomCenter,
                                         child: Image.asset('assets/city.png')),
@@ -330,12 +333,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

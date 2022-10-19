@@ -98,7 +98,7 @@ class _EmailTextFieldState extends State<EmailTextField> {
     // );
     return Container(
       height: height * 0.084,
-      width: width * 0.8,
+      width: width * 0.83,
       decoration: BoxDecoration(
         color: AppColors.White.withOpacity(0.8),
         borderRadius: BorderRadius.only(
