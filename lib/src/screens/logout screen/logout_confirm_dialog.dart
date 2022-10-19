@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import '../../../utils/app_constant/app_colors.dart';
 
-class ShowLogOutConfirmDialog extends StatelessWidget {
-  const ShowLogOutConfirmDialog({
+class LogOutConfirmDialog extends StatelessWidget {
+  const LogOutConfirmDialog({
     Key? key,
   }) : super(key: key);
 
@@ -21,70 +21,90 @@ class ShowLogOutConfirmDialog extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
-            child: Column(
-              children: [
-                const Text(
-                  "Bạn có chắc chắn không?",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+          child: Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage(
+                        "assets/logout-confirm-dialog-background.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(
-                  height: height * 0.023,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
+                child: Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.LogoutButtonColor,
-                        fixedSize: Size(
-                          width * 0.28,
-                          height * 0.035,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(14)),
-                        ),
-                      ),
-                      child: const Text(
-                        "Đăng xuất",
-                        style: TextStyle(color: AppColors.White, fontSize: 14),
+                    const Text(
+                      "Bạn có chắc chắn không?",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
-                      width: width * 0.08,
+                      height: height * 0.023,
                     ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.Black,
-                        fixedSize: Size(
-                          width * 0.28,
-                          height * 0.035,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.LogoutButtonColor,
+                            fixedSize: Size(
+                              width * 0.28,
+                              height * 0.035,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
+                            ),
+                          ),
+                          child: const Text(
+                            "Đăng xuất",
+                            style:
+                                TextStyle(color: AppColors.White, fontSize: 14),
+                          ),
                         ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(14)),
+                        SizedBox(
+                          width: width * 0.08,
                         ),
-                      ),
-                      child: const Text(
-                        "Hủy",
-                        style: TextStyle(color: AppColors.White, fontSize: 14),
-                      ),
-                    )
+                        ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.Black,
+                            fixedSize: Size(
+                              width * 0.28,
+                              height * 0.035,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
+                            ),
+                          ),
+                          child: const Text(
+                            "Hủy",
+                            style:
+                                TextStyle(color: AppColors.White, fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
