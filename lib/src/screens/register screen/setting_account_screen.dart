@@ -100,7 +100,6 @@ class MailCertificateScreen extends StatelessWidget {
                       SizedBox(
                         height: 18,
                       ),
-                      WidgetButton(),
                     ],
                   )),
               Image.asset('assets/slide2.png')

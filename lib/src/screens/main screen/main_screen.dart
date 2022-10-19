@@ -47,8 +47,9 @@ class _MainScreenState extends State<MainScreen> {
       body: FutureBuilder(
           future: provider.getPhones(),
           builder: (context, snapshot) {
-            return snapshot.hasData
-                ? Container(
+            return 
+            // snapshot.hasData ?
+            Container(
                     padding: const EdgeInsets.only(top: 10),
                     height: MediaQuery.of(context).size.height,
                     color: Colors.white,
@@ -151,26 +152,26 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ),
                     ),
-                  )
-                : snapshot.hasError
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.error,
-                              color: AppColors.Grey,
-                              size: 64,
-                            ),
-                            Text(
-                              'Có lỗi xảy ra, vui lòng thử lại sau',
-                              style: AppTextStyle.nunitoBoldSize14
-                                  .copyWith(fontSize: 24),
-                            ),
-                          ],
-                        ),
-                      )
-                    : const WidgetLoad();
+                  );
+                // : snapshot.hasError
+                //     ? Center(
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             const Icon(
+                //               Icons.error,
+                //               color: AppColors.Grey,
+                //               size: 64,
+                //             ),
+                //             Text(
+                //               'Có lỗi xảy ra, vui lòng thử lại sau',
+                //               style: AppTextStyle.nunitoBoldSize14
+                //                   .copyWith(fontSize: 24),
+                //             ),
+                //           ],
+                //         ),
+                //       )
+                //     : const WidgetLoad();
           }),
     ));
   }
