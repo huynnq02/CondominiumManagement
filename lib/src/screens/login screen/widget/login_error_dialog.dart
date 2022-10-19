@@ -2,9 +2,8 @@ import "package:flutter/material.dart";
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 class LoginErrorDialog extends StatefulWidget {
-  const LoginErrorDialog({
-    Key? key,
-  }) : super(key: key);
+  final String content;
+  const LoginErrorDialog({Key? key, required this.content}) : super(key: key);
 
   @override
   State<LoginErrorDialog> createState() => _LoginErrorDialogState();
@@ -35,10 +34,10 @@ class _LoginErrorDialogState extends State<LoginErrorDialog> {
                 ),
                 SizedBox(
                   width: width * 0.6,
-                  child: const Text(
-                    "Email hoặc mật khẩu không hợp lệ!",
+                  child: Text(
+                    widget.content,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.red,

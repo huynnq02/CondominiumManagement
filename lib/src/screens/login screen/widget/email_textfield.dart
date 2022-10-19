@@ -115,7 +115,7 @@ class _EmailTextFieldState extends State<EmailTextField> {
                 validator: (value) {
                   // Check if this field is empty
                   // if (value == null || value.isEmpty) {
-                  //   return '     Vui lòng nhập email';
+                  //   showDialog(context: context, builder: builder)
                   // } else if (!value.isValidEmail()) {
                   //   return '     Email không hợp lệ';
                   // }

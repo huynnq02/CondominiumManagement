@@ -44,20 +44,28 @@ class LoginProvider extends ChangeNotifier {
             authAPIProvider!.userId.toString()) // lưu token vào sharePreference
         : '';
     setPreference(valueEmail, valuePassword);
-    check == true
-        ? Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainScreen(
-                checkScreen: true,
+    if (valueEmail.isEmpty || valuePassword.isEmpty) {
+      showDialog(
+        context: context,
+        builder: ((context) =>
+            const LoginErrorDialog(content: "Vui lòng nhập đầy đủ thông tin!")),
+      );
+    } else {
+      check == true
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainScreen(
+                  checkScreen: true,
+                ),
               ),
-            ),
-          )
-        : showDialog(
-            context: context,
-            builder: ((context) => const LoginErrorDialog()),
-          );
-
+            )
+          : showDialog(
+              context: context,
+              builder: ((context) => const LoginErrorDialog(
+                  content: "Email hoặc mật khẩu không hợp lệ!")),
+            );
+    }
     // ScaffoldMessenger.of(context).showSnackBar(
     //   SnackBar(content: Text(message == null ? '' : message)));
   }
