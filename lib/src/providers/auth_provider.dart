@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:untitled/repository/auth/authAPI_provider.dart';
+import '../screens/login screen/widget/login_error_dialog.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   var status;
@@ -17,16 +18,24 @@ class AuthenticationProvider extends ChangeNotifier {
 
     success = data['success'];
     // kiểm tra reponse từ api để xử lý đăng nhập
+    // if (success == false) {
+    //   message = data['error']['message'];
+    //   message == 'Invalid user name or password'
+    //       ? message = 'Sai thông tin đăng nhập.'
+    //       : message ==
+    //               'The user account has been locked out. Please try again later.'
+    //           ? message =
+    //               'Tài khoản người dùng đã bị khóa. Vui lòng thử lại sau.'
+    //           : message;
+    //   print(message);
     if (success == false) {
       message = data['error']['message'];
-      message == 'Invalid user name or password'
-          ? message = 'Sai thông tin đăng nhập.'
-          : message ==
-                  'The user account has been locked out. Please try again later.'
-              ? message =
-                  'Tài khoản người dùng đã bị khóa. Vui lòng thử lại sau.'
-              : message;
-      print(message);
+      if (message == 'Invalid user name or password') {
+        message = 'Sai thông tin đăng nhập.';
+      } else if (message ==
+          'The user account has been locked out. Please try again later.') {
+        message = 'Tài khoản người dùng đã bị khóa. Vui lòng thử lại sau.';
+      }
     } else {
       message = 'Loading';
       accessToken = data['result']['accessToken'];

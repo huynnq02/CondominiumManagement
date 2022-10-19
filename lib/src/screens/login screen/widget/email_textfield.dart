@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -44,54 +43,119 @@ class _EmailTextFieldState extends State<EmailTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (value) {
-        // Check if this field is empty
-        if (value == null || value.isEmpty) {
-          return '     Vui lòng nhập email';
-        } else if (!value.isValidEmail()) {
-          return '     Email không hợp lệ';
-        }
-      },
-      controller: controller,
-      onChanged: (value) {
-        setState(() {
-          valueEmail = value;
-          widget.email(valueEmail);
-        });
-      },
-      style: TextStyle(fontSize: 14),
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(top: 12, bottom: 12),
-        label: Text(
-          'Email',
-          style: AppTextStyle.nunitoSize13.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-              color: AppColors.MidGrey),
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
-        focusedBorder: _buildBorder(AppColors.Blue),
-        enabledBorder: _buildBorder(AppColors.MidGrey),
-        focusedErrorBorder: _buildBorder(AppColors.Red),
-        border: _buildBorder(AppColors.MidGrey),
-        errorBorder: _buildBorder(AppColors.Red),
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    // return TextFormField(
+    //   validator: (value) {
+    //     // Check if this field is empty
+    //     if (value == null || value.isEmpty) {
+    //       return '     Vui lòng nhập email';
+    //     } else if (!value.isValidEmail()) {
+    //       return '     Email không hợp lệ';
+    //     }
+    //   },
+    //   controller: controller,
+    //   onChanged: (value) {
+    //     setState(() {
+    //       valueEmail = value;
+    //       widget.email(valueEmail);
+    //     });
+    //   },
+    //   style: TextStyle(fontSize: 14),
+    //   decoration: InputDecoration(
+    //     contentPadding: EdgeInsets.only(top: 12, bottom: 12),
+    //     label: Text(
+    //       'Email',
+    //       style: AppTextStyle.nunitoSize13.copyWith(
+    //           fontSize: 14,
+    //           fontWeight: FontWeight.normal,
+    //           color: AppColors.MidGrey),
+    //     ),
+    //     floatingLabelBehavior: FloatingLabelBehavior.auto,
+    //     focusedBorder: _buildBorder(AppColors.Blue),
+    //     enabledBorder: _buildBorder(AppColors.MidGrey),
+    //     focusedErrorBorder: _buildBorder(AppColors.Red),
+    //     border: _buildBorder(AppColors.MidGrey),
+    //     errorBorder: _buildBorder(AppColors.Red),
 
-        hintText: "Điền email của bạn...",
-        hintStyle: AppTextStyle.nunitoSize13.copyWith(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: AppColors.MidGrey,
+    //     hintText: "Điền email của bạn...",
+    //     hintStyle: AppTextStyle.nunitoSize13.copyWith(
+    //       fontSize: 14,
+    //       fontWeight: FontWeight.normal,
+    //       color: AppColors.MidGrey,
+    //     ),
+    //     // prefixText: "Tài khoản",
+    //     prefixIcon: Padding(
+    //       padding:
+    //           const EdgeInsets.only(left: 17, right: 10, top: 12, bottom: 14),
+    //       child: Icon(
+    //         Icons.people,
+    //         color: AppColors.Black,
+    //         size: 22,
+    //       ),
+    //     ),
+    //   ),
+    // );
+    return Container(
+      height: height * 0.084,
+      width: width * 0.83,
+      decoration: BoxDecoration(
+        color: AppColors.White.withOpacity(0.8),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
-        // prefixText: "Tài khoản",
-        prefixIcon: Padding(
-          padding:
-              const EdgeInsets.only(left: 17, right: 10, top: 12, bottom: 14),
-          child: Icon(
-            Icons.people,
-            color: AppColors.Black,
-            size: 22,
-          ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 25),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                validator: (value) {
+                  // Check if this field is empty
+                  // if (value == null || value.isEmpty) {
+                  //   showDialog(context: context, builder: builder)
+                  // } else if (!value.isValidEmail()) {
+                  //   return '     Email không hợp lệ';
+                  // }
+                },
+                controller: controller,
+                onChanged: (value) {
+                  setState(() {
+                    valueEmail = value;
+                    widget.email(valueEmail);
+                  });
+                },
+                style: TextStyle(fontSize: 14),
+                decoration: InputDecoration(
+                  label: Text(
+                    'Email',
+                    style: AppTextStyle.nunitoSize13.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.Black),
+                  ),
+                  // floatingLabelBehavior: FloatingLabelBehavior.never,
+                  border: InputBorder.none,
+                  hintText: "Nhập email của bạn",
+                  hintStyle: AppTextStyle.nunitoSize13.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.MidGrey,
+                  ),
+                  suffix: Text(
+                    "@gmail.com",
+                    style: AppTextStyle.nunitoSize13.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: AppColors.MidGrey,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
