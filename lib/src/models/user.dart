@@ -6,6 +6,10 @@ class MDUser {
   String? userName;
   String? email;
   String? password;
+  String? gender;
+  String? idNumber;
+  String? fullName;
+  String? birthDate;
 
   MDUser({
     this.name,
@@ -13,6 +17,10 @@ class MDUser {
     this.surname,
     this.email,
     this.password,
+    this.gender,
+    this.idNumber,
+    this.fullName,
+    this.birthDate
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +30,10 @@ class MDUser {
       "userName": userName,
       "emailAddress": email,
       "password": password,
+      "gender": gender,
+      "idNumber": idNumber,
+      "fullName": fullName,
+      "birthDate": birthDate
     };
   }
 
@@ -32,6 +44,10 @@ class MDUser {
       userName: map['userName'],
       email: map['emailAddress'],
       password: map['password'],
+      gender: map['gender'],
+      idNumber: map['idNumber'],
+      fullName: map['fullName'],
+      birthDate: map['birthDate'],
     );
   }
 
