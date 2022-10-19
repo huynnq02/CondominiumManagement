@@ -6,12 +6,12 @@ import '../../repository/auth/authAPI_provider.dart';
 import '../screens/login screen/login_screen.dart';
 
 class RegisterProvider extends ChangeNotifier {
-  var success;
+  var data;
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
-  Future register(MDUser mdUser, BuildContext context) async {
-    success = await authAPIProvider.register(mdUser: mdUser);
+  Future register(MDUser mdUser,String otp, BuildContext context) async {
+    data = await authAPIProvider.register(mdUser: mdUser,otp: otp);
     // kiểm tra reponse từ api
-    if (success == true) {
+    if (data['success'] == true && data['result']['canLogin']==true) {
       //đăng kí thành công chuyển về đăng nhập
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Đăng kí thành công')));

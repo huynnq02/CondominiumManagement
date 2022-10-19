@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class EmailTextField extends StatefulWidget {
   String valueEmail;
@@ -46,7 +48,9 @@ class _EmailTextFieldState extends State<EmailTextField> {
       validator: (value) {
         // Check if this field is empty
         if (value == null || value.isEmpty) {
-          return 'Vui lòng điền thông tin';
+          return '     Vui lòng nhập email';
+        } else if (!value.isValidEmail()) {
+          return '     Email không hợp lệ';
         }
       },
       controller: controller,
@@ -59,33 +63,46 @@ class _EmailTextFieldState extends State<EmailTextField> {
       style: TextStyle(fontSize: 14),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(top: 12, bottom: 12),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            width: 1,
-            color: AppColors.MidGrey,
-          ),
+        label: Text(
+          'Email',
+          style: AppTextStyle.nunitoSize13.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: AppColors.MidGrey),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: AppColors.MidGrey,
-            width: 1,
-          ),
-        ),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        focusedBorder: _buildBorder(AppColors.Blue),
+        enabledBorder: _buildBorder(AppColors.MidGrey),
+        focusedErrorBorder: _buildBorder(AppColors.Red),
+        border: _buildBorder(AppColors.MidGrey),
+        errorBorder: _buildBorder(AppColors.Red),
+
         hintText: "Điền email của bạn...",
         hintStyle: AppTextStyle.nunitoSize13.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.normal,
           color: AppColors.MidGrey,
         ),
+        // prefixText: "Tài khoản",
         prefixIcon: Padding(
           padding:
-              const EdgeInsets.only(left: 17, right: 10, top: 14, bottom: 14),
-          child: SvgPicture.asset(
-            'assets/email.svg',
+              const EdgeInsets.only(left: 17, right: 10, top: 12, bottom: 14),
+          child: Icon(
+            Icons.people,
+            color: AppColors.Black,
+            size: 22,
           ),
         ),
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildBorder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25),
+      borderSide: BorderSide(
+        width: 1.5,
+        color: color,
       ),
     );
   }
