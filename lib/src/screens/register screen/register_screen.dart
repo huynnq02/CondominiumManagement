@@ -66,6 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String getDateString(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   Future<void> _selectDate(BuildContext context) async {
+    if (_isButtonDisabled) return;
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
