@@ -7,7 +7,7 @@ import '../../repository/auth/authAPI_provider.dart';
 class OTPProvider extends ChangeNotifier {
   var success;
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
-  Future<bool> sendOTP(MDUser mdUser, BuildContext context) async {
+  Future sendOTP(MDUser mdUser, BuildContext context) async {
     success = await authAPIProvider.sendOTP(mdUser: mdUser);
     // kiểm tra reponse từ api
     if (success == true) {
@@ -21,6 +21,5 @@ class OTPProvider extends ChangeNotifier {
     }
 
     notifyListeners();
-    return success;
   }
 }

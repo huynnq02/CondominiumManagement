@@ -21,8 +21,7 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
 
   Future register({MDUser? mdUser,String? otp}) async {
     final res = await repository.register(mdUser: mdUser,otp: otp);
-    print(res.data);
-    return res.data['success'];
+    return res.data;
   }
 
   Future sendOTP({MDUser? mdUser}) async {

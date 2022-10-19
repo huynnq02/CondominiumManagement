@@ -29,7 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   RegisterProvider? provider;
   String? password;
   String dropdownValue = genderList.first;
-  File? avatar;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -38,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController idController = TextEditingController();
   final TextEditingController dateController = TextEditingController(
       text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+  final ScrollController _controller = ScrollController();
   bool? checkBoxValue = false;
   bool? showError = false;
   bool? isValid = false;
@@ -80,49 +80,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<bool> sendOTP() async {
-    String fullName = nameController.text;
-    String email = emailController.text + '@gmail.com';
-    String gender = dropdownValue;
-    String idNumber = idController.text;
-    String password = passwordController.text;
-    String birthDate = selectedDate.toIso8601String();
-    mdUser = MDUser(
-        fullName: fullName,
-        email: email,
-        gender: gender,
-        idNumber: idNumber,
-        password: password,
-        birthDate: birthDate);
-    bool success = await otpProvider!.sendOTP(mdUser!, context);
-    return success;
-  }
-
-  Future<void> handleOTPonClick() async {
+  Future<void> sendOTP() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        isLoading = true;
+        isValid = true;
+        _isButtonDisabled = true;
+        scrollToOTP();
       });
-      bool success = await sendOTP();
-      setState(() {
-        isLoading = false;
-      });
-      if (success) {
-        setState(() {
-          isValid = true;
-          _isButtonDisabled = true;
-        });
-      }
-      //provider!.register(mdUser, context);
-      // Navigator.of(context).push(MaterialPageRoute(
-      //     builder: ((context) => ConfirmRegisterScreen(
-      //           mdUser: mdUser,
-      //         ))));
+      String fullName = nameController.text;
+      String email = emailController.text + '@gmail.com';
+      String gender = dropdownValue;
+      String idNumber = idController.text;
+      String password = passwordController.text;
+      String birthDate = selectedDate.toIso8601String();
+      mdUser = MDUser(
+          fullName: fullName,
+          email: email,
+          gender: gender,
+          idNumber: idNumber,
+          password: password,
+          birthDate: birthDate);
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Hãy kiểm tra hộp thư của bạn.')));
+      await otpProvider!.sendOTP(mdUser!, context);
     } else {
       setState(() {
         isValid = false;
       });
     }
+  }
+
+  void scrollToOTP() {
+    _controller.animateTo(
+      300,
+      duration: Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   @override
@@ -142,6 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
+            controller: _controller,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -309,7 +303,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               const SnackBar(
                                   content: Text('Hệ thống đã gửi OTP')));
                         }
-                      : (() => handleOTPonClick()),
+                      : (() => sendOTP()),
                 ),
                 if (isValid == true)
                   Column(
@@ -350,7 +344,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(6)
                                 ],
-                                onChanged: (value) => otp=value,
+                                onChanged: (value) => otp = value,
                                 validator: (value) {
                                   if (value != null) {
                                     if (value.length < 6) {
@@ -434,7 +428,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       content: Text(
                                           'Vui lòng chấp nhận điều khoản.')));
                             } else {
-                              provider!.register(mdUser!,otp!, context);
+                              provider!.register(mdUser!, otp!, context);
                             }
                           }
                         }),
