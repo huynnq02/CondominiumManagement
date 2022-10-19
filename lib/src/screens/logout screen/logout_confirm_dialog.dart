@@ -1,14 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import '../../../utils/app_constant/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled/src/providers/login_provider.dart';
+import '../../providers/repository_provider.dart';
+import 'package:provider/provider.dart';
 
-class LogOutConfirmDialog extends StatelessWidget {
-  const LogOutConfirmDialog({
-    Key? key,
-  }) : super(key: key);
+import 'package:untitled/src/screens/main%20screen/main_screen.dart';
+
+class LogOutConfirmDialog extends StatefulWidget {
+  LogOutConfirmDialog({Key? key}) : super(key: key);
+
+  @override
+  State<LogOutConfirmDialog> createState() => _LogOutConfirmDialogState();
+}
+
+class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
+  late LoginProvider loginProvider;
+
+  late RepositoryProvider getPhonesProvider;
+  Future removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('userId');
+    prefs.remove('token');
+  }
 
   @override
   Widget build(BuildContext context) {
+    loginProvider = Provider.of<LoginProvider>(context, listen: false);
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Dialog(
@@ -54,11 +73,13 @@ class LogOutConfirmDialog extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                            );
+                            removeToken(); //remove token khi đăng xuất
+                            loginProvider.check = false;
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MainScreen(
+                                checkScreen: false,
+                              ),
+                            ));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.LogoutButtonColor,

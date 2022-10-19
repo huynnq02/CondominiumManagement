@@ -11,7 +11,7 @@ import 'package:untitled/src/screens/dashboard/widget/menu_item.dart' as menu;
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/src/screens/register%20screen/setting_account_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
-
+import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
 import '../../providers/repository_provider.dart';
 
 class MenuDashboard extends StatefulWidget {
@@ -142,13 +142,9 @@ class _MenuDashboardState extends State<MenuDashboard> {
                   ),
                   GestureDetector(
                     onTap: (() {
-                      removeToken(); //remove token khi đăng xuất
-                      loginProvider.check = false;
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MainScreen(
-                          checkScreen: false,
-                        ),
-                      ));
+                      showDialog(
+                          context: context,
+                          builder: ((context) => LogOutConfirmDialog()));
                     }),
                     child: menu.MenuItem(
                       title: 'Đăng xuất',
