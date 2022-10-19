@@ -41,6 +41,7 @@ class _LoginErrorDialogState extends State<LoginErrorDialog> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      color: Colors.red,
                     ),
                   ),
                 ),

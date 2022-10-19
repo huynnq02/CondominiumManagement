@@ -66,18 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Positioned(
                       child: Image.asset('assets/apato-logo.png'),
                       top: height * 0.23),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     image: DecorationImage(
-
-                  //     ),
-                  //   ),
-                  // ),
-                  // Positioned(
-                  //   bottom: 0,
-                  //   child: Image.asset('assets/city.png'),
-                  // ),
-
                   Padding(
                     padding: const EdgeInsets.only(left: 21, right: 10),
                     child: SingleChildScrollView(
@@ -90,13 +78,29 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "Đăng nhập",
-                                style: AppTextStyle.tomorrow
-                                    .copyWith(fontSize: 25),
+                              child: Stack(
+                                children: [
+                                  Text(
+                                    "Đăng nhập",
+                                    style: AppTextStyle.tomorrow.copyWith(
+                                      fontSize: 48,
+                                      foreground: Paint()
+                                        ..style = PaintingStyle.stroke
+                                        ..strokeWidth = 1
+                                        ..color = AppColors.Black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Đăng nhập",
+                                    style: AppTextStyle.tomorrow.copyWith(
+                                      fontSize: 48,
+                                      color: AppColors.White,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: height * 0.1),
+                            SizedBox(height: height * 0.07),
                             Expanded(
                               flex: 6,
                               child: Padding(
@@ -156,21 +160,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   valuePassword.toString(),
                                                   checkSave,
                                                   context);
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) =>
-                                              //         const LogoutTemp(),
-                                              //   ),
-                                              // );
                                             }
                                           },
                                           child: Text(
                                             'Đăng nhập',
-                                            style: AppTextStyle.nunitoSize13
-                                                .copyWith(
+                                            style:
+                                                AppTextStyle.lexendExa.copyWith(
                                               color: AppColors.Black,
-                                              fontSize: 20,
+                                              fontSize: 16,
                                             ),
                                           ),
                                         ),
@@ -188,8 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     SizedBox(height: height * 0.15),
                                     Container(
-                                      height: height * 0.07,
-                                      width: width * 0.55,
+                                      height: height * 0.09,
+                                      width: width * 0.6,
                                       decoration: BoxDecoration(
                                         border:
                                             Border.all(color: AppColors.White),
@@ -205,130 +202,46 @@ class _LoginScreenState extends State<LoginScreen> {
                                             "Không có tài khoản?",
                                             style: AppTextStyle.nunitoSize13
                                                 .copyWith(
-                                              fontSize: 12,
-                                              color: Color(0xFFFFFFFF),
+                                              fontSize: 20,
+                                              color: Color(0xFFFFFFFF)
+                                                  .withOpacity(0.7),
                                             ),
                                           ),
                                           InkWell(
                                             onTap: () => {print("Tapped")},
-                                            child: Text(
-                                              "Đăng kí",
-                                              style: AppTextStyle
-                                                  .nunitoBoldSize14
-                                                  .copyWith(
-                                                fontSize: 13,
-                                                color: Color(0xFFFA00FF),
-                                              ),
+                                            child: Stack(
+                                              children: [
+                                                Text(
+                                                  "Đăng kí",
+                                                  style: AppTextStyle.tomorrow
+                                                      .copyWith(
+                                                    fontSize: 28,
+                                                    foreground: Paint()
+                                                      ..style =
+                                                          PaintingStyle.stroke
+                                                      ..strokeWidth = 2
+                                                      ..color =
+                                                          Color(0xFFFFFFFF),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Đăng kí",
+                                                  style: AppTextStyle.tomorrow
+                                                      .copyWith(
+                                                    fontSize: 28,
+                                                    color: Color(0xFFFA00FF),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           )
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: height * 0.08),
+                                    Spacer(),
                                     Align(
                                         alignment: Alignment.bottomCenter,
                                         child: Image.asset('assets/city.png')),
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Align(
-                                    //       child: CustomCheckBox(
-                                    //         check: checkSave,
-                                    //         checkSave: (val) => checkSave =
-                                    //             val, // lấy dữ liệu trả về từ widget child
-                                    //       ),
-                                    //       alignment: Alignment.centerLeft,
-                                    //     ),
-                                    // TextButton(
-                                    //     onPressed: () {
-                                    //       Navigator.of(context).push(
-                                    //           MaterialPageRoute(builder: ((context) {
-                                    //         return ForgetPasswordScreen();
-                                    //       })));
-                                    //     },
-                                    //     child: Text(
-                                    //       'Quên mật khẩu',
-                                    //       style: AppTextStyle.nunitoSize13,
-                                    //     ))
-                                    //   ],
-                                    // ),
-                                    // Stack(
-                                    //   fit: StackFit.loose,
-                                    //   alignment: Alignment.center,
-                                    //   children: [
-                                    //     Image.asset(
-                                    //         'assets/cover-button-login.png'),
-                                    //     SizedBox(
-                                    //       child: ElevatedButton(
-                                    //         style: ElevatedButton.styleFrom(
-                                    //           primary:
-                                    //               AppColors.ButtonLoginColor,
-                                    //         ),
-                                    //         onPressed: () {
-                                    //           if (_formKey.currentState!
-                                    //               .validate()) {
-                                    //             AppPreferences.prefs.setBool(
-                                    //                 'save',
-                                    //                 checkSave); //lưu trạng thái của nút lưu thông tin
-                                    //             loginProvider!.checkAccount(
-                                    //                 // kiểm tra đăng nhập
-                                    //                 valueEmail.toString(),
-                                    //                 valuePassword.toString(),
-                                    //                 checkSave,
-                                    //                 context);
-                                    //             Navigator.push(
-                                    //               context,
-                                    //               MaterialPageRoute(
-                                    //                   builder: (context) =>
-                                    //                       const LogoutTemp()),
-                                    //             );
-                                    //           }
-                                    //         },
-                                    //         child: Text(
-                                    //           'Đăng nhập',
-                                    //           style: AppTextStyle.nunitoSize13
-                                    //               .copyWith(
-                                    //                   color: AppColors.Black,
-                                    //                   fontSize: 20,
-                                    //                   fontWeight:
-                                    //                       FontWeight.bold),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    // Row(
-                                    //   mainAxisAlignment: MainAxisAlignment.center,
-                                    //   children: [
-                                    //     Text(
-                                    //       'Chưa có tài khoản! ',
-                                    //       style: AppTextStyle.nunitoBoldSize14
-                                    //           .copyWith(fontSize: 12),
-                                    //     ),
-                                    //     TextButton(
-                                    //       onPressed: () {
-                                    //         Navigator.of(context).push(
-                                    //           MaterialPageRoute(
-                                    //             builder: ((context) {
-                                    //               return RegisterScreen();
-                                    //             }),
-                                    //           ),
-                                    //         );
-                                    //       },
-                                    //       child: InkWell(
-                                    //         onTap: () => {},
-                                    //         child: Text(
-                                    //           'Đăng kí',
-                                    //           style: AppTextStyle.nunitoBoldSize14
-                                    //               .copyWith(
-                                    //                   fontSize: 12,
-                                    //                   color: AppColors.Blue),
-                                    //         ),
-                                    //       ),
-                                    //     )
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                               ),

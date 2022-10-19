@@ -18,4 +18,5 @@ class AppTextStyle {
       fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.DarkGrey);
   static final tomorrow = GoogleFonts.tomorrow(color: AppColors.White);
   static final lato = GoogleFonts.lato(color: AppColors.Black);
+  static final lexendExa = GoogleFonts.lexendExa(color: AppColors.Black);
 }
