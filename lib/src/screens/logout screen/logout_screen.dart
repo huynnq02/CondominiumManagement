@@ -27,6 +27,5 @@ class _LogoutTempState extends State<LogoutTemp> {
 
   void showLogoutConfirmPopupDialog(BuildContext context, height, width) =>
       showDialog(
-          context: context,
-          builder: ((context) => const ShowLogOutConfirmDialog()));
+          context: context, builder: ((context) => LogOutConfirmDialog()));
 }
