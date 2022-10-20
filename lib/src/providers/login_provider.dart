@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
+import 'package:untitled/src/screens/login%20screen/widget/login_error_dialog.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
 
@@ -43,15 +44,30 @@ class LoginProvider extends ChangeNotifier {
             authAPIProvider!.userId.toString()) // lưu token vào sharePreference
         : '';
     setPreference(valueEmail, valuePassword);
-    check == true
-        ? Navigator.push(
-            context,
-            MaterialPageRoute(
+    if (valueEmail.isEmpty || valuePassword.isEmpty) {
+      showDialog(
+        context: context,
+        builder: ((context) =>
+            const LoginErrorDialog(content: "Vui lòng nhập đầy đủ thông tin!")),
+      );
+    } else {
+      check == true
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
                 builder: (context) => MainScreen(
-                      checkScreen: true,
-                    )))
-        : ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message == null ? '' : message)));
+                  checkScreen: true,
+                ),
+              ),
+            )
+          : showDialog(
+              context: context,
+              builder: ((context) => const LoginErrorDialog(
+                  content: "Email hoặc mật khẩu không hợp lệ!")),
+            );
+    }
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text(message == null ? '' : message)));
   }
 
 // lấy email, password từ SharePreference
