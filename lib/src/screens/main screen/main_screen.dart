@@ -186,14 +186,18 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: ImageIcon(
                 const AssetImage('assets/bottom_navigation_bar_icon/home.png'),
-                color: _selectedIndex == 0 ? AppColors.Black : AppColors.Grey,
+                color: _selectedIndex == 0
+                    ? AppColors.Black
+                    : const Color(0xFF1D6D54),
               ),
               label: 'Trang chủ',
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(
                 const AssetImage('assets/bottom_navigation_bar_icon/2.png'),
-                color: _selectedIndex == 1 ? AppColors.Black : AppColors.Grey,
+                color: _selectedIndex == 1
+                    ? AppColors.Black
+                    : const Color(0xFF1D6D54),
               ),
               label: "?",
             ),
@@ -201,14 +205,18 @@ class _MainScreenState extends State<MainScreen> {
               icon: ImageIcon(
                 const AssetImage(
                     'assets/bottom_navigation_bar_icon/global.png'),
-                color: _selectedIndex == 2 ? AppColors.Black : AppColors.Grey,
+                color: _selectedIndex == 2
+                    ? AppColors.Black
+                    : const Color(0xFF1D6D54),
               ),
               label: '?',
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(
                 const AssetImage('assets/bottom_navigation_bar_icon/4.png'),
-                color: _selectedIndex == 3 ? AppColors.Black : AppColors.Grey,
+                color: _selectedIndex == 3
+                    ? AppColors.Black
+                    : const Color(0xFF1D6D54),
               ),
               label: '?',
             ),
@@ -216,14 +224,22 @@ class _MainScreenState extends State<MainScreen> {
               icon: ImageIcon(
                 const AssetImage(
                     'assets/bottom_navigation_bar_icon/profile.png'),
-                color: _selectedIndex == 4 ? AppColors.Black : AppColors.Grey,
+                color: _selectedIndex == 4
+                    ? AppColors.Black
+                    : const Color(0xFF1D6D54),
               ),
               label: 'Cá nhân',
             ),
           ],
           currentIndex: _selectedIndex,
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: const Color(0xFF1D6D54),
+          unselectedItemColor: const Color(0xFF1D6D54),
+          selectedItemColor: AppColors.Black,
+          unselectedLabelStyle: AppTextStyle.robotoSize14.copyWith(
+            fontSize: 10,
+          ),
+          selectedLabelStyle: AppTextStyle.robotoSize14.copyWith(
+            fontSize: 10,
+          ),
           showUnselectedLabels: true,
           onTap: _onTapTapped,
           // elevation: 0,
