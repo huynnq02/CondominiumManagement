@@ -208,7 +208,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                             ),
                                           ),
                                           InkWell(
-                                            onTap: () => {print("Tapped")},
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: ((context) =>
+                                                          RegisterScreen())));
+                                            },
                                             child: Stack(
                                               children: [
                                                 Text(
