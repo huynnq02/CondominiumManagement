@@ -37,6 +37,18 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   final pages = [
+    const Center(
+      child: Text("Screen 1"),
+    ),
+    const Center(
+      child: Text("Screen 2"),
+    ),
+    const Center(
+      child: Text("Screen 3"),
+    ),
+    const Center(
+      child: Text("Screen 4"),
+    ),
     ProfileScreen(),
   ];
   @override
@@ -54,8 +66,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: Scaffold(
-        body: pages[0],
+        body: pages[_selectedIndex],
         // body: FutureBuilder(
         //   future: provider.getPhones(),
         //   builder: (context, snapshot) {
@@ -187,8 +200,8 @@ class _MainScreenState extends State<MainScreen> {
               icon: ImageIcon(
                 const AssetImage('assets/bottom_navigation_bar_icon/home.png'),
                 color: _selectedIndex == 0
-                    ? AppColors.Black
-                    : const Color(0xFF1D6D54),
+                    ? const Color(0xFF1D6D54)
+                    : AppColors.Black,
               ),
               label: 'Trang chủ',
             ),
@@ -196,8 +209,8 @@ class _MainScreenState extends State<MainScreen> {
               icon: ImageIcon(
                 const AssetImage('assets/bottom_navigation_bar_icon/2.png'),
                 color: _selectedIndex == 1
-                    ? AppColors.Black
-                    : const Color(0xFF1D6D54),
+                    ? const Color(0xFF1D6D54)
+                    : AppColors.Black,
               ),
               label: "?",
             ),
@@ -206,8 +219,8 @@ class _MainScreenState extends State<MainScreen> {
                 const AssetImage(
                     'assets/bottom_navigation_bar_icon/global.png'),
                 color: _selectedIndex == 2
-                    ? AppColors.Black
-                    : const Color(0xFF1D6D54),
+                    ? const Color(0xFF1D6D54)
+                    : AppColors.Black,
               ),
               label: '?',
             ),
@@ -215,8 +228,8 @@ class _MainScreenState extends State<MainScreen> {
               icon: ImageIcon(
                 const AssetImage('assets/bottom_navigation_bar_icon/4.png'),
                 color: _selectedIndex == 3
-                    ? AppColors.Black
-                    : const Color(0xFF1D6D54),
+                    ? const Color(0xFF1D6D54)
+                    : AppColors.Black,
               ),
               label: '?',
             ),
@@ -225,15 +238,15 @@ class _MainScreenState extends State<MainScreen> {
                 const AssetImage(
                     'assets/bottom_navigation_bar_icon/profile.png'),
                 color: _selectedIndex == 4
-                    ? AppColors.Black
-                    : const Color(0xFF1D6D54),
+                    ? const Color(0xFF1D6D54)
+                    : AppColors.Black,
               ),
               label: 'Cá nhân',
             ),
           ],
           currentIndex: _selectedIndex,
-          unselectedItemColor: const Color(0xFF1D6D54),
-          selectedItemColor: AppColors.Black,
+          unselectedItemColor: AppColors.Black,
+          selectedItemColor: const Color(0xFF1D6D54),
           unselectedLabelStyle: AppTextStyle.robotoSize14.copyWith(
             fontSize: 10,
           ),
