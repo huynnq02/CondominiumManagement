@@ -8,13 +8,14 @@ import 'package:untitled/src/screens/dashboard/menu_dashboard.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/widgets/information.dart';
 import 'package:untitled/src/screens/main%20screen/widgets/search_bar.dart';
+import 'package:untitled/src/screens/profile%20screen/profile_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import '../../../utils/app_constant/app_text_style.dart';
 import '../../../utils/helper/app_preference.dart';
 import '../search screen/widget/widget_load.dart';
 
 class MainScreen extends StatefulWidget {
-  bool? checkScreen;
+  bool checkScreen;
   MainScreen({
     required this.checkScreen,
     Key? key,
@@ -28,6 +29,28 @@ class _MainScreenState extends State<MainScreen> {
   late RepositoryProvider provider;
   LoginProvider? loginProvider;
   String? email;
+  int _selectedIndex = 0;
+  void _onTapTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  final pages = [
+    const Center(
+      child: Text("Screen 1"),
+    ),
+    const Center(
+      child: Text("Screen 2"),
+    ),
+    const Center(
+      child: Text("Screen 3"),
+    ),
+    const Center(
+      child: Text("Screen 4"),
+    ),
+    ProfileScreen(),
+  ];
   @override
   void initState() {
     super.initState();
@@ -43,13 +66,16 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: FutureBuilder(
-          future: provider.getPhones(),
-          builder: (context, snapshot) {
-            return 
-            // snapshot.hasData ?
-            Container(
+      bottom: false,
+      child: Scaffold(
+        body: widget.checkScreen
+            ? pages[_selectedIndex]
+            : FutureBuilder(
+                future: provider.getPhones(),
+                builder: (context, snapshot) {
+                  return
+                      // snapshot.hasData ?
+                      Container(
                     padding: const EdgeInsets.only(top: 10),
                     height: MediaQuery.of(context).size.height,
                     color: Colors.white,
@@ -153,26 +179,96 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   );
-                // : snapshot.hasError
-                //     ? Center(
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: [
-                //             const Icon(
-                //               Icons.error,
-                //               color: AppColors.Grey,
-                //               size: 64,
-                //             ),
-                //             Text(
-                //               'Có lỗi xảy ra, vui lòng thử lại sau',
-                //               style: AppTextStyle.nunitoBoldSize14
-                //                   .copyWith(fontSize: 24),
-                //             ),
-                //           ],
-                //         ),
-                //       )
-                //     : const WidgetLoad();
-          }),
-    ));
+                  // : snapshot.hasError
+                  //     ? Center(
+                  //         child: Column(
+                  //           mainAxisAlignment: MainAxisAlignment.center,
+                  //           children: [
+                  //             const Icon(
+                  //               Icons.error,
+                  //               color: AppColors.Grey,
+                  //               size: 64,
+                  //             ),
+                  //             Text(
+                  //               'Có lỗi xảy ra, vui lòng thử lại sau',
+                  //               style: AppTextStyle.nunitoBoldSize14
+                  //                   .copyWith(fontSize: 24),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       )
+                  //     : const WidgetLoad();
+                },
+              ),
+        bottomNavigationBar: widget.checkScreen
+            ? BottomNavigationBar(
+                items: [
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      const AssetImage(
+                          'assets/bottom_navigation_bar_icon/home.png'),
+                      color: _selectedIndex == 0
+                          ? const Color(0xFF1D6D54)
+                          : AppColors.Black,
+                    ),
+                    label: 'Trang chủ',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      const AssetImage(
+                          'assets/bottom_navigation_bar_icon/2.png'),
+                      color: _selectedIndex == 1
+                          ? const Color(0xFF1D6D54)
+                          : AppColors.Black,
+                    ),
+                    label: "?",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      const AssetImage(
+                          'assets/bottom_navigation_bar_icon/global.png'),
+                      color: _selectedIndex == 2
+                          ? const Color(0xFF1D6D54)
+                          : AppColors.Black,
+                    ),
+                    label: '?',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      const AssetImage(
+                          'assets/bottom_navigation_bar_icon/4.png'),
+                      color: _selectedIndex == 3
+                          ? const Color(0xFF1D6D54)
+                          : AppColors.Black,
+                    ),
+                    label: '?',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      const AssetImage(
+                          'assets/bottom_navigation_bar_icon/profile.png'),
+                      color: _selectedIndex == 4
+                          ? const Color(0xFF1D6D54)
+                          : AppColors.Black,
+                    ),
+                    label: 'Cá nhân',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                unselectedItemColor: AppColors.Black,
+                selectedItemColor: const Color(0xFF1D6D54),
+                unselectedLabelStyle: AppTextStyle.robotoSize14.copyWith(
+                  fontSize: 10,
+                ),
+                selectedLabelStyle: AppTextStyle.robotoSize14.copyWith(
+                  fontSize: 10,
+                ),
+                showUnselectedLabels: true,
+                onTap: _onTapTapped,
+                // elevation: 0,
+              )
+            : null,
+      ),
+    );
   }
 }
