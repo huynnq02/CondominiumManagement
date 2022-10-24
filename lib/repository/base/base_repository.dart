@@ -7,9 +7,8 @@ import 'package:untitled/utils/helper/app_preference.dart';
 
 abstract class BaseRepository {
   static String get tokenAuth => AppPreferences.prefs.getString('token') ?? '';
-  var baseUrl =
-      // 'https://10.0.2.2:44301'; //'https://10.0.2.2:44301';
-      'https://aireviewapi.azurewebsites.net';
+  var baseUrl = 'https://10.0.2.2:44301'; //'https://10.0.2.2:44301';
+  // 'https://aireviewapi.azurewebsites.net';
   @protected
   Dio init() {
     Dio dio = Dio();
