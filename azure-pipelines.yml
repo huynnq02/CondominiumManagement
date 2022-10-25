@@ -19,18 +19,6 @@ stages:
   - job: AndroidJob
     displayName: Android
     steps: 
-    - task: Bash@3
-      displayName: Copy config files
-      inputs:
-        targetType: 'inline'
-        script: |
-          cp $(keyprop.secureFilePath) $(Build.SourcesDirectory)/android/key.properties
-          cp $(key.secureFilePath) $(Build.SourcesDirectory)/android/app/key.jks
-          
-          echo "key.properties copied to $(Build.SourcesDirectory)/android/key.properties"
-          echo "key.jks copied to $(Build.SourcesDirectory)/android/app/key.jks"
-
-
     - task: FlutterBuild@0
       displayName: "Build application"
       inputs:
