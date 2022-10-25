@@ -19,19 +19,6 @@ stages:
   - job: AndroidJob
     displayName: Android
     steps: 
-
-    - task: DownloadSecureFile@1
-      name: keyprop
-      displayName: Download key properties file
-      inputs:
-        secureFile: 'key.properties'
-
-    - task: DownloadSecureFile@1
-      name: key
-      displayName: Download signing key
-      inputs:
-        secureFile: 'key.jks'
-
     - task: Bash@3
       displayName: Copy config files
       inputs:
@@ -53,7 +40,6 @@ stages:
     - task: FlutterTest@0
       displayName: "Run unit tests"
       inputs:
-        generateCodeCoverageReport: true
         projectDirectory: '$(Build.SourcesDirectory)'
 
     - task: CopyFiles@2
