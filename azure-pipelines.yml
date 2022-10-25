@@ -22,6 +22,7 @@ stages:
     steps: 
     
     - task: FlutterInstall@0
+      displayName: "Install the latest version of Flutter"
       inputs:
         mode: 'auto'
         channel: 'stable'
