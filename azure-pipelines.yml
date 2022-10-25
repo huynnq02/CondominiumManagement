@@ -34,11 +34,6 @@ stages:
         target: 'apk'
         projectDirectory: '$(Build.SourcesDirectory)'
 
-    - task: FlutterTest@0
-      displayName: "Run unit tests"
-      inputs:
-        projectDirectory: '$(Build.SourcesDirectory)'
-
     - task: CopyFiles@2
       displayName: "Copy app to staging directory"
       inputs:
