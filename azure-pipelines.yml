@@ -25,6 +25,10 @@ stages:
       inputs:
         channel: 'stable'
         version: 'latest'
+      
+    - task: CmdLine@2
+      inputs:
+        script: 'flutter upgrade'
 
     - task: FlutterBuild@0
       displayName: "Build application"
