@@ -5,7 +5,7 @@
 
 
 trigger:
-  - main
+  - sprint02
 
 pool:
   vmImage: macOS-11
