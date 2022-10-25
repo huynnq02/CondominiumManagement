@@ -8,7 +8,7 @@ trigger:
   - sprint02
 
 pool:
-  vmImage: macOS-latest
+  vmImage: macOS-12
 
 stages:
 - stage: AndroidStage
