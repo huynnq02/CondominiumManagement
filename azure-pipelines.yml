@@ -39,6 +39,7 @@ stages:
       inputs:
         sourceFolder: '$(Agent.BuildDirectory)'
         targetFolder: '$(Build.ArtifactStagingDirectory)'
+        override: true
 
     - task: PublishBuildArtifacts@1
       displayName: "Publish APK file"
