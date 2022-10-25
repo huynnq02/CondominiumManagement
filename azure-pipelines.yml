@@ -21,7 +21,7 @@ stages:
     displayName: Android
     steps: 
     
-    - task: Hey24sheep.FlutterInstall@0
+    - task: FlutterInstall@0
       inputs:
         mode: 'auto'
         channel: 'stable'
