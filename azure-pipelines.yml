@@ -1,4 +1,5 @@
 # Starter pipeline
+
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -21,8 +22,8 @@ stages:
     steps: 
     
     - task: FlutterInstall@0
-      displayName: "Install Flutter"
       inputs:
+        mode: 'auto'
         channel: 'stable'
         version: 'latest'
       
