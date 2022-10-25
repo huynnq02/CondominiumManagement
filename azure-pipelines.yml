@@ -39,7 +39,7 @@ stages:
       inputs:
         sourceFolder: '$(Agent.BuildDirectory)'
         contents: '**/bundle/**'
-        targetFolder: '$(Build.StagingDirectory)'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
 
     - task: PublishBuildArtifacts@1
