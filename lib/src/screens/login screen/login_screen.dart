@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                               loginProvider!.checkAccount(
                                                   // kiểm tra đăng nhập
-                                                  valueEmail.toString(),
+                                                  valueEmail.toString() + '@gmail.com',
                                                   valuePassword.toString(),
                                                   checkSave,
                                                   context);

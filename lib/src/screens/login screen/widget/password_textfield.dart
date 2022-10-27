@@ -136,7 +136,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   label: Text(
-                    'Password',
+                    'Mật khẩu',
                     style: AppTextStyle.nunitoSize13.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
