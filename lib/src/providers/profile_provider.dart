@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:untitled/src/models/user.dart';
+import 'package:untitled/src/providers/repository_provider.dart';
 import '../../repository/profile/profileAPI_provider.dart';
 import '../../utils/helper/app_preference.dart';
+import 'dart:convert';
 
 class ProfileProvider extends ChangeNotifier {
   var reponse;
@@ -28,5 +33,22 @@ class ProfileProvider extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Mật khẩu mới không hợp lệ')));
     }
+  }
+
+  Future getCurrentUserProfile(BuildContext context) async {
+    var response = await ProfilePro().getCurrentUserProfileAPIProvider();
+    print(response['result']);
+    MDUser user = MDUser.fromMap(response['result']);
+    return user;
+  }
+
+  Future getProfilePicture(BuildContext context) async {
+    var response = await ProfilePro().getProfilePictureAPIProvider();
+    return response;
+  }
+
+  Future updateProfilePicture(BuildContext context, File file) async {
+    var response = await ProfilePro().updateProfilePictureAPIProvider(file);
+    return response;
   }
 }
