@@ -35,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController idController = TextEditingController();
+  final TextEditingController apartmentIdController = TextEditingController();
   final TextEditingController dateController = TextEditingController(
       text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
   final ScrollController _controller = ScrollController();
@@ -221,13 +222,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     RegisterTextField(
                       labelText: 'CMND/CCCD',
                       controller: idController,
+                      type: TextFieldType.number,
+                      isDisabled: _isButtonDisabled,
+                      maxLength: 12,
+                    ),
+                    RegisterTextField(
+                      labelText: 'Mã căn hộ',
+                      controller: apartmentIdController,
                       border: const BorderRadius.only(
                         bottomLeft: Radius.circular(12.0),
                         bottomRight: Radius.circular(12.0),
                       ),
-                      type: TextFieldType.number,
                       isDisabled: _isButtonDisabled,
-                      maxLength: 12,
+                      maxLength: 15,
                     ),
                   ],
                 ),
