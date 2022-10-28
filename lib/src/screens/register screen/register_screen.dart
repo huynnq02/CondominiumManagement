@@ -13,7 +13,7 @@ import '../../widget/register_textfield.dart';
 import '../login screen/login_screen.dart';
 import 'widget/widget_button.dart';
 
-const List<String> genderList = <String>['Nam', 'Nữ', 'Khác'];
+const List<String> genderList = <String>['Nam', 'Nữ'];
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
