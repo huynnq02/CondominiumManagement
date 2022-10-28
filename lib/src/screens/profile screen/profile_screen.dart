@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
+import 'package:untitled/src/screens/change%20phone%20number%20screen/change_phone_number_screen.dart';
 import 'package:untitled/src/screens/profile%20screen/widgets/profile_picture.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
@@ -309,13 +310,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     _handleWatchPhoneNumber,
                                               ),
                                               IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const ChangePhoneNumberScreen(),
+                                                    ),
+                                                  );
+                                                },
                                                 icon: const Icon(Icons.edit),
                                               ),
                                             ],
                                           )
                                         : IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ChangePhoneNumberScreen(),
+                                                ),
+                                              );
+                                            },
                                             icon: const Icon(Icons.edit),
                                           ),
                                   ],
