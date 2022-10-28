@@ -44,6 +44,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future getProfilePicture(BuildContext context) async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
+    print(response);
     return response;
   }
 

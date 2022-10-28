@@ -24,7 +24,6 @@ class ProfileRepository extends BaseRepository {
 
   Future<Response> getProfilePictureAPIRepository() async {
     try {
-
       var client = init();
       final profileResponse = await client.get(
         '/api/services/app/Profile/GetProfilePicture',
@@ -53,7 +52,6 @@ class ProfileRepository extends BaseRepository {
   Future<Response> updateProfilePictureAPIRepository(File file) async {
     try {
       var client = init();
-      print("zo xxx");
       String fileName = file.path.split('/').last;
       FormData formData = FormData.fromMap({
         "fileToken": await MultipartFile.fromFile(
@@ -61,15 +59,11 @@ class ProfileRepository extends BaseRepository {
           filename: fileName,
         ),
       });
-      print("toi day");
-      print("link ne: " + file.path);
-      print("ten ne: " + fileName);
+
       final profileResponse = await client.put(
         '/api/services/app/Profile/UpdateProfilePicture',
         data: formData,
       );
-      print("adu");
-      print("repon: " + profileResponse.data);
       return profileResponse;
     } on DioError catch (error) {
       return error.response as Response;

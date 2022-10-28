@@ -25,7 +25,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
   void initState() {
     super.initState();
     profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    // getUserProfilePicture();
+    getUserProfilePicture();
   }
 
   void getUserProfilePicture() async {
@@ -209,7 +209,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
 
   // upload _imageFile to api
   void uploadImage(PickedFile _imageFile) async {
-    profileProvider?.updateProfilePicture(
+    await profileProvider?.updateProfilePicture(
       context,
       File(_imageFile.path),
     );
