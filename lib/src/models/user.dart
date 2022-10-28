@@ -3,24 +3,24 @@ import 'dart:convert';
 class MDUser {
   String name;
   String surname;
-  String userName;
+  String? userName;
   String email;
-  // String password;
+  String? password;
   String gender;
   String idNumber;
-  // String fullName;
+  String? fullName;
   String birthDate;
   String? phoneNumber;
 
   MDUser(
       {required this.name,
-      required this.userName,
+      this.userName,
       required this.surname,
       required this.email,
-      // required this.password,
+      required this.password,
       required this.gender,
       required this.idNumber,
-      // required this.fullName,
+      this.fullName,
       required this.birthDate,
       this.phoneNumber});
 
@@ -30,10 +30,10 @@ class MDUser {
       "surname": surname,
       "userName": userName,
       "emailAddress": email,
-      // "password": password,
+      "password": password,
       "gender": gender,
       "idNumber": idNumber,
-      // "fullName": fullName,
+      "fullName": fullName,
       "birthDate": birthDate
     };
   }
@@ -42,12 +42,12 @@ class MDUser {
     return MDUser(
       name: map['name'],
       surname: map['surname'],
-      userName: map['userName'],
+      userName: map['userName']?.toString(),
       email: map['emailAddress'],
-      // password: map['password'],
+      password: map['password']?.toString(),
       gender: map['gender'],
       idNumber: map['idNumber'],
-      // fullName: map['fullName'],
+      fullName: map['fullName']?.toString(),
       birthDate: map['birthDate'],
       phoneNumber: map['phoneNumber']?.toString(),
     );
