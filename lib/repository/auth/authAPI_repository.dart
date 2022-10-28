@@ -21,7 +21,7 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
-  Future<Response> register({MDUser? mdUser,String? otp}) async {
+  Future<Response> register({MDUser? mdUser, String? otp}) async {
     try {
       var client = init();
 
@@ -29,12 +29,10 @@ class AuthAPIRepository extends BaseRepository {
         '/api/services/app/Account/Register',
         data: {
           "clientType": 1,
-          "fullName": mdUser!.fullName,
-          "emailAddress": mdUser.email,
+          "emailAddress": mdUser!.email,
           "gender": mdUser.gender,
           "idNumber": mdUser.idNumber,
           "birthDate": mdUser.birthDate,
-          "password": mdUser.password,
           "otp": otp
         },
       );
@@ -53,12 +51,10 @@ class AuthAPIRepository extends BaseRepository {
           '/api/services/app/Account/SendEmailActivationOTP',
           data: {
             "clientType": 1,
-            "fullName": mdUser!.fullName,
-            "emailAddress": mdUser.email,
+            "emailAddress": mdUser!.email,
             "gender": mdUser.gender,
             "idNumber": mdUser.idNumber,
             "birthDate": mdUser.birthDate,
-            "password": mdUser.password
           },
           options: Options(headers: {
             'Content-Type': 'application/json',
