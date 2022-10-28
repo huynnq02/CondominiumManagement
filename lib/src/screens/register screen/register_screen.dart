@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:intl/intl.dart';
-import 'dart:io';
 import '../../widget/register_textfield.dart';
-import '../login screen/login_screen.dart';
 import 'widget/widget_button.dart';
 
 const List<String> genderList = <String>['Nam', 'Nữ'];
@@ -115,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void scrollToOTP() {
     _controller.animateTo(
       300,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
   }
@@ -436,6 +432,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       content: Text(
                                           'Vui lòng chấp nhận điều khoản.')));
                             } else {
+                              //Hiển thị trạng thái loading
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  });
                               provider!.register(mdUser!, otp!, context);
                             }
                           }

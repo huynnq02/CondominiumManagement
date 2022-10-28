@@ -10,6 +10,10 @@ class RegisterProvider extends ChangeNotifier {
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
   Future register(MDUser mdUser,String otp, BuildContext context) async {
     data = await authAPIProvider.register(mdUser: mdUser,otp: otp);
+
+    //Dừng trạng thái loading
+    Navigator.of(context).pop();
+    
     // kiểm tra reponse từ api
     if (data['success'] == true && data['result']['canLogin']==true) {
       //đăng kí thành công chuyển về đăng nhập
