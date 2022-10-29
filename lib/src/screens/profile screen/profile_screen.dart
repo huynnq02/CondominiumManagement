@@ -203,7 +203,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.birthDate,
+                                  mdUser.birthDate
+                                      .substring(0, 10)
+                                      .replaceAll("-", "/"),
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
@@ -248,13 +250,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: AppTextStyle.lato
                                           .copyWith(fontSize: 16),
                                     ),
-                                    IconButton(
-                                      icon: Icon(
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                    InkWell(
+                                      child: Icon(
                                         _isObsecureIdNumber
                                             ? Icons.visibility_off
                                             : Icons.visibility,
                                       ),
-                                      onPressed: _handleWatchIdNumber,
+                                      onTap: _handleWatchIdNumber,
                                     ),
                                   ],
                                 ),
@@ -295,22 +300,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Text(
                                       mdUser.phoneNumber == null
                                           ? "Chưa cập nhật"
-                                          : "OK",
+                                          : mdUser.phoneNumber!,
                                     ),
                                     mdUser.phoneNumber != null
                                         ? Row(
                                             children: [
-                                              IconButton(
-                                                icon: Icon(
+                                              InkWell(
+                                                child: Icon(
                                                   _isObsecurePhoneNumber
                                                       ? Icons.visibility_off
                                                       : Icons.visibility,
                                                 ),
-                                                onPressed:
-                                                    _handleWatchPhoneNumber,
+                                                onTap: _handleWatchPhoneNumber,
                                               ),
-                                              IconButton(
-                                                onPressed: () {
+                                              SizedBox(
+                                                width: width * 0.02,
+                                              ),
+                                              InkWell(
+                                                onTap: () {},
+                                                child: const Icon(Icons.edit),
+                                              )
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              SizedBox(
+                                                width: width * 0.02,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -319,22 +337,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                   );
                                                 },
-                                                icon: const Icon(Icons.edit),
+                                                child: const Icon(Icons.edit),
                                               ),
                                             ],
                                           )
-                                        : IconButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const ChangePhoneNumberScreen(),
-                                                ),
-                                              );
-                                            },
-                                            icon: const Icon(Icons.edit),
-                                          ),
                                   ],
                                 )
                               ],
@@ -374,7 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  "Email",
+                                  "M02.407",
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
