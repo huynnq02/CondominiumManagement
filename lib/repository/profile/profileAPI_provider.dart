@@ -21,6 +21,7 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
 
   Future getProfilePictureAPIProvider() async {
     final res = await repository.getProfilePictureAPIRepository();
+    print("ne");
     print(res.data['result']);
     return res.data['result'];
   }
@@ -31,8 +32,8 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     return res.data;
   }
 
-  Future updateProfilePictureAPIProvider(File file) async {
-    final res = await repository.updateProfilePictureAPIRepository(file);
+  Future updateProfilePictureAPIProvider(File image) async {
+    final res = await repository.updateProfilePictureAPIRepository(image);
     return res.data;
   }
 }

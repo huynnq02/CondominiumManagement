@@ -44,12 +44,18 @@ class ProfileProvider extends ChangeNotifier {
 
   Future getProfilePicture(BuildContext context) async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
-    print(response);
-    return response;
+    // print("res ne");
+    // print(response['profilePicture'] as String);
+    // String profilePicture = response['profilePicture'] as String;
+    var bytesString = response['profilePicture'] as String;
+    List<int> bytesList = base64.decode(bytesString);
+    print("bai lit");
+    print(bytesList);
+    return bytesList;
   }
 
-  Future updateProfilePicture(BuildContext context, File file) async {
-    var response = await ProfilePro().updateProfilePictureAPIProvider(file);
+  Future updateProfilePicture(File image) async {
+    var response = await ProfilePro().updateProfilePictureAPIProvider(image);
     return response;
   }
 }

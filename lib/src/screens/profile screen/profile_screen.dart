@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
@@ -26,6 +27,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final phoneController = TextEditingController();
   final idController = TextEditingController();
 
+  List<int>? profilePicture;
+  Uint8List? bytes;
   @override
   void initState() {
     super.initState();
@@ -37,7 +40,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isLoading = true;
     });
+    profilePicture = await profileProvider?.getProfilePicture(context);
+    bytes = Uint8List.fromList(profilePicture!);
+    print("Thu ne");
+    print(bytes);
+    print("laydata");
     mdUser = await profileProvider?.getCurrentUserProfile(context);
+    // String profilePicture = await profileProvider?.getProfilePicture(context);
     setState(() {
       _isLoading = false;
     });
@@ -79,7 +88,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Spacer(
                     flex: 1,
                   ),
-                  ProfilePicture(),
+                  ProfilePicture(
+                    image: bytes == null ? null : bytes!,
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),
