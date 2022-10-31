@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:untitled/repository/base/base_repository.dart';
 
@@ -15,6 +17,54 @@ class ProfileRepository extends BaseRepository {
       );
 
       return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> getProfilePictureAPIRepository() async {
+    try {
+      var client = init();
+      final profileResponse = await client.get(
+        '/api/services/app/Profile/GetProfilePicture',
+      );
+
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> getCurrentUserProfileAPIRepository() async {
+    try {
+      var client = init();
+
+      final profileResponse = await client.get(
+        '/api/services/app/Profile/GetCurrentUserProfileForEdit',
+      );
+
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> updateProfilePictureAPIRepository(File file) async {
+    try {
+      var client = init();
+      String fileName = file.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "fileToken": await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        ),
+      });
+
+      final profileResponse = await client.put(
+        '/api/services/app/Profile/UpdateProfilePicture',
+        data: formData,
+      );
+      return profileResponse;
     } on DioError catch (error) {
       return error.response as Response;
     }

@@ -93,13 +93,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       String birthDate = selectedDate.toIso8601String();
       String apartmentId = apartmentIdController.text;
       mdUser = MDUser(
-          fullName: fullName,
-          email: email,
-          gender: gender,
-          idNumber: idNumber,
-          password: password,
-          birthDate: birthDate,
-          apartmentId: apartmentId);
+        name: fullName,
+        surname: fullName,
+        email: email,
+        gender: gender,
+        idNumber: idNumber,
+        password: password,
+        birthDate: birthDate,
+        fullName: fullName,
+        apartmentId: apartmentId
+      );
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Hãy kiểm tra hộp thư của bạn.')));
       await otpProvider!.sendOTP(mdUser!, context);
