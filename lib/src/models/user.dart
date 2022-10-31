@@ -1,27 +1,30 @@
 import 'dart:convert';
 
 class MDUser {
-  String? name;
-  String? surname;
+  String name;
+  String surname;
   String? userName;
-  String? email;
+  String email;
   String? password;
-  String? gender;
-  String? idNumber;
+  String gender;
+  String idNumber;
   String? fullName;
-  String? birthDate;
+  String birthDate;
+  String? phoneNumber;
+  String? apartmentId;
 
-  MDUser({
-    this.name,
-    this.userName,
-    this.surname,
-    this.email,
-    this.password,
-    this.gender,
-    this.idNumber,
-    this.fullName,
-    this.birthDate
-  });
+  MDUser(
+      {required this.name,
+      this.userName,
+      required this.surname,
+      required this.email,
+      required this.password,
+      required this.gender,
+      required this.idNumber,
+      this.fullName,
+      required this.birthDate,
+      this.phoneNumber,
+      this.apartmentId});
 
   Map<String, dynamic> toMap() {
     return {
@@ -33,7 +36,8 @@ class MDUser {
       "gender": gender,
       "idNumber": idNumber,
       "fullName": fullName,
-      "birthDate": birthDate
+      "birthDate": birthDate,
+      "apartmentId": apartmentId
     };
   }
 
@@ -41,13 +45,15 @@ class MDUser {
     return MDUser(
       name: map['name'],
       surname: map['surname'],
-      userName: map['userName'],
+      userName: map['userName']?.toString(),
       email: map['emailAddress'],
-      password: map['password'],
+      password: map['password']?.toString(),
       gender: map['gender'],
       idNumber: map['idNumber'],
-      fullName: map['fullName'],
+      fullName: map['fullName']?.toString(),
       birthDate: map['birthDate'],
+      phoneNumber: map['phoneNumber']?.toString(),
+      apartmentId: map['apartmentId'],
     );
   }
 

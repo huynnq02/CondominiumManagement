@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
@@ -63,104 +64,107 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       bottom: false,
       child: Scaffold(
         body: widget.checkScreen
             ? pages[_selectedIndex]
-            : Container(
-                padding: const EdgeInsets.only(top: 10),
-                height: MediaQuery.of(context).size.height,
-                color: Colors.white,
-                child: GestureDetector(
-                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // Padding(
-                        //   padding: EdgeInsets.only(right: 15, bottom: 29),
-                        // child:
-                        loginProvider!.check == true &&
-                                widget.checkScreen == true
-                            ? GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()),
-                                  ).then((value) => setState(() {}));
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const Icon(
-                                      Icons.circle,
-                                      color: AppColors.LightBlue,
-                                      size: 17,
-                                    ),
-                                    Text(
-                                      'Xin chào, ' + email.toString(),
-                                      style: GoogleFonts.roboto(
-                                        textStyle: AppTextStyle.robotoSize14
-                                            .copyWith(
-                                                fontWeight: FontWeight.w500),
+            : SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // Padding(
+                          //   padding: EdgeInsets.only(right: 15, bottom: 29),
+                          // child:
+                          loginProvider!.check == true &&
+                                  widget.checkScreen == true
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()),
+                                    ).then((value) => setState(() {}));
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const Icon(
+                                        Icons.circle,
+                                        color: AppColors.LightBlue,
+                                        size: 17,
                                       ),
-                                    ),
-                                    const SizedBox(width: 15),
-                                  ],
-                                ),
-                              )
-                            : GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()),
-                                  ).then((value) => setState(() {}));
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const Icon(
-                                      Icons.circle,
-                                      color: AppColors.LightBlue,
-                                      size: 17,
-                                    ),
-                                    Text(
-                                      'Đăng nhập',
-                                      style: GoogleFonts.roboto(
-                                        textStyle: AppTextStyle.robotoSize14
-                                            .copyWith(
-                                                fontWeight: FontWeight.w500),
+                                      Text(
+                                        'Xin chào, ' + email.toString(),
+                                        style: GoogleFonts.roboto(
+                                          textStyle: AppTextStyle.robotoSize14
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 15),
-                                  ],
+                                      const SizedBox(width: 15),
+                                    ],
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()),
+                                    ).then((value) => setState(() {}));
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const Icon(
+                                        Icons.circle,
+                                        color: AppColors.LightBlue,
+                                        size: 17,
+                                      ),
+                                      Text(
+                                        'Đăng nhập',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: AppTextStyle.robotoSize14
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 15),
+                                    ],
+                                  ),
                                 ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Image.asset('assets/logo.png'),
                               ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Image.asset('assets/logo.png'),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 17,
-                        ),
-                        const SizedBox(
-                          height: 33,
-                        ),
-                        Stack(
-                          children: [
-                            Image.asset('assets/slide.png'),
-                            Container(
-                              child: const Information(),
-                              margin: const EdgeInsets.only(top: 72),
-                            ),
-                          ],
-                        )
-                      ],
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 17,
+                          ),
+                          const SizedBox(
+                            height: 33,
+                          ),
+                          Stack(
+                            children: [
+                              Image.asset('assets/slide.png'),
+                              Container(
+                                child: const Information(),
+                                margin: const EdgeInsets.only(top: 72),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

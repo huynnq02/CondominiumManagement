@@ -21,7 +21,7 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
-  Future<Response> register({MDUser? mdUser,String? otp}) async {
+  Future<Response> register({MDUser? mdUser, String? otp}) async {
     try {
       var client = init();
 
@@ -34,6 +34,7 @@ class AuthAPIRepository extends BaseRepository {
           "gender": mdUser.gender,
           "idNumber": mdUser.idNumber,
           "birthDate": mdUser.birthDate,
+          "apartmentId": mdUser.apartmentId,
           "password": mdUser.password,
           "otp": otp
         },
@@ -58,6 +59,7 @@ class AuthAPIRepository extends BaseRepository {
             "gender": mdUser.gender,
             "idNumber": mdUser.idNumber,
             "birthDate": mdUser.birthDate,
+            "apartmentId": mdUser.apartmentId,
             "password": mdUser.password
           },
           options: Options(headers: {
