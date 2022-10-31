@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:intl/intl.dart';
-import 'dart:io';
 import '../../widget/register_textfield.dart';
-import '../login screen/login_screen.dart';
 import 'widget/widget_button.dart';
 
-const List<String> genderList = <String>['Nam', 'Nữ', 'Khác'];
+const List<String> genderList = <String>['Nam', 'Nữ'];
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -35,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController idController = TextEditingController();
+  final TextEditingController apartmentIdController = TextEditingController();
   final TextEditingController dateController = TextEditingController(
       text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
   final ScrollController _controller = ScrollController();
@@ -94,6 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       String idNumber = idController.text;
       String password = passwordController.text;
       String birthDate = selectedDate.toIso8601String();
+      String apartmentId = apartmentIdController.text;
       mdUser = MDUser(
         name: fullName,
         surname: fullName,
@@ -103,6 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: password,
         birthDate: birthDate,
         fullName: fullName,
+        apartmentId: apartmentId
       );
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Hãy kiểm tra hộp thư của bạn.')));
@@ -117,7 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void scrollToOTP() {
     _controller.animateTo(
       300,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
   }
@@ -224,13 +223,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     RegisterTextField(
                       labelText: 'CMND/CCCD',
                       controller: idController,
+                      type: TextFieldType.number,
+                      isDisabled: _isButtonDisabled,
+                      maxLength: 12,
+                    ),
+                    RegisterTextField(
+                      labelText: 'Mã căn hộ',
+                      controller: apartmentIdController,
                       border: const BorderRadius.only(
                         bottomLeft: Radius.circular(12.0),
                         bottomRight: Radius.circular(12.0),
                       ),
-                      type: TextFieldType.number,
                       isDisabled: _isButtonDisabled,
-                      maxLength: 12,
+                      maxLength: 15,
                     ),
                   ],
                 ),
@@ -432,6 +437,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       content: Text(
                                           'Vui lòng chấp nhận điều khoản.')));
                             } else {
+                              //Hiển thị trạng thái loading
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  });
                               provider!.register(mdUser!, otp!, context);
                             }
                           }

@@ -117,6 +117,12 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Số CMND / CCCD không hợp lệ';
             return '';
           }
+          break;
+        case null: 
+          if (value.isEmpty) {
+            errorText = 'Vui lòng nhập thông tin';
+            return '';
+          }
       }
     }
     errorText = '';
