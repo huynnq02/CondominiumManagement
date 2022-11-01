@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
+import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/change%20phone%20number%20screen/widgets/time_counter.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
@@ -9,26 +12,48 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ChangePhoneNumberScreen extends StatefulWidget {
-  MDUser mdUser;
-  ChangePhoneNumberScreen({Key? key, required this.mdUser}) : super(key: key);
+  MDUser? mdUser;
+  ChangePhoneNumberScreen({Key? key, this.mdUser}) : super(key: key);
   @override
   State<ChangePhoneNumberScreen> createState() =>
       _ChangePhoneNumberScreenState();
 }
 
 class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
-  OTPProvider? otpProvider;
+  ProfileProvider? profileProvider;
+  final TextEditingController phoneNumberController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    otpProvider = Provider.of<OTPProvider>(context, listen: false);
+    profileProvider = Provider.of<ProfileProvider>(context, listen: false);
   }
 
   bool _isExpired = true, _isOTPSent = false;
   bool? _isValidOTP;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
+
   String? otp;
+  int min = 2, sec = 0;
+  void startTimer() {
+    const onSec = Duration(seconds: 1);
+    Timer timer = Timer.periodic(onSec, (timer) {
+      if (min == 0 && sec == 0) {
+        setState(() {
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          if (min > 0 && sec == 0) {
+            min--;
+            sec = 59;
+          }
+          sec--;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(TimerController());
@@ -124,6 +149,8 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                               ),
                               TextField(
                                 textAlign: TextAlign.center,
+                                controller: phoneNumberController,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.all(0),
@@ -146,45 +173,26 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                         onTap: () => {
                           print("ok"),
                         },
-                        child: _isOTPSent
-                            ? Container(
-                                height: height * 0.05,
-                                width: width * 0.45,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: AppColors.Grey,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Dagui',
-                                    style: AppTextStyle.lexendExa.copyWith(
-                                      fontSize: 16,
-                                      color: AppColors.Black,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () {
-                                  otpProvider!.sendOTP(widget.mdUser, context);
-                                  setState(() {
-                                    _isOTPSent = true;
-                                  });
-                                },
-                                child: ButtonContainer(
-                                  height: height,
-                                  width: width,
-                                  text: "Gửi mã OTP",
-                                  color: const Color(0xFF5FC5FF),
-                                ),
-                              ),
+                        child: InkWell(
+                          onTap: () {
+                            startTimer();
+                            print(widget.mdUser?.email);
+                            profileProvider!.sendOTPToChangePhoneNumber(
+                                widget.mdUser!, context);
+
+                            setState(() {
+                              _isOTPSent = true;
+                            });
+                          },
+                          child: ButtonContainer(
+                            height: height,
+                            width: width,
+                            text: _isOTPSent ? "0$min:$sec" : "Gửi mã OTP",
+                            color: _isOTPSent
+                                ? const Color(0xFFCDCDCD)
+                                : const Color(0xFF5FC5FF),
+                          ),
+                        ),
                       ),
                       if (_isOTPSent)
                         Column(
@@ -221,7 +229,7 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                 boxShadow: const [
                                   BoxShadow(
                                     color: AppColors.Grey,
-                                    blurRadius: 5,
+                                    blurRadius: 10,
                                     offset: Offset(0, 2),
                                   ),
                                 ],
@@ -267,16 +275,29 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                _otpFormKey.currentState!.validate();
-
-                                print(_isOTPSent);
-                                print(_isValidOTP);
+                                if (min == 0 && sec == 0) {
+                                } else {
+                                  _otpFormKey.currentState!.validate();
+                                  print(_isOTPSent);
+                                  print(_isValidOTP);
+                                  print(phoneNumberController.text);
+                                  if (_isValidOTP == true &&
+                                      _isOTPSent == true &&
+                                      phoneNumberController.text.isNotEmpty) {
+                                    profileProvider!.changePhoneNumber(
+                                        context,
+                                        widget.mdUser,
+                                        phoneNumberController.text);
+                                  }
+                                }
                               },
                               child: ButtonContainer(
                                   height: height,
                                   width: width,
                                   text: "Xác thực",
-                                  color: AppColors.White),
+                                  color: (min == 0 && sec == 0)
+                                      ? const Color(0xFFCDCDCD)
+                                      : AppColors.White),
                             ),
                           ],
                         ),

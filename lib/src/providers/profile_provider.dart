@@ -52,4 +52,40 @@ class ProfileProvider extends ChangeNotifier {
     var response = await ProfilePro().updateProfilePictureAPIProvider(file);
     return response;
   }
+
+  Future sendOTPToChangePhoneNumber(
+      MDUser? mdUser, BuildContext context) async {
+    var success =
+        await ProfilePro().sendOTPToChangePhoneNumberAPIProvider(mdUser);
+    // kiểm tra reponse từ api
+    if (success == true) {
+      //Gửi OTP thành công
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Gửi OTP thành công')));
+    } else {
+      // sai thông tin dăng kí thông báo cho người dùng
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Gửi OTP thất bại, kiểm tra lại thông tin')));
+    }
+
+    notifyListeners();
+  }
+
+  Future changePhoneNumber(
+      BuildContext context, MDUser? mdUser, String phoneNumber) async {
+    var success =
+        await ProfilePro().changePhoneNumberAPIProvider(mdUser, phoneNumber);
+    // kiểm tra reponse từ api
+    // if (success == true) {
+    //   //Gửi OTP thành công
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(const SnackBar(content: Text('Cập nhật thành công')));
+    // } else {
+    //   // sai thông tin dăng kí thông báo cho người dùng
+    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //       content: Text('Cập nhật thất bại, kiểm tra lại thông tin')));
+    // }
+
+    notifyListeners();
+  }
 }
