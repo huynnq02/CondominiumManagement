@@ -31,6 +31,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.image);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Stack(
@@ -50,7 +51,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   ? FileImage(
                       File(_imageFile!.path),
                     )
-                  : widget.image == null
+                  : widget.image == []
                       ? const AssetImage("assets/default-profile-picture.png")
                       : MemoryImage(widget.image!) as ImageProvider,
             ),
