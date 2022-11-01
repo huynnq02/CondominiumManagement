@@ -4,10 +4,8 @@ import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
-import 'package:untitled/src/screens/change%20phone%20number%20screen/widgets/time_counter.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
-import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -30,23 +28,26 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
   }
 
   bool _isExpired = true, _isOTPSent = false;
-  bool? _isValidOTP;
+  bool? _isValidOTP, _isWaiting;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
 
   String? otp;
-  int min = 2, sec = 0;
+  int min = 0, sec = 15;
   void startTimer() {
     const onSec = Duration(seconds: 1);
     Timer timer = Timer.periodic(onSec, (timer) {
       if (min == 0 && sec == 0) {
         setState(() {
           timer.cancel();
+          _isWaiting = false;
+          min = 0;
+          sec = 15;
         });
       } else {
         setState(() {
           if (min > 0 && sec == 0) {
             min--;
-            sec = 59;
+            sec = 60;
           }
           sec--;
         });
@@ -56,7 +57,6 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(TimerController());
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -175,22 +175,46 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                         },
                         child: InkWell(
                           onTap: () {
-                            startTimer();
-                            print(widget.mdUser?.email);
-                            profileProvider!.sendOTPToChangePhoneNumber(
-                                widget.mdUser!, context);
+                            print("oke");
+                            if (_isWaiting == null || _isWaiting == false) {
+                              print("zo ne");
+                              startTimer();
+                              print(widget.mdUser?.email);
+                              profileProvider!.sendOTPToChangePhoneNumber(
+                                  widget.mdUser!, context);
 
-                            setState(() {
-                              _isOTPSent = true;
-                            });
+                              setState(() {
+                                _isOTPSent = true;
+                                _isWaiting = true;
+                              });
+                            }
                           },
-                          child: ButtonContainer(
-                            height: height,
-                            width: width,
-                            text: _isOTPSent ? "0$min:$sec" : "Gửi mã OTP",
-                            color: _isOTPSent
-                                ? const Color(0xFFCDCDCD)
-                                : const Color(0xFF5FC5FF),
+                          child: Column(
+                            children: [
+                              if (_isOTPSent == false)
+                                ButtonContainer(
+                                  height: height,
+                                  width: width,
+                                  text: "Gửi mã OTP",
+                                  color: const Color(0xFF5FC5FF),
+                                ),
+                              if (_isOTPSent == true && _isWaiting == true)
+                                ButtonContainer(
+                                  height: height,
+                                  width: width,
+                                  text: sec / 10 == 0
+                                      ? "0$min:0$sec"
+                                      : "0$min:$sec",
+                                  color: const Color(0xFFCDCDCD),
+                                ),
+                              if (_isOTPSent == true && _isWaiting == false)
+                                ButtonContainer(
+                                  height: height,
+                                  width: width,
+                                  text: "Gửi lại OTP",
+                                  color: const Color(0xFF5FC5FF),
+                                ),
+                            ],
                           ),
                         ),
                       ),
@@ -204,7 +228,9 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                               SizedBox(
                                 width: width * 0.7,
                                 child: Text(
-                                  "Đã gửi OTP, vui lòng check trong hộp thư Email của bạn và điền mã OTP vào ô dưới đây",
+                                  _isWaiting == true
+                                      ? "Đã gửi OTP, vui lòng check trong hộp thư Email của bạn và điền mã OTP vào ô dưới đây"
+                                      : "OTP đã hết hạn, vui lòng gửi lại OTP",
                                   style: AppTextStyle.lato.copyWith(
                                       fontSize: 13, color: AppColors.Red),
                                   textAlign: TextAlign.center,
@@ -275,19 +301,18 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                if (min == 0 && sec == 0) {
-                                } else {
-                                  _otpFormKey.currentState!.validate();
-                                  print(_isOTPSent);
-                                  print(_isValidOTP);
-                                  print(phoneNumberController.text);
-                                  if (_isValidOTP == true &&
-                                      _isOTPSent == true &&
-                                      phoneNumberController.text.isNotEmpty) {
-                                    profileProvider!.changePhoneNumber(
-                                        context,
-                                        widget.mdUser,
-                                        phoneNumberController.text);
+                                if (_isWaiting == true && _isWaiting != null) {
+                                  if (min == 0 && sec == 0) {
+                                  } else {
+                                    _otpFormKey.currentState!.validate();
+                                    if (_isValidOTP == true &&
+                                        _isOTPSent == true &&
+                                        phoneNumberController.text.isNotEmpty) {
+                                      profileProvider!.changePhoneNumber(
+                                          context,
+                                          widget.mdUser,
+                                          phoneNumberController.text);
+                                    }
                                   }
                                 }
                               },
@@ -295,7 +320,7 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                   height: height,
                                   width: width,
                                   text: "Xác thực",
-                                  color: (min == 0 && sec == 0)
+                                  color: _isWaiting == false
                                       ? const Color(0xFFCDCDCD)
                                       : AppColors.White),
                             ),
