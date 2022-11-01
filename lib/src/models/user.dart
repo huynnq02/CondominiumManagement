@@ -11,7 +11,7 @@ class MDUser {
   String? fullName;
   String birthDate;
   String? phoneNumber;
-  String? apartmentId;
+  String apartmentId;
 
   MDUser(
       {required this.name,
@@ -24,7 +24,7 @@ class MDUser {
       this.fullName,
       required this.birthDate,
       this.phoneNumber,
-      this.apartmentId});
+      required this.apartmentId});
 
   Map<String, dynamic> toMap() {
     return {

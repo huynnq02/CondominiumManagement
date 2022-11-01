@@ -382,7 +382,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  "M02.407",
+                                  mdUser.apartmentId,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
