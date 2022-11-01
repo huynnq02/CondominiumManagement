@@ -29,10 +29,13 @@ class AuthAPIRepository extends BaseRepository {
         '/api/services/app/Account/Register',
         data: {
           "clientType": 1,
-          "emailAddress": mdUser!.email,
+          "fullName": mdUser!.fullName,
+          "emailAddress": mdUser.email,
           "gender": mdUser.gender,
           "idNumber": mdUser.idNumber,
           "birthDate": mdUser.birthDate,
+          "apartmentId": mdUser.apartmentId,
+          "password": mdUser.password,
           "otp": otp
         },
       );
@@ -51,10 +54,13 @@ class AuthAPIRepository extends BaseRepository {
           '/api/services/app/Account/SendEmailActivationOTP',
           data: {
             "clientType": 1,
-            "emailAddress": mdUser!.email,
+            "fullName": mdUser!.fullName,
+            "emailAddress": mdUser.email,
             "gender": mdUser.gender,
             "idNumber": mdUser.idNumber,
             "birthDate": mdUser.birthDate,
+            "apartmentId": mdUser.apartmentId,
+            "password": mdUser.password
           },
           options: Options(headers: {
             'Content-Type': 'application/json',

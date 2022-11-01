@@ -127,6 +127,7 @@ class _EmailTextFieldState extends State<EmailTextField> {
                     widget.email(valueEmail);
                   });
                 },
+                maxLength: 50,
                 style: TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   label: Text(
@@ -138,6 +139,7 @@ class _EmailTextFieldState extends State<EmailTextField> {
                   ),
                   // floatingLabelBehavior: FloatingLabelBehavior.never,
                   border: InputBorder.none,
+                  counterText: "",
                   hintText: "Nhập email của bạn",
                   hintStyle: AppTextStyle.nunitoSize13.copyWith(
                     fontSize: 14,

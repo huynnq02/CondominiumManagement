@@ -44,6 +44,10 @@ class LoginProvider extends ChangeNotifier {
             authAPIProvider!.userId.toString()) // lưu token vào sharePreference
         : '';
     setPreference(valueEmail, valuePassword);
+
+    //Dừng trạng thái loading
+    Navigator.of(context).pop();
+    
     if (valueEmail.isEmpty || valuePassword.isEmpty) {
       showDialog(
         context: context,

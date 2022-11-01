@@ -134,9 +134,10 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                 },
                 style: TextStyle(fontSize: 14),
                 obscureText: _obscureText,
+                maxLength: 20,
                 decoration: InputDecoration(
                   label: Text(
-                    'Password',
+                    'Mật khẩu',
                     style: AppTextStyle.nunitoSize13.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
@@ -144,6 +145,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
                   ),
                   // floatingLabelBehavior: FloatingLabelBehavior.never,
                   border: InputBorder.none,
+                  counterText: "",
                   hintText: "Nhập mật khẩu của bạn",
                   hintStyle: AppTextStyle.nunitoSize13.copyWith(
                     fontSize: 14,
