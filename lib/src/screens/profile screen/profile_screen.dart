@@ -5,6 +5,7 @@ import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/change%20phone%20number%20screen/change_phone_number_screen.dart';
 import 'package:untitled/src/screens/profile%20screen/widgets/profile_picture.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/src/screens/profile%20screen/widgets/user_info.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
@@ -17,11 +18,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late String birthDate;
-  bool _isEditingPhoneNumber = false,
-      _isEditingIdNumber = false,
-      _isObsecurePhoneNumber = true,
-      _isObsecureIdNumber = true,
-      _isLoading = false;
+  bool _isObsecurePhoneNumber = true, _isObsecureIdNumber = true;
 
   final phoneController = TextEditingController();
   final idController = TextEditingController();
@@ -33,7 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context,
       listen: false,
     );
-    if (profileProvider.mdUser.email == '') {
+    if (profileProvider.mdUser.email == '' &&
+        profileProvider.profilePicture == null) {
       profileProvider.getCurrentUserProfile();
       profileProvider.getProfilePicture(context);
     }
@@ -66,366 +64,228 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<ProfileProvider>(context);
-    print(user);
+    print(user.mdUser.birthDate.length == 0);
+    print(user.profilePicture == null);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return user.mdUser.email == ''
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : Scaffold(
-            body: Container(
-              height: height,
-              width: width,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/login-screen-background.png"),
-                  fit: BoxFit.cover,
+
+    if (user.mdUser.birthDate.length == 0 && user.profilePicture == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        body: Container(
+          height: height,
+          width: width,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/login-screen-background.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              const Spacer(
+                flex: 1,
+              ),
+              ProfilePicture(
+                image: user.profilePicture,
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Text(
+                user.mdUser.surname + ' ' + user.mdUser.name,
+                style: AppTextStyle.lato.copyWith(
+                  fontSize: 35,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              Flexible(
+                flex: 6,
+                child: Column(
+                  children: [
+                    UserInfo(
+                      value: user.mdUser.email,
+                      info: 'Email',
+                    ),
+                    SizedBox(height: height * 0.001),
+                    UserInfo(
+                      info: 'Giới tính',
+                      value: user.mdUser.gender,
+                    ),
+                    SizedBox(height: height * 0.001),
+                    UserInfo(
+                      info: 'Ngày sinh',
+                      value: formatDatetime(
+                        user.mdUser.birthDate,
+                      ),
+                    ),
+                    SizedBox(height: height * 0.001),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xFF00000033).withOpacity(0.20),
+                          width: 1,
+                        ),
+                        color: AppColors.White,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: AppColors.Grey,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "CMND/CCCD",
+                              style: AppTextStyle.lato.copyWith(fontSize: 16),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _isObsecureIdNumber
+                                      ? "*" * user.mdUser.idNumber.length
+                                      : user.mdUser.idNumber,
+                                  style:
+                                      AppTextStyle.lato.copyWith(fontSize: 16),
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                InkWell(
+                                  child: Icon(
+                                    _isObsecureIdNumber
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onTap: _handleWatchIdNumber,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.001),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xFF00000033).withOpacity(0.20),
+                            width: 1),
+                        color: AppColors.White,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: AppColors.Grey,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Số điện thoại",
+                              style: AppTextStyle.lato.copyWith(fontSize: 16),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  user.mdUser.phoneNumber == null
+                                      ? "Chưa cập nhật"
+                                      : _isObsecurePhoneNumber
+                                          ? "*" *
+                                              user.mdUser.phoneNumber!.length
+                                          : user.mdUser.phoneNumber!,
+                                  style:
+                                      AppTextStyle.lato.copyWith(fontSize: 16),
+                                ),
+                                user.mdUser.phoneNumber != null
+                                    ? Row(
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.02,
+                                          ),
+                                          InkWell(
+                                            child: Icon(
+                                              _isObsecurePhoneNumber
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                            ),
+                                            onTap: _handleWatchPhoneNumber,
+                                          ),
+                                          SizedBox(
+                                            width: width * 0.02,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChangePhoneNumberScreen(
+                                                    mdUser: user.mdUser,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Icon(Icons.edit),
+                                          )
+                                        ],
+                                      )
+                                    : Row(
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.02,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChangePhoneNumberScreen(
+                                                    mdUser: user.mdUser,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Icon(Icons.edit),
+                                          ),
+                                        ],
+                                      )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.001),
+                    UserInfo(
+                      info: 'Mã căn hộ',
+                      value: user.mdUser.apartmentId ?? '',
+                    ),
+                  ],
                 ),
               ),
-              child: Column(
-                children: [
-                  const Spacer(
-                    flex: 1,
-                  ),
-                  ProfilePicture(
-                    image: user.profilePicture,
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Text(
-                    user.mdUser.surname + ' ' + user.mdUser.name,
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 35,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: height * 0.1,
-                  ),
-                  Flexible(
-                    flex: 6,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: height * 0.05,
-                          width: width * 0.95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.circular(8),
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColors.Grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Email",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                Text(
-                                  user.mdUser.email,
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: height * 0.001),
-                        Container(
-                          height: height * 0.05,
-                          width: width * 0.95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColors.Grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Giới tính",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                Text(
-                                  user.mdUser.gender,
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: height * 0.001),
-                        Container(
-                          height: height * 0.05,
-                          width: width * 0.95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColors.Grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Ngày sinh",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                Text(
-                                  formatDatetime(user.mdUser.birthDate),
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: height * 0.001),
-                        Container(
-                          height: height * 0.05,
-                          width: width * 0.95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColors.Grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "CMND/CCCD",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      _isObsecureIdNumber
-                                          ? "*" * user.mdUser.idNumber.length
-                                          : user.mdUser.idNumber,
-                                      style: AppTextStyle.lato
-                                          .copyWith(fontSize: 16),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Icon(
-                                        _isObsecureIdNumber
-                                            ? Icons.visibility_off
-                                            : Icons.visibility,
-                                      ),
-                                      onTap: _handleWatchIdNumber,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: height * 0.001),
-                        Container(
-                          height: height * 0.05,
-                          width: width * 0.95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColors.Grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Số điện thoại",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      user.mdUser.phoneNumber == null
-                                          ? "Chưa cập nhật"
-                                          : _isObsecurePhoneNumber
-                                              ? "*" *
-                                                  user.mdUser.phoneNumber!
-                                                      .length
-                                              : user.mdUser.phoneNumber!,
-                                      style: AppTextStyle.lato
-                                          .copyWith(fontSize: 16),
-                                    ),
-                                    user.mdUser.phoneNumber != null
-                                        ? Row(
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.02,
-                                              ),
-                                              InkWell(
-                                                child: Icon(
-                                                  _isObsecurePhoneNumber
-                                                      ? Icons.visibility_off
-                                                      : Icons.visibility,
-                                                ),
-                                                onTap: _handleWatchPhoneNumber,
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.02,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChangePhoneNumberScreen(
-                                                        mdUser: user.mdUser,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: const Icon(Icons.edit),
-                                              )
-                                            ],
-                                          )
-                                        : Row(
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.02,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChangePhoneNumberScreen(
-                                                        mdUser: user.mdUser,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: const Icon(Icons.edit),
-                                              ),
-                                            ],
-                                          )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: height * 0.001),
-                        Container(
-                          height: height * 0.05,
-                          width: width * 0.95,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColors.Grey,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Mã căn hộ",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                Text(
-                                  user.mdUser.apartmentId == null
-                                      ? "Chưa cập nhật"
-                                      : user.mdUser.apartmentId!,
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

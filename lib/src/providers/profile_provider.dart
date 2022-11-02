@@ -9,10 +9,33 @@ import '../../repository/profile/profileAPI_provider.dart';
 import '../../utils/helper/app_preference.dart';
 import 'dart:convert';
 
+import '../screens/change phone number screen/widgets/change_phone_number_successful_dialog.dart';
+
 class ProfileProvider extends ChangeNotifier {
   var reponse;
+  bool _isSent = false;
+  bool get isSent => _isSent;
+  void setIsSent(bool isSent) {
+    _isSent = isSent;
+    notifyListeners();
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  void setIsLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
+
+  bool _changePhoneFail = false;
+  bool get changePhoneFail => _changePhoneFail;
+  void setChangePhoneFail(bool changePhoneFail) {
+    _changePhoneFail = changePhoneFail;
+    notifyListeners();
+  }
+
   Uint8List? _profilePicture;
-  Uint8List? get profilePicture => _profilePicture!;
+  Uint8List? get profilePicture => _profilePicture;
   void setProfilePicture(Uint8List profilePicture) {
     _profilePicture = profilePicture;
     notifyListeners();
@@ -31,6 +54,7 @@ class ProfileProvider extends ChangeNotifier {
     apartmentId: "",
     otp: "",
   );
+
   MDUser get mdUser => _mdUser;
   void setMdUser(MDUser mdUser) {
     _mdUser = mdUser;
@@ -72,9 +96,9 @@ class ProfileProvider extends ChangeNotifier {
   void getProfilePicture(BuildContext context) async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
     var bytesString = response['profilePicture'] as String;
-    List<int> bytesList = base64.decode(bytesString);
-    Uint8List bytes = Uint8List.fromList(bytesList);
-    setProfilePicture(bytes);
+    setProfilePicture(
+      base64Decode(bytesString),
+    );
   }
 
   Future updateProfilePicture(File image) async {
@@ -84,13 +108,15 @@ class ProfileProvider extends ChangeNotifier {
 
   Future sendOTPToChangePhoneNumber(
       MDUser? mdUser, BuildContext context) async {
+    print('111');
     var success =
         await ProfilePro().sendOTPToChangePhoneNumberAPIProvider(mdUser);
     // kiểm tra reponse từ api
     if (success == true) {
+      setIsSent(true);
       //Gửi OTP thành công
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Gửi OTP thành công')));
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(const SnackBar(content: Text('Gửi OTP thành công')));
     } else {
       // sai thông tin dăng kí thông báo cho người dùng
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -100,22 +126,26 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void showSuccessfulDialog(BuildContext context) => showDialog(
+        context: context,
+        builder: ((context) => (SuccessfulDialog())),
+      );
+
   Future changePhoneNumber(BuildContext context, MDUser? mdUser,
       String phoneNumber, String otp) async {
     SharedPreferences pref;
+    setIsLoading(true);
     var success = await ProfilePro()
         .changePhoneNumberAPIProvider(mdUser, phoneNumber, otp);
-    print(1);
     if (success == true) {
-      print(2);
-      print('change succeed');
-      //Gửi OTP thành công
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(const SnackBar(content: Text('Cập nhật thành công')));
-      pref = await SharedPreferences.getInstance();
-
-      pref.setBool("isValidOTP", true);
+      mdUser!.phoneNumber = phoneNumber;
+      setMdUser(mdUser);
+      showSuccessfulDialog(context);
+      setIsLoading(false);
     } else if (success == false) {
+      setChangePhoneFail(true);
+      setIsLoading(false);
+
       print("3");
       pref = await SharedPreferences.getInstance();
 
@@ -125,6 +155,5 @@ class ProfileProvider extends ChangeNotifier {
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text('Cập nhật thất bại, kiểm tra lại thông tin')));
     }
-    notifyListeners();
   }
 }
