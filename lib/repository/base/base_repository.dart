@@ -9,7 +9,7 @@ abstract class BaseRepository {
   static String get tokenAuth => AppPreferences.prefs.getString('token') ?? '';
   var baseUrl =
       // 'https://10.0.2.2:44301';
-      'https://c079-14-161-13-207.ap.ngrok.io/';
+      'https://se214-api.azurewebsites.net';
   @protected
   Dio init() {
     Dio dio = Dio();
