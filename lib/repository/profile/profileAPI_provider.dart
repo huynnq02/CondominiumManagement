@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:untitled/repository/base/base_provider.dart';
 import 'package:untitled/repository/profile/profile_repository.dart';
+import 'package:untitled/src/models/user.dart';
 
 class ProfilePro extends BaseProvider<ProfileRepository> {
   @override
@@ -34,5 +36,22 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
   Future updateProfilePictureAPIProvider(File image) async {
     final res = await repository.updateProfilePictureAPIRepository(image);
     return res.data;
+  }
+
+  Future sendOTPToChangePhoneNumberAPIProvider(MDUser? mdUser) async {
+    final res =
+        await repository.sendOTPToChangePhoneNumberAPIRepository(mdUser);
+    print("kq ne:");
+    print(res.data);
+    return res.data['success'];
+  }
+
+  Future changePhoneNumberAPIProvider(
+      MDUser? mdUser, String phoneNumber, String otp) async {
+    final res = await repository.changePhoneNumberAPIRepository(
+        mdUser, phoneNumber, otp);
+    print("kq neee:");
+    print(res.data['success']);
+    return res.data['success'];
   }
 }

@@ -12,6 +12,7 @@ class MDUser {
   String birthDate;
   String? phoneNumber;
   String? apartmentId;
+  String? otp;
 
   MDUser(
       {required this.name,
@@ -24,7 +25,8 @@ class MDUser {
       this.fullName,
       required this.birthDate,
       this.phoneNumber,
-      this.apartmentId});
+      this.apartmentId,
+      this.otp});
 
   Map<String, dynamic> toMap() {
     return {
@@ -37,7 +39,8 @@ class MDUser {
       "idNumber": idNumber,
       "fullName": fullName,
       "birthDate": birthDate,
-      "apartmentId": apartmentId
+      "apartmentId": apartmentId,
+      "otp": otp,
     };
   }
 
@@ -54,6 +57,7 @@ class MDUser {
       birthDate: map['birthDate'],
       phoneNumber: map['phoneNumber']?.toString(),
       apartmentId: map['apartmentId']?.toString(),
+      otp: map['otp']?.toString(),
     );
   }
 
