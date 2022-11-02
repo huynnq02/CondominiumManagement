@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
+import 'package:untitled/src/screens/change%20phone%20number%20screen/widgets/change_phone_number_successful_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:flutter/services.dart';
@@ -338,36 +339,30 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                               height: height * 0.03,
                             ),
                             InkWell(
-                              onTap: () {
-                                // print("zo");
-                                // print(_isWaiting);
-                                // print("valid");
-                                // print(_isValidOTP);
-                                print(_isWaiting);
+                              onTap: () async {
                                 if (_isWaiting == true && _isWaiting != null) {
-                                  print("ok");
-                                  print(min.toString() + " " + sec.toString());
                                   if (min >= 0 && sec > 0) {
                                     if (_otpFormKey.currentState!.validate()) {
                                       if (_isValidOTP == true) {
-                                        print(
-                                            "valid: " + _isValidOTP.toString());
-                                        print(_isOTPSent);
                                         if (_isValidOTP == true &&
                                             _isOTPSent == true &&
                                             phoneNumberController
                                                 .text.isNotEmpty) {
-                                          print("otp");
-                                          print(otp);
-                                          profileProvider!.changePhoneNumber(
-                                              context,
-                                              widget.mdUser,
-                                              phoneNumberController.text,
-                                              otp!);
+                                          await profileProvider!
+                                              .changePhoneNumber(
+                                                  context,
+                                                  widget.mdUser,
+                                                  phoneNumberController.text,
+                                                  otp!);
                                           getSharedPreferences();
+                                          setState(() {
+                                            _isValidOTP =
+                                                pref!.getBool("isValidOTP");
+                                          });
 
-                                          // print("valid k z");
-                                          // print(pref!.getBool("isValidOTP"));
+                                          if (_isValidOTP == true) {
+                                            showSuccessfulDialog(context);
+                                          }
                                         }
                                       }
                                     }
@@ -394,6 +389,11 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
       ),
     );
   }
+
+  void showSuccessfulDialog(BuildContext context) => showDialog(
+        context: context,
+        builder: ((context) => (SuccessfulDialog())),
+      );
 }
 
 class ButtonContainer extends StatelessWidget {

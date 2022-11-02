@@ -417,7 +417,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.apartmentId!,
+                                  mdUser.apartmentId == null
+                                      ? "Chưa cập nhật"
+                                      : mdUser.apartmentId!,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),

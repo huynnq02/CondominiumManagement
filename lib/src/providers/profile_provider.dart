@@ -11,7 +11,19 @@ import 'dart:convert';
 
 class ProfileProvider extends ChangeNotifier {
   var reponse;
-
+  MDUser mdUser = MDUser(
+    name: "",
+    surname: "",
+    userName: "",
+    email: "",
+    password: "",
+    gender: "",
+    idNumber: "",
+    fullName: "",
+    birthDate: "",
+    apartmentId: "",
+    otp: "",
+  );
   Future changePassword(BuildContext context, String? newPassword,
       String? newPassword1, String? curentPassword) async {
     String? password = AppPreferences.prefs.getString('password');
@@ -42,6 +54,7 @@ class ProfileProvider extends ChangeNotifier {
     print(response['result']);
     MDUser user = MDUser.fromMap(response['result']);
     return user;
+    // notifyListeners();
   }
 
   Future getProfilePicture(BuildContext context) async {
@@ -95,11 +108,11 @@ class ProfileProvider extends ChangeNotifier {
       pref = await SharedPreferences.getInstance();
 
       pref.setBool("isValidOTP", false);
-
+      print(pref.getBool("isValidOTP"));
       print('change failed');
-
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text('Cập nhật thất bại, kiểm tra lại thông tin')));
     }
+    notifyListeners();
   }
 }
