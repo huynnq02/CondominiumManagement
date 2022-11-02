@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
@@ -16,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   ProfileProvider? profileProvider;
   late MDUser mdUser;
-
+  late String birthDate;
   bool _isEditingPhoneNumber = false,
       _isEditingIdNumber = false,
       _isObsecurePhoneNumber = true,
@@ -25,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final phoneController = TextEditingController();
   final idController = TextEditingController();
+  Uint8List? profilePicture;
 
   @override
   void initState() {
@@ -37,7 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isLoading = true;
     });
+    profilePicture = await profileProvider?.getProfilePicture(context);
     mdUser = await profileProvider?.getCurrentUserProfile(context);
+    formatDatetime();
     setState(() {
       _isLoading = false;
     });
@@ -53,6 +57,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isObsecureIdNumber = !_isObsecureIdNumber;
     });
+  }
+
+  void formatDatetime() {
+    final date = DateTime.parse(mdUser.birthDate);
+    String day =
+        date.day / 10 < 1 ? "0" + date.day.toString() : date.day.toString();
+    String month = date.month / 10 < 1
+        ? "0" + date.month.toString()
+        : date.month.toString();
+
+    final formattedDate = "$day/$month/${date.year}";
+    birthDate = formattedDate;
+    print(birthDate);
+    print(mdUser.birthDate);
   }
 
   @override
@@ -79,7 +97,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Spacer(
                     flex: 1,
                   ),
-                  ProfilePicture(),
+                  ProfilePicture(
+                    image: profilePicture,
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),
@@ -202,9 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.birthDate
-                                      .substring(0, 10)
-                                      .replaceAll("-", "/"),
+                                  birthDate,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
@@ -371,7 +389,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  "M02.407",
+                                  mdUser.apartmentId!,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),

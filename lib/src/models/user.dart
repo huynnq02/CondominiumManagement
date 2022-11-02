@@ -53,7 +53,7 @@ class MDUser {
       fullName: map['fullName']?.toString(),
       birthDate: map['birthDate'],
       phoneNumber: map['phoneNumber']?.toString(),
-      apartmentId: map['apartmentId'],
+      apartmentId: map['apartmentId']?.toString(),
     );
   }
 
