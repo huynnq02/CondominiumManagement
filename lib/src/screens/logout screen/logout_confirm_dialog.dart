@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import '../../../utils/app_constant/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import '../../providers/repository_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 
 class LogOutConfirmDialog extends StatefulWidget {
   LogOutConfirmDialog({Key? key}) : super(key: key);
@@ -76,9 +75,7 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
                             removeToken(); //remove token khi đăng xuất
                             loginProvider.check = false;
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MainScreen(
-                                checkScreen: false,
-                              ),
+                              builder: (context) => LoginScreen()
                             ));
                           },
                           style: ElevatedButton.styleFrom(
