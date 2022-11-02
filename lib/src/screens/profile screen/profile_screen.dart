@@ -17,10 +17,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late String birthDate;
   bool _isObsecurePhoneNumber = true, _isObsecureIdNumber = true;
 
   final phoneController = TextEditingController();
+  bool isLoading = false;
   final idController = TextEditingController();
 
   @override
@@ -30,8 +30,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context,
       listen: false,
     );
-    if (profileProvider.mdUser.email == '' &&
+
+    if (profileProvider.mdUser.birthDate.length == 0 &&
         profileProvider.profilePicture == null) {
+      setState(() {
+        isLoading = true;
+      });
       profileProvider.getCurrentUserProfile();
       profileProvider.getProfilePicture(context);
     }
@@ -64,12 +68,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<ProfileProvider>(context);
-    print(user.mdUser.birthDate.length == 0);
+    if (user.mdUser.birthDate.isNotEmpty && user.profilePicture != null) {
+      setState(() {
+        isLoading = false;
+      });
+    }
     print(user.profilePicture == null);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    if (user.mdUser.birthDate.length == 0 && user.profilePicture == null) {
+    if (isLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
