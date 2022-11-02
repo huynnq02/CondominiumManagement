@@ -412,12 +412,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "M12.3",
+                                  "Mã căn hộ",
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  "OK",
+                                  mdUser.apartmentId!,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
