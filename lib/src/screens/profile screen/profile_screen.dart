@@ -18,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   ProfileProvider? profileProvider;
   late MDUser mdUser;
-
+  late String birthDate;
   bool _isEditingPhoneNumber = false,
       _isEditingIdNumber = false,
       _isObsecurePhoneNumber = true,
@@ -27,7 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final phoneController = TextEditingController();
   final idController = TextEditingController();
-
   Uint8List? profilePicture;
 
   @override
@@ -70,7 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         : date.month.toString();
 
     final formattedDate = "$day/$month/${date.year}";
-    mdUser.birthDate = formattedDate;
+    birthDate = formattedDate;
+    print(birthDate);
     print(mdUser.birthDate);
   }
 
@@ -223,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.birthDate,
+                                  birthDate,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
@@ -395,7 +395,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Mã căn hộ",
+                                  "M12.3",
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
