@@ -125,7 +125,8 @@ class ProfileRepository extends BaseRepository {
           "name": mdUser.name,
           "surname": mdUser.surname,
           "phoneNumber": phoneNumber,
-          "otp": otp
+          "otp": otp,
+          "apartmentId": mdUser.apartmentId,
         },
       );
 
