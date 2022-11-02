@@ -16,8 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  ProfileProvider? profileProvider;
-  late MDUser mdUser;
   late String birthDate;
   bool _isEditingPhoneNumber = false,
       _isEditingIdNumber = false,
@@ -27,25 +25,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final phoneController = TextEditingController();
   final idController = TextEditingController();
-  Uint8List? profilePicture;
 
   @override
   void initState() {
     super.initState();
-    profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    getUserInfomation();
-  }
-
-  void getUserInfomation() async {
-    setState(() {
-      _isLoading = true;
-    });
-    profilePicture = await profileProvider?.getProfilePicture(context);
-    mdUser = await profileProvider?.getCurrentUserProfile(context);
-    formatDatetime();
-    setState(() {
-      _isLoading = false;
-    });
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
+    if (profileProvider.mdUser.email == '') {
+      profileProvider.getCurrentUserProfile();
+      profileProvider.getProfilePicture(context);
+    }
   }
 
   void _handleWatchPhoneNumber() {
@@ -60,8 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void formatDatetime() {
-    final date = DateTime.parse(mdUser.birthDate);
+  String formatDatetime(String x) {
+    final date = DateTime.parse(x);
     String day =
         date.day / 10 < 1 ? "0" + date.day.toString() : date.day.toString();
     String month = date.month / 10 < 1
@@ -69,17 +60,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         : date.month.toString();
 
     final formattedDate = "$day/$month/${date.year}";
-    birthDate = formattedDate;
-    print(birthDate);
-    print(mdUser.birthDate);
+    return formattedDate;
   }
 
   @override
   Widget build(BuildContext context) {
-    profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final user = Provider.of<ProfileProvider>(context);
+    print(user);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return _isLoading
+    return user.mdUser.email == ''
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -99,16 +89,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     flex: 1,
                   ),
                   ProfilePicture(
-                    image: profilePicture,
+                    image: user.profilePicture,
                   ),
                   SizedBox(
                     height: height * 0.02,
                   ),
                   Text(
-                    mdUser.surname + " " + mdUser.name,
+                    user.mdUser.surname + ' ' + user.mdUser.name,
                     style: AppTextStyle.lato.copyWith(
-                      fontSize: 48,
+                      fontSize: 35,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(
                     height: height * 0.1,
@@ -149,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.email,
+                                  user.mdUser.email,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
@@ -186,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.gender,
+                                  user.mdUser.gender,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
@@ -223,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  birthDate,
+                                  formatDatetime(user.mdUser.birthDate),
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
@@ -263,8 +254,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   children: [
                                     Text(
                                       _isObsecureIdNumber
-                                          ? "*" * mdUser.idNumber.length
-                                          : mdUser.idNumber,
+                                          ? "*" * user.mdUser.idNumber.length
+                                          : user.mdUser.idNumber,
                                       style: AppTextStyle.lato
                                           .copyWith(fontSize: 16),
                                     ),
@@ -316,15 +307,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      mdUser.phoneNumber == null
+                                      user.mdUser.phoneNumber == null
                                           ? "Chưa cập nhật"
                                           : _isObsecurePhoneNumber
-                                              ? "*" * mdUser.phoneNumber!.length
-                                              : mdUser.phoneNumber!,
+                                              ? "*" *
+                                                  user.mdUser.phoneNumber!
+                                                      .length
+                                              : user.mdUser.phoneNumber!,
                                       style: AppTextStyle.lato
                                           .copyWith(fontSize: 16),
                                     ),
-                                    mdUser.phoneNumber != null
+                                    user.mdUser.phoneNumber != null
                                         ? Row(
                                             children: [
                                               SizedBox(
@@ -348,7 +341,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ChangePhoneNumberScreen(
-                                                        mdUser: mdUser,
+                                                        mdUser: user.mdUser,
                                                       ),
                                                     ),
                                                   );
@@ -369,7 +362,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ChangePhoneNumberScreen(
-                                                        mdUser: mdUser,
+                                                        mdUser: user.mdUser,
                                                       ),
                                                     ),
                                                   );
@@ -417,9 +410,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.apartmentId == null
+                                  user.mdUser.apartmentId == null
                                       ? "Chưa cập nhật"
-                                      : mdUser.apartmentId!,
+                                      : user.mdUser.apartmentId!,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),

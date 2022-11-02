@@ -11,7 +11,14 @@ import 'dart:convert';
 
 class ProfileProvider extends ChangeNotifier {
   var reponse;
-  MDUser mdUser = MDUser(
+  Uint8List? _profilePicture;
+  Uint8List? get profilePicture => _profilePicture!;
+  void setProfilePicture(Uint8List profilePicture) {
+    _profilePicture = profilePicture;
+    notifyListeners();
+  }
+
+  MDUser _mdUser = MDUser(
     name: "",
     surname: "",
     userName: "",
@@ -24,6 +31,12 @@ class ProfileProvider extends ChangeNotifier {
     apartmentId: "",
     otp: "",
   );
+  MDUser get mdUser => _mdUser;
+  void setMdUser(MDUser mdUser) {
+    _mdUser = mdUser;
+    notifyListeners();
+  }
+
   Future changePassword(BuildContext context, String? newPassword,
       String? newPassword1, String? curentPassword) async {
     String? password = AppPreferences.prefs.getString('password');
@@ -49,20 +62,19 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future getCurrentUserProfile(BuildContext context) async {
+  void getCurrentUserProfile() async {
     var response = await ProfilePro().getCurrentUserProfileAPIProvider();
     print(response['result']);
     MDUser user = MDUser.fromMap(response['result']);
-    return user;
-    // notifyListeners();
+    setMdUser(user); // notifyListeners();
   }
 
-  Future getProfilePicture(BuildContext context) async {
+  void getProfilePicture(BuildContext context) async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
     var bytesString = response['profilePicture'] as String;
     List<int> bytesList = base64.decode(bytesString);
     Uint8List bytes = Uint8List.fromList(bytesList);
-    return bytes;
+    setProfilePicture(bytes);
   }
 
   Future updateProfilePicture(File image) async {
