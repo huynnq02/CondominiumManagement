@@ -2,12 +2,12 @@ import 'dart:async';
 
 import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
-import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class ChangePhoneNumberScreen extends StatefulWidget {
   MDUser? mdUser;
@@ -18,9 +18,6 @@ class ChangePhoneNumberScreen extends StatefulWidget {
 }
 
 class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
-  ProfileProvider? profileProvider;
-  final TextEditingController phoneNumberController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -28,11 +25,12 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
   }
 
   bool _isExpired = true, _isOTPSent = false;
-  bool? _isValidOTP, _isWaiting;
+  bool? _isValidOTP, _isWaiting, _isValidPhoneNumber;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
-
+  ProfileProvider? profileProvider;
+  final TextEditingController phoneNumberController = TextEditingController();
   String? otp;
-  int min = 0, sec = 15;
+  int min = 0, sec = 30;
   void startTimer() {
     const onSec = Duration(seconds: 1);
     Timer timer = Timer.periodic(onSec, (timer) {
@@ -175,22 +173,38 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                         },
                         child: InkWell(
                           onTap: () {
-                            print("oke");
-                            if (_isWaiting == null || _isWaiting == false) {
-                              print("zo ne");
-                              startTimer();
-                              print(widget.mdUser?.email);
-                              profileProvider!.sendOTPToChangePhoneNumber(
-                                  widget.mdUser!, context);
+                            // use StringExtension to check phonenubmer
 
-                              setState(() {
-                                _isOTPSent = true;
-                                _isWaiting = true;
-                              });
+                            if (phoneNumberController.text
+                                .isValidPhoneNumber()) {
+                              _isValidPhoneNumber = true;
+                              if (_isWaiting == null || _isWaiting == false) {
+                                startTimer();
+                                profileProvider!.sendOTPToChangePhoneNumber(
+                                    widget.mdUser!, context);
+                                setState(() {
+                                  _isOTPSent = true;
+                                  _isWaiting = true;
+                                });
+                              }
+                            } else {
+                              _isValidPhoneNumber = false;
                             }
                           },
                           child: Column(
                             children: [
+                              if (_isValidPhoneNumber == false)
+                                Text(
+                                  "Số điện thoại không hợp lệ",
+                                  style: AppTextStyle.lato.copyWith(
+                                    fontSize: 14,
+                                    color: AppColors.Red,
+                                  ),
+                                ),
+                              if (_isValidPhoneNumber == false)
+                                SizedBox(
+                                  height: height * 0.001,
+                                ),
                               if (_isOTPSent == false)
                                 ButtonContainer(
                                   height: height,
