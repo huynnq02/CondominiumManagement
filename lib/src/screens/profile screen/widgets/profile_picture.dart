@@ -12,7 +12,7 @@ import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class ProfilePicture extends StatefulWidget {
   Uint8List? image;
-  ProfilePicture({Key? key, required this.image}) : super(key: key);
+  ProfilePicture({Key? key, this.image}) : super(key: key);
 
   @override
   State<ProfilePicture> createState() => _ProfilePictureState();
@@ -31,7 +31,6 @@ class _ProfilePictureState extends State<ProfilePicture> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.image);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Stack(
@@ -51,7 +50,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   ? FileImage(
                       File(_imageFile!.path),
                     )
-                  : widget.image == []
+                  : widget.image!.isEmpty == true
                       ? const AssetImage("assets/default-profile-picture.png")
                       : MemoryImage(widget.image!) as ImageProvider,
             ),

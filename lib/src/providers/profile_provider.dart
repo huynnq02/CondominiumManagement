@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
@@ -44,14 +45,10 @@ class ProfileProvider extends ChangeNotifier {
 
   Future getProfilePicture(BuildContext context) async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
-    // print("res ne");
-    // print(response['profilePicture'] as String);
-    // String profilePicture = response['profilePicture'] as String;
     var bytesString = response['profilePicture'] as String;
     List<int> bytesList = base64.decode(bytesString);
-    print("bai lit");
-    print(bytesList);
-    return bytesList;
+    Uint8List bytes = Uint8List.fromList(bytesList);
+    return bytes;
   }
 
   Future updateProfilePicture(File image) async {

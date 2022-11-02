@@ -27,8 +27,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final phoneController = TextEditingController();
   final idController = TextEditingController();
 
-  List<int>? profilePicture;
-  Uint8List? bytes;
+  Uint8List? profilePicture;
+
   @override
   void initState() {
     super.initState();
@@ -41,12 +41,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isLoading = true;
     });
     profilePicture = await profileProvider?.getProfilePicture(context);
-    bytes = Uint8List.fromList(profilePicture!);
-    print("Thu ne");
-    print(bytes);
-    print("laydata");
     mdUser = await profileProvider?.getCurrentUserProfile(context);
-    // String profilePicture = await profileProvider?.getProfilePicture(context);
+    formatDatetime();
     setState(() {
       _isLoading = false;
     });
@@ -62,6 +58,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isObsecureIdNumber = !_isObsecureIdNumber;
     });
+  }
+
+  void formatDatetime() {
+    final date = DateTime.parse(mdUser.birthDate);
+    String day =
+        date.day / 10 < 1 ? "0" + date.day.toString() : date.day.toString();
+    String month = date.month / 10 < 1
+        ? "0" + date.month.toString()
+        : date.month.toString();
+
+    final formattedDate = "$day/$month/${date.year}";
+    mdUser.birthDate = formattedDate;
+    print(mdUser.birthDate);
   }
 
   @override
@@ -89,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     flex: 1,
                   ),
                   ProfilePicture(
-                    image: bytes == null ? null : bytes!,
+                    image: profilePicture,
                   ),
                   SizedBox(
                     height: height * 0.02,
@@ -213,9 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
                                 Text(
-                                  mdUser.birthDate
-                                      .substring(0, 10)
-                                      .replaceAll("-", "/"),
+                                  mdUser.birthDate,
                                   style:
                                       AppTextStyle.lato.copyWith(fontSize: 16),
                                 ),
