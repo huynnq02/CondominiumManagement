@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -50,21 +51,30 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future<Response> updateProfilePictureAPIRepository(File file) async {
+  Future<Response> updateProfilePictureAPIRepository(File _image) async {
     try {
       var client = init();
-      String fileName = file.path.split('/').last;
-      FormData formData = FormData.fromMap({
-        "fileToken": await MultipartFile.fromFile(
-          file.path,
-          filename: fileName,
-        ),
+      // upload image to asp.net core server
+      var formData = FormData.fromMap({
+        "fileToken": await MultipartFile.fromFile(_image.path,
+            filename: _image.path.split('/').last),
       });
-
+      print("fom data");
+      print(formData);
       final profileResponse = await client.put(
-        '/api/services/app/Profile/UpdateProfilePicture',
-        data: formData,
-      );
+          '/api/services/app/Profile/UpdateProfilePicture',
+          data: formData);
+      // final _imageBytes = _image.readAsBytesSync();
+      // final _imageBase64 = base64UrlEncode(_imageBytes);
+      // print("sai ho bo: " + _imageBase64);
+      // final profileResponse = await client.put(
+      //   '/api/services/app/Profile/UpdateProfilePicture',
+      //   data: {"fileToken": _imageBase64},
+      // );
+
+      print("duoc k z");
+      print(profileResponse.data['result']);
+
       return profileResponse;
     } on DioError catch (error) {
       return error.response as Response;

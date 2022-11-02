@@ -154,9 +154,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   'save',
                                                   checkSave); //lưu trạng thái của nút lưu thông tin
 
+                                              //Hiển thị trạng thái loading
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  });
+
                                               loginProvider!.checkAccount(
                                                   // kiểm tra đăng nhập
-                                                  valueEmail.toString(),
+                                                  valueEmail.toString() + '@gmail.com',
                                                   valuePassword.toString(),
                                                   checkSave,
                                                   context);

@@ -1,17 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
-import 'dart:convert';
 
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class ProfilePicture extends StatefulWidget {
-  const ProfilePicture({Key? key}) : super(key: key);
+  Uint8List? image;
+  ProfilePicture({Key? key, this.image}) : super(key: key);
 
   @override
   State<ProfilePicture> createState() => _ProfilePictureState();
@@ -21,15 +22,11 @@ class _ProfilePictureState extends State<ProfilePicture> {
   ProfileProvider? profileProvider;
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
+
   @override
   void initState() {
     super.initState();
     profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    getUserProfilePicture();
-  }
-
-  void getUserProfilePicture() async {
-    await profileProvider?.getProfilePicture(context);
   }
 
   @override
@@ -49,12 +46,13 @@ class _ProfilePictureState extends State<ProfilePicture> {
             ),
             border: Border.all(color: AppColors.Black, width: 1),
             image: DecorationImage(
-              image: _imageFile == null
-                  ? const AssetImage("assets/default-profile-picture.png")
-                  : FileImage(
+              image: _imageFile != null
+                  ? FileImage(
                       File(_imageFile!.path),
-                    ) as ImageProvider,
-              fit: BoxFit.fill,
+                    )
+                  : widget.image!.isEmpty == true
+                      ? const AssetImage("assets/default-profile-picture.png")
+                      : MemoryImage(widget.image!) as ImageProvider,
             ),
           ),
         ),
@@ -215,9 +213,11 @@ class _ProfilePictureState extends State<ProfilePicture> {
 
   // upload _imageFile to api
   void uploadImage(PickedFile _imageFile) async {
-    await profileProvider?.updateProfilePicture(
-      context,
-      File(_imageFile.path),
-    );
+    final _image = File(_imageFile.path);
+
+    final _response = await profileProvider?.updateProfilePicture(_image);
+    if (_response != null) {
+      Navigator.pop(context);
+    }
   }
 }
