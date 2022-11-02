@@ -42,16 +42,16 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     final res =
         await repository.sendOTPToChangePhoneNumberAPIRepository(mdUser);
     print("kq ne:");
-    print(res.data['success']);
+    print(res.data);
     return res.data['success'];
   }
 
   Future changePhoneNumberAPIProvider(
-      MDUser? mdUser, String phoneNumber) async {
-    final res =
-        await repository.changePhoneNumberAPIRepository(mdUser, phoneNumber);
-    print("kq ne:");
-    print(res.data);
-    return res.data;
+      MDUser? mdUser, String phoneNumber, String otp) async {
+    final res = await repository.changePhoneNumberAPIRepository(
+        mdUser, phoneNumber, otp);
+    print("kq neee:");
+    print(res.data['success']);
+    return res.data['success'];
   }
 }

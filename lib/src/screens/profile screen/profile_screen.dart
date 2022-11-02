@@ -318,11 +318,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Text(
                                       mdUser.phoneNumber == null
                                           ? "Chưa cập nhật"
-                                          : mdUser.phoneNumber!,
+                                          : _isObsecurePhoneNumber
+                                              ? "*" * mdUser.phoneNumber!.length
+                                              : mdUser.phoneNumber!,
+                                      style: AppTextStyle.lato
+                                          .copyWith(fontSize: 16),
                                     ),
                                     mdUser.phoneNumber != null
                                         ? Row(
                                             children: [
+                                              SizedBox(
+                                                width: width * 0.02,
+                                              ),
                                               InkWell(
                                                 child: Icon(
                                                   _isObsecurePhoneNumber
@@ -335,7 +342,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 width: width * 0.02,
                                               ),
                                               InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ChangePhoneNumberScreen(
+                                                        mdUser: mdUser,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                                 child: const Icon(Icons.edit),
                                               )
                                             ],

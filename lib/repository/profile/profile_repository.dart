@@ -87,17 +87,20 @@ class ProfileRepository extends BaseRepository {
       var client = init();
       print("Go in OTP");
       final profileResponse = await client.post(
-        '/api/services/app/Profile/SendEmailActivationOTP',
-        data: {
-          "emailAddress": mdUser!.email,
-          "gender": mdUser.gender,
-          "idNumber": mdUser.idNumber,
-          "birthDate": mdUser.birthDate,
-          "userName": mdUser.userName,
-          "name": mdUser.name,
-          "surname": mdUser.surname,
-        },
-      );
+          '/api/services/app/Profile/SendEmailActivationOTP',
+          data: {
+            "emailAddress": mdUser!.email,
+            "gender": mdUser.gender,
+            "idNumber": mdUser.idNumber,
+            "birthDate": mdUser.birthDate,
+            "userName": mdUser.userName,
+            "name": mdUser.name,
+            "surname": mdUser.surname,
+          },
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }));
 
       return profileResponse;
     } on DioError catch (error) {
@@ -106,10 +109,10 @@ class ProfileRepository extends BaseRepository {
   }
 
   Future<Response> changePhoneNumberAPIRepository(
-      MDUser? mdUser, String phoneNumber) async {
+      MDUser? mdUser, String phoneNumber, String otp) async {
     try {
       var client = init();
-      print("dt day");
+
       print(phoneNumber);
       final profileResponse = await client.put(
         '/api/services/app/Profile/UpdateCurrentUserProfile',
@@ -122,13 +125,10 @@ class ProfileRepository extends BaseRepository {
           "name": mdUser.name,
           "surname": mdUser.surname,
           "phoneNumber": phoneNumber,
+          "otp": otp
         },
-        options: Options(
-          headers: {"Content-Type": "application/json"},
-        ),
       );
-      print("res ne:");
-      print(profileResponse.data);
+
       return profileResponse;
     } on DioError catch (error) {
       return error.response as Response;

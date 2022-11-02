@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
 import '../../repository/profile/profileAPI_provider.dart';
@@ -74,21 +75,31 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future changePhoneNumber(
-      BuildContext context, MDUser? mdUser, String phoneNumber) async {
-    var success =
-        await ProfilePro().changePhoneNumberAPIProvider(mdUser, phoneNumber);
-    // kiểm tra reponse từ api
-    // if (success == true) {
-    //   //Gửi OTP thành công
-    //   ScaffoldMessenger.of(context)
-    //       .showSnackBar(const SnackBar(content: Text('Cập nhật thành công')));
-    // } else {
-    //   // sai thông tin dăng kí thông báo cho người dùng
-    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    //       content: Text('Cập nhật thất bại, kiểm tra lại thông tin')));
-    // }
+  Future changePhoneNumber(BuildContext context, MDUser? mdUser,
+      String phoneNumber, String otp) async {
+    SharedPreferences pref;
+    var success = await ProfilePro()
+        .changePhoneNumberAPIProvider(mdUser, phoneNumber, otp);
+    print(1);
+    if (success == true) {
+      print(2);
+      print('change succeed');
+      //Gửi OTP thành công
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(const SnackBar(content: Text('Cập nhật thành công')));
+      pref = await SharedPreferences.getInstance();
 
-    notifyListeners();
+      pref.setBool("isValidOTP", true);
+    } else if (success == false) {
+      print("3");
+      pref = await SharedPreferences.getInstance();
+
+      pref.setBool("isValidOTP", false);
+
+      print('change failed');
+
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Cập nhật thất bại, kiểm tra lại thông tin')));
+    }
   }
 }
