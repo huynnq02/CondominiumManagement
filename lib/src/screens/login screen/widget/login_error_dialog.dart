@@ -18,7 +18,7 @@ class _LoginErrorDialogState extends State<LoginErrorDialog> {
       backgroundColor: Colors.transparent,
       child: Container(
         color: Colors.transparent,
-        height: height * 0.4,
+        // height: height * 0.4,
         width: width * 0.8,
         child: Card(
           shape: RoundedRectangleBorder(
@@ -28,6 +28,7 @@ class _LoginErrorDialogState extends State<LoginErrorDialog> {
           child: Padding(
             padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
             child: Column(
+            mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   height: height * 0.015,
