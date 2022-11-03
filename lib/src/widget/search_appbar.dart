@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/src/screens/main%20screen/widgets/search_history_item.dart';
-import 'package:untitled/src/screens/search%20screen/seach_result_screen.dart';
 import 'package:untitled/src/widget/search_item.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 

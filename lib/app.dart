@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
-import 'package:untitled/src/providers/favorite_provider.dart';
 import 'package:untitled/src/providers/filter_provider.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
@@ -12,20 +11,44 @@ import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
 import 'package:untitled/src/screens/logout%20screen/logout_screen.dart';
-
+import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
+import 'package:untitled/utils/helper/app_preference.dart';
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  bool isLoggedIn = false;
+
   Future removeToken() async {
     final prefs = await SharedPreferences.getInstance();
 
     prefs.remove('token');
   }
 
+  Future navigateUser(BuildContext context) async {
+    var token = AppPreferences.prefs.getString('token');
+    if (token != null) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    navigateUser(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    removeToken();
+    // removeToken();
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -46,11 +69,6 @@ class App extends StatelessWidget {
           ChangeNotifierProvider(
             create: (BuildContext context) {
               return LoginProvider();
-            },
-          ),
-          ChangeNotifierProvider(
-            create: (BuildContext context) {
-              return FavoriteProvider();
             },
           ),
           ChangeNotifierProvider(
@@ -83,9 +101,11 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: 'Lato'),
           home: Scaffold(
-              body: MainScreen(
-            checkScreen: false,
-          )),
+              body: isLoggedIn
+                  ? MainScreen(
+                      checkScreen: true,
+                    )
+                  : LoginScreen()),
         ));
   }
 }
