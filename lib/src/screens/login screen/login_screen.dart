@@ -2,19 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:untitled/src/providers/login_provider.dart';
-import 'package:untitled/src/screens/login%20screen/widget/checkbox.dart';
+import 'package:untitled/src/screens/forget%20password%20screen/forget_password_screen.dart';
 import 'package:untitled/src/screens/login%20screen/widget/email_textfield.dart';
 import 'package:untitled/src/screens/login%20screen/widget/password_textfield.dart';
-import 'package:untitled/src/screens/logout%20screen/logout_screen.dart';
 import 'package:untitled/src/screens/register%20screen/register_screen.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import '../../../utils/app_constant/app_colors.dart';
 import '../../../utils/helper/app_preference.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -166,7 +164,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                               loginProvider!.checkAccount(
                                                   // kiểm tra đăng nhập
-                                                  valueEmail.toString() + '@gmail.com',
+                                                  valueEmail.toString() +
+                                                      '@gmail.com',
                                                   valuePassword.toString(),
                                                   checkSave,
                                                   context);
@@ -186,11 +185,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(height: height * 0.025),
                                     Align(
                                       alignment: Alignment.centerRight,
-                                      child: Text(
-                                        "Quên mật khẩu",
-                                        style: AppTextStyle.lato.copyWith(
-                                            color: Color(0xFF4200FF),
-                                            fontSize: 16),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      ForgetPasswordScreen())));
+                                        },
+                                        child: Text(
+                                          "Quên mật khẩu",
+                                          style: AppTextStyle.lato.copyWith(
+                                              color: Color(0xFF4200FF),
+                                              fontSize: 16),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(height: height * 0.15),
