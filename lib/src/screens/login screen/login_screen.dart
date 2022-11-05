@@ -200,10 +200,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: height * 0.15),
+                                    // SizedBox(height: height * 0.15),
+                                    Spacer(),
                                     Container(
-                                      height: height * 0.09,
+                                      // height: height * 0.09,
                                       width: width * 0.6,
+                                      padding: EdgeInsets.symmetric(vertical: 12),
                                       decoration: BoxDecoration(
                                         border:
                                             Border.all(color: AppColors.White),
@@ -260,7 +262,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ],
                                       ),
                                     ),
-                                    Spacer(),
+                                    // Spacer(),
+                                    const SizedBox(height: 44),
                                     Align(
                                         alignment: Alignment.bottomCenter,
                                         child: Image.asset('assets/city.png')),
