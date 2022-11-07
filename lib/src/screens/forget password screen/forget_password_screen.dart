@@ -3,9 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
+class ForgetPasswordScreen extends StatefulWidget {
   ForgetPasswordScreen({Key? key}) : super(key: key);
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _OTPKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,32 +28,43 @@ class ForgetPasswordScreen extends StatelessWidget {
       child: SafeArea(
         child: Stack(children: [
           Container(
-            height: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 38, vertical: 50),
             child: Center(
               child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 254,
-                        child: OutlinedText(
-                          text: 'Nhập email dùng đăng kí app để nhận mã OTP',
-                          fontSize: 24,
-                          textAlign: TextAlign.center,
-                        ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 254,
+                      child: OutlinedText(
+                        text: 'Nhập email dùng đăng kí app để nhận mã OTP',
+                        fontSize: 24,
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(
-                        height: 51,
-                      ),
-                      TextFormField(
+                    ),
+                    const SizedBox(
+                      height: 51,
+                    ),
+                    Form(
+                      key: _emailKey,
+                      child: TextFormField(
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: Colors.black,
                         style: const TextStyle(fontSize: 18),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Vui lòng nhập email';
+                          }
+                          String pattern =
+                              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@gmail.com$';
+                          RegExp regExp = RegExp(pattern);
+                          if (!regExp.hasMatch(value)) {
+                            return 'Định  dạng email không đúng, vui lòng nhập lại';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.8),
@@ -58,86 +78,99 @@ class ForgetPasswordScreen extends StatelessWidget {
                               borderSide: const BorderSide(
                                   color: Color(0xFF5FC5FF), width: 2.0),
                             ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFFFF0000)),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFFFF0000)),
+                            ),
                             contentPadding:
                                 const EdgeInsets.symmetric(vertical: 17)),
                       ),
-                      const SizedBox(
-                        height: 69,
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF5FC5FF),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 37, vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 4),
-                          onPressed: () {},
-                          child: Text(
-                            'Gửi mã OTP',
-                            style: GoogleFonts.lexendExa(
-                                fontSize: 16, color: Colors.black),
-                          )),
-                      const SizedBox(
-                        height: 51,
-                      ),
-                      const SizedBox(
-                        width: 254,
-                        child: Text(
-                          'Đã gửi OTP, vui lòng check trong hộp thư của bạn và điền mã OTP vào ô dưới đây',
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: Color(0xFFFF0000), fontSize: 13),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Material(
-                        borderRadius: BorderRadius.circular(12),
-                        color: const Color(0xFFF8F6FD),
-                        elevation: 4,
-                        shadowColor: Colors.black,
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          cursorColor: Colors.black,
-                          style: const TextStyle(fontSize: 18),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 26)),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 77,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Xác nhận',
-                          style: GoogleFonts.lexendExa(
-                              fontSize: 16, color: Colors.black),
-                        ),
+                    ),
+                    const SizedBox(
+                      height: 69,
+                    ),
+                    ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: const Color(0xFF5FC5FF),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 47, vertical: 14),
+                                horizontal: 37, vertical: 14),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                             elevation: 4),
+                        onPressed: () {
+                          if (_emailKey.currentState!.validate()) {
+                          }
+                        },
+                        child: Text(
+                          'Gửi mã OTP',
+                          style: GoogleFonts.lexendExa(
+                              fontSize: 16, color: Colors.black),
+                        )),
+                    const SizedBox(
+                      height: 51,
+                    ),
+                    const SizedBox(
+                      width: 254,
+                      child: Text(
+                        'Đã gửi OTP, vui lòng check trong hộp thư của bạn và điền mã OTP vào ô dưới đây',
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(color: Color(0xFFFF0000), fontSize: 13),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Material(
+                      borderRadius: BorderRadius.circular(12),
+                      color: const Color(0xFFF8F6FD),
+                      elevation: 4,
+                      shadowColor: Colors.black,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        cursorColor: Colors.black,
+                        style: const TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 26)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 77,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Xác nhận',
+                        style: GoogleFonts.lexendExa(
+                            fontSize: 16, color: Colors.black),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 47, vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 4),
+                    ),
+                  ],
                 ),
               ),
             ),
