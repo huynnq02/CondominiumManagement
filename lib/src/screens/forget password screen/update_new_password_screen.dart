@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled/src/screens/forget%20password%20screen/update_password_dialog.dart';
 import 'package:untitled/src/screens/register%20screen/widget/widget_button.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/src/widget/register_textfield.dart';
@@ -10,7 +11,8 @@ class UpdateNewPasswordScreen extends StatefulWidget {
   const UpdateNewPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<UpdateNewPasswordScreen> createState() => _UpdateNewPasswordScreenState();
+  State<UpdateNewPasswordScreen> createState() =>
+      _UpdateNewPasswordScreenState();
 }
 
 class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
@@ -94,7 +96,11 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                   onPressed: () {
                     setState(() {});
                     if (_formKey.currentState!.validate()) {
-                      
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const UpdatePasswordDialog();
+                          });
                     }
                   },
                 )

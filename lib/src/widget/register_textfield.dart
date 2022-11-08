@@ -153,7 +153,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
               children: [
                 Text(
                   widget.labelText,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
                 ),
                 const SizedBox(
                   height: 4,
