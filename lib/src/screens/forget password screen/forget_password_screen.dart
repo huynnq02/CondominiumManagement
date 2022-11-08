@@ -9,7 +9,7 @@ import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
-  ForgetPasswordScreen({Key? key}) : super(key: key);
+  const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
   State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
@@ -67,7 +67,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 254,
                       child: OutlinedText(
                         text: 'Nhập email dùng đăng kí app để nhận mã OTP',
@@ -122,6 +122,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         },
                         decoration: InputDecoration(
                             counterText: '',
+                            hintText: 'Nhập email',
+                            hintStyle: const TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 16),
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.8),
                             enabledBorder: OutlineInputBorder(
@@ -241,6 +244,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 },
                                 decoration: InputDecoration(
                                     counterText: '',
+                                    hintText: 'Nhập mã OTP',
+                                    hintStyle: const TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide.none,
