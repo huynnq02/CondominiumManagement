@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
@@ -14,10 +17,35 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _OTPKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _otpKey = GlobalKey<FormState>();
   bool isOTPSent = false;
   String emailError = '';
   String otpError = '';
+  int min = 1, sec = 59;
+  bool _isWaiting = false;
+
+  void startTimer() {
+    const duration = Duration(seconds: 1);
+    Timer.periodic(duration, (timer) {
+      if (min == 0 && sec == 0) {
+        setState(() {
+          timer.cancel();
+          _isWaiting = false;
+
+          min = 1;
+          sec = 59;
+        });
+      } else {
+        setState(() {
+          if (min > 0 && sec == 0) {
+            min--;
+            sec = 60;
+          }
+          sec--;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +154,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF5FC5FF),
+                            backgroundColor: _isWaiting
+                                ? const Color(0xFFCDCDCD)
+                                : const Color(0xFF5FC5FF),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 37, vertical: 14),
                             shape: RoundedRectangleBorder(
@@ -136,14 +166,19 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         onPressed: () {
                           if (_emailKey.currentState!.validate()) {
                             setState(() {
+                              _isWaiting = true;
                               isOTPSent = true;
                             });
+                            startTimer();
                           }
                         },
                         child: Text(
-                          'Gửi mã OTP',
+                          _isWaiting ? '$min:$sec' : 'Gửi mã OTP',
                           style: GoogleFonts.lexendExa(
-                              fontSize: 16, color: Colors.black),
+                              fontSize: 16,
+                              color: _isWaiting
+                                  ? Colors.black.withOpacity(0.5)
+                                  : Colors.black),
                         )),
                     if (isOTPSent)
                       Column(
@@ -177,7 +212,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               ],
                             ),
                           Form(
-                            key: _OTPKey,
+                            key: _otpKey,
                             child: Material(
                               borderRadius: BorderRadius.circular(12),
                               color: const Color(0xFFF8F6FD),
@@ -235,7 +270,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              if (_OTPKey.currentState!.validate()) {}
+                              if (_otpKey.currentState!.validate()) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const UpdateNewPasswordScreen())));
+                              }
                             },
                             child: Text(
                               'Xác nhận',
