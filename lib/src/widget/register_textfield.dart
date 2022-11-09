@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import '../../utils/app_constant/app_colors.dart';
 
@@ -19,19 +18,19 @@ class RegisterTextField extends StatefulWidget {
   final bool isDisabled;
   final void Function(BuildContext context)? onTap;
 
-  RegisterTextField({
-    Key? key,
-    required this.labelText,
-    this.type,
-    this.validator,
-    this.controller,
-    this.maxLength,
-    this.autovalidateMode,
-    this.isCenter,
-    this.border,
-    this.isDisabled=false,
-    this.onTap
-  }) : super(key: key);
+  const RegisterTextField(
+      {Key? key,
+      required this.labelText,
+      this.type,
+      this.validator,
+      this.controller,
+      this.maxLength,
+      this.autovalidateMode,
+      this.isCenter,
+      this.border,
+      this.isDisabled = false,
+      this.onTap})
+      : super(key: key);
 
   @override
   State<RegisterTextField> createState() => _RegisterTextFieldState();
@@ -43,6 +42,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
   double? width;
   double? height;
   String errorText = '';
+  final FocusNode unitCodeCtrlFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -112,13 +112,12 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           if (value.isEmpty) {
             errorText = 'Vui lòng nhập thông tin';
             return '';
-          }
-          else if (value.length != 9 && value.length != 12) {
+          } else if (value.length != 9 && value.length != 12) {
             errorText = 'Số CMND / CCCD không hợp lệ';
             return '';
           }
           break;
-        case null: 
+        case null:
           if (value.isEmpty) {
             errorText = 'Vui lòng nhập thông tin';
             return '';
@@ -129,17 +128,22 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     return null;
   }
 
+  void handleOnTap() {
+    if (widget.onTap != null) widget.onTap!(context);
+    unitCodeCtrlFocusNode.requestFocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (widget.onTap != null) ? () => widget.onTap!(context) : null,
+      onTap: handleOnTap,
       child: Stack(alignment: Alignment.center, children: [
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           decoration: BoxDecoration(
               border: (errorText != '')
-                  ? Border.all(color: Color(0xFFFF0000))
+                  ? Border.all(color: const Color(0xFFFF0000))
                   : null,
               color: Colors.white.withOpacity(0.8),
               borderRadius: widget.border),
@@ -147,66 +151,63 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  // color: Colors.yellow,
-                  child: Text(
-                    widget.labelText,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
-                  ),
+                Text(
+                  widget.labelText,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
                 ),
                 const SizedBox(
                   height: 4,
                 ),
-                Container(
-                  // color: Colors.red,
-                  child: TextFormField(
-                    key: _textformfieldkey,
-                    validator: ((value) => getValidator(value, widget.type)),
-                    controller: widget.controller,
-                    enabled: (widget.type == TextFieldType.date) ? false : !widget.isDisabled,
-                    textAlign:
+                TextFormField(
+                  key: _textformfieldkey,
+                  validator: ((value) => getValidator(value, widget.type)),
+                  controller: widget.controller,
+                  focusNode: unitCodeCtrlFocusNode,
+                  enabled: (widget.type == TextFieldType.date)
+                      ? false
+                      : !widget.isDisabled,
+                  textAlign:
+                      (widget.isCenter != null && widget.isCenter == true)
+                          ? TextAlign.center
+                          : TextAlign.start,
+                  textCapitalization: widget.type == TextFieldType.name
+                      ? TextCapitalization.words
+                      : TextCapitalization.none,
+                  keyboardType: widget.type == TextFieldType.email
+                      ? TextInputType.emailAddress
+                      : widget.type == TextFieldType.number
+                          ? TextInputType.number
+                          : TextInputType.text,
+                  obscureText: widget.type == TextFieldType.password
+                      ? _obscureText
+                      : false,
+                  obscuringCharacter: '*',
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(widget.maxLength),
+                    if (widget.type == TextFieldType.number)
+                      FilteringTextInputFormatter.digitsOnly
+                  ],
+                  onChanged: (value) {
+                    if (widget.type != TextFieldType.name) return;
+                    final controller = widget.controller;
+                    if (controller != null) {
+                      controller.value = TextEditingValue(
+                          text: formatedName(value),
+                          selection: controller.selection);
+                    }
+                  },
+                  style: const TextStyle(fontSize: 18),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    errorStyle: TextStyle(height: 0),
+                    floatingLabelAlignment:
                         (widget.isCenter != null && widget.isCenter == true)
-                            ? TextAlign.center
-                            : TextAlign.start,
-                    textCapitalization: widget.type == TextFieldType.name
-                        ? TextCapitalization.words
-                        : TextCapitalization.none,
-                    keyboardType: widget.type == TextFieldType.email
-                        ? TextInputType.emailAddress
-                        : widget.type == TextFieldType.number
-                            ? TextInputType.number
-                            : TextInputType.text,
-                    obscureText: widget.type == TextFieldType.password
-                        ? _obscureText
-                        : false,
-                    obscuringCharacter: '*',
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(widget.maxLength),
-                      if (widget.type == TextFieldType.number)
-                        FilteringTextInputFormatter.digitsOnly
-                    ],
-                    onChanged: (value) {
-                      if (widget.type != TextFieldType.name) return;
-                      final controller = widget.controller;
-                      if (controller != null) {
-                        controller.value = TextEditingValue(
-                            text: formatedName(value),
-                            selection: controller.selection);
-                      }
-                    },
-                    style: const TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: InputBorder.none,
-                      errorStyle: TextStyle(height: 0),
-                      floatingLabelAlignment:
-                          (widget.isCenter != null && widget.isCenter == true)
-                              ? FloatingLabelAlignment.center
-                              : FloatingLabelAlignment.start,
-                      contentPadding: widget.type != TextFieldType.date
-                          ? const EdgeInsets.symmetric(horizontal: 10)
-                          : EdgeInsets.zero,
-                    ),
+                            ? FloatingLabelAlignment.center
+                            : FloatingLabelAlignment.start,
+                    contentPadding: widget.type != TextFieldType.date
+                        ? const EdgeInsets.symmetric(horizontal: 10)
+                        : EdgeInsets.zero,
                   ),
                 ),
               ],
@@ -252,7 +253,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             top: 0,
             child: Text(errorText,
                 style:
-                    GoogleFonts.inter(color: Color(0xFFFF0000), fontSize: 8))),
+                    GoogleFonts.inter(color: const Color(0xFFFF0000), fontSize: 8))),
       ]),
     );
   }

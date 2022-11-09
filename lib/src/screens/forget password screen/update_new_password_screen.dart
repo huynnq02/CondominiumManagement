@@ -1,86 +1,138 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/reset_password_provider.dart';
+import 'package:untitled/src/screens/register%20screen/widget/widget_button.dart';
+import 'package:untitled/src/widget/outlined_text.dart';
+import 'package:untitled/src/widget/register_textfield.dart';
+import 'package:untitled/utils/app_constant/app_shadows.dart';
 
-import '../../../utils/app_constant/app_colors.dart';
-import '../../../utils/app_constant/app_text_style.dart';
-import '../../widget/custom_textfield.dart';
+class UpdateNewPasswordScreen extends StatefulWidget {
+  final String email;
+  const UpdateNewPasswordScreen({Key? key, required this.email})
+      : super(key: key);
 
-class UpdateNewPasswordScreen extends StatelessWidget {
-  const UpdateNewPasswordScreen({Key? key}) : super(key: key);
+  @override
+  State<UpdateNewPasswordScreen> createState() =>
+      _UpdateNewPasswordScreenState();
+}
+
+class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ResetPasswordProvider? provider;
+  TextEditingController pwController = TextEditingController();
+
+  @override
+  void initState() {
+    provider = Provider.of<ResetPasswordProvider>(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: AppColors.White,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 57,
-              ),
-              Image.asset(
-                'assets/logo.png',
-                width: 328,
-                height: 81,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Cập Nhật Mật Khẩu Mới',
-                        style: AppTextStyle.nunitoSize13.copyWith(
-                            color: AppColors.Blue,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const CustomTextField(
-                        input: 'Nhập mật khẩu mới...',
-                        type: iconType.lock,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const CustomTextField(
-                        input: 'Nhập lại mật khẩu mới...',
-                        type: iconType.lock,
-                      ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      SizedBox(
-                        width: 382,
-                        height: 56,
-                        child: ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: AppColors.Blue),
-                          onPressed: () {
-                            print('tap ');
-                          },
-                          child: Text(
-                            'Cập nhật',
-                            style: AppTextStyle.nunitoSize13.copyWith(
-                                color: AppColors.White,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
+      resizeToAvoidBottomInset: false,
+        body: Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/register_bg.jpg"),
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter),
+      ),
+      child: SafeArea(
+        child: Stack(children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 38, vertical: 58),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                OutlinedText(
+                  text: 'Đổi mật khẩu',
+                  style: GoogleFonts.tomorrow(),
+                  fontSize: 32,
+                  strokeColor: Colors.black,
+                  isShadowed: true,
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                Container(
+                  width: 248,
+                  margin: const EdgeInsets.only(left: 13),
+                  child: Text(
+                    'Mật khẩu mới của bạn phải khác so với mật khẩu cũ',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        shadows: AppShadows.defaultShadows),
                   ),
                 ),
-              ),
-              Image.asset('assets/slide2.png')
-            ],
+                Expanded(
+                    child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Nhập mật khẩu mới',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
+                            shadows: AppShadows.defaultShadows),
+                      ),
+                      const SizedBox(
+                        height: 26,
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: RegisterTextField(
+                          controller: pwController,
+                          labelText: 'Mật khẩu',
+                          border: BorderRadius.circular(12),
+                          type: TextFieldType.password,
+                          maxLength: 20,
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+                const SizedBox(
+                  height: 26,
+                ),
+                WidgetButton(
+                  labelText: 'Đổi mật khẩu',
+                  width: 185,
+                  onPressed: () {
+                    setState(() {});
+                    if (_formKey.currentState!.validate()) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          });
+                      provider!.resetPassword(
+                          widget.email, pwController.text, context);
+                    }
+                  },
+                )
+              ],
+            ),
           ),
-        ),
+          IconButton(
+              constraints: const BoxConstraints(),
+              padding: const EdgeInsets.all(22),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: SvgPicture.asset('assets/back.svg'))
+        ]),
       ),
-    );
+    ));
   }
 }
