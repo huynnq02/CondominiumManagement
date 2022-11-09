@@ -73,20 +73,50 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
-  // Future<Response> sendEmail({String? email}) async {
-  //   try {
-  //     var client = init();
+  Future<Response> sendPasswordResetOTP({String? email}) async {
+    try {
+      var client = init();
 
-  //     final authRespone = await client.post(
-  //       '/api/services/app/Account/SendEmailActivationLink',
-  //       data: {
-  //         "emailAddress": email,
-  //       },
-  //     );
+      final authRespone = await client.post(
+        '/api/services/app/Account/SendPasswordResetOTP',
+        data: {
+          "emailAddress": email,
+        },
+      );
 
-  //     return authRespone;
-  //   } on DioError catch (error) {
-  //     return error.response as Response;
-  //   }
-  // }
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> checkPasswordResetOTP({String? email, String? otp}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/CheckPasswordResetOTP',
+        data: {"emailAddress": email, "otp": otp},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> resetPassword({String? email, String? password}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/ResetPassword',
+        data: {"emailAddress": email, "password": password},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }

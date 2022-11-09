@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/src/screens/forget%20password%20screen/update_password_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/screens/register%20screen/widget/widget_button.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/src/widget/register_textfield.dart';
 import 'package:untitled/utils/app_constant/app_shadows.dart';
 
 class UpdateNewPasswordScreen extends StatefulWidget {
-  const UpdateNewPasswordScreen({Key? key}) : super(key: key);
+  final String email;
+  const UpdateNewPasswordScreen({Key? key, required this.email})
+      : super(key: key);
 
   @override
   State<UpdateNewPasswordScreen> createState() =>
@@ -17,10 +20,19 @@ class UpdateNewPasswordScreen extends StatefulWidget {
 
 class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ResetPasswordProvider? provider;
+  TextEditingController pwController = TextEditingController();
+
+  @override
+  void initState() {
+    provider = Provider.of<ResetPasswordProvider>(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: Container(
       width: double.infinity,
       height: double.infinity,
@@ -78,6 +90,7 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                       Form(
                         key: _formKey,
                         child: RegisterTextField(
+                          controller: pwController,
                           labelText: 'Mật khẩu',
                           border: BorderRadius.circular(12),
                           type: TextFieldType.password,
@@ -99,8 +112,12 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                       showDialog(
                           context: context,
                           builder: (context) {
-                            return const UpdatePasswordDialog();
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           });
+                      provider!.resetPassword(
+                          widget.email, pwController.text, context);
                     }
                   },
                 )

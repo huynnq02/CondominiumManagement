@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
@@ -16,21 +16,36 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  ResetPasswordProvider? provider;
   final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _otpKey = GlobalKey<FormState>();
-  bool isOTPSent = false;
-  String emailError = '';
-  String otpError = '';
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+  Timer? timer;
   int min = 1, sec = 59;
-  bool _isWaiting = false;
+  bool isWaiting = false;
+  late String email;
 
-  void startTimer() {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    provider = Provider.of<ResetPasswordProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    provider!.reset();
+    super.dispose();
+  }
+
+  void startTimer(ResetPasswordProvider data) {
     const duration = Duration(seconds: 1);
-    Timer.periodic(duration, (timer) {
+    timer = Timer.periodic(duration, (timer) {
       if (min == 0 && sec == 0) {
         setState(() {
           timer.cancel();
-          _isWaiting = false;
+          isWaiting = false;
 
           min = 1;
           sec = 59;
@@ -47,8 +62,27 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     });
   }
 
+  void showLoading() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
+
+  void handleOTPSent(ResetPasswordProvider data) {
+    Navigator.of(context).pop();
+    if (data.isOTPSent == true) {
+      isWaiting = true;
+      startTimer(data);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final data = Provider.of<ResetPasswordProvider>(context);
     return Scaffold(
         body: Container(
       decoration: const BoxDecoration(
@@ -78,11 +112,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     const SizedBox(
                       height: 51,
                     ),
-                    if (emailError.isNotEmpty)
+                    if (data.emailError.isNotEmpty)
                       Column(
                         children: [
                           Text(
-                            emailError,
+                            data.emailError,
                             style: GoogleFonts.inter(
                                 color: AppColors.Red, fontSize: 12),
                           ),
@@ -94,6 +128,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     Form(
                       key: _emailKey,
                       child: TextFormField(
+                        controller: emailController,
+                        readOnly: data.isOTPSent,
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: Colors.black,
@@ -102,7 +138,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             setState(() {
-                              emailError = 'Vui lòng nhập email';
+                              data.emailError = 'Vui lòng nhập email';
                             });
                             return '';
                           }
@@ -111,12 +147,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           RegExp regExp = RegExp(pattern);
                           if (!regExp.hasMatch(value)) {
                             setState(() {
-                              emailError = 'Email không hợp lệ';
+                              data.emailError = 'Email không hợp lệ';
                             });
                             return '';
                           }
                           setState(() {
-                            emailError = '';
+                            data.emailError = '';
                           });
                           return null;
                         },
@@ -134,8 +170,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(
-                                  color: Color(0xFF5FC5FF), width: 2.0),
+                              borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.5)),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -155,35 +191,44 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     const SizedBox(
                       height: 69,
                     ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: _isWaiting
-                                ? const Color(0xFFCDCDCD)
-                                : const Color(0xFF5FC5FF),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 37, vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 4),
-                        onPressed: () {
-                          if (_emailKey.currentState!.validate()) {
-                            setState(() {
-                              _isWaiting = true;
-                              isOTPSent = true;
-                            });
-                            startTimer();
-                          }
-                        },
-                        child: Text(
-                          _isWaiting ? '$min:$sec' : 'Gửi mã OTP',
-                          style: GoogleFonts.lexendExa(
-                              fontSize: 16,
-                              color: _isWaiting
-                                  ? Colors.black.withOpacity(0.5)
-                                  : Colors.black),
-                        )),
-                    if (isOTPSent)
+                    SizedBox(
+                      width: 185,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: isWaiting
+                                  ? const Color(0xFFCDCDCD)
+                                  : const Color(0xFF5FC5FF),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 4),
+                          onPressed: () {
+                            if (_emailKey.currentState!.validate()) {
+                              if (!isWaiting) {
+                                showLoading();
+                                email = emailController.text;
+                                provider!
+                                    .sendPasswordResetOTP(email)
+                                    .then((_) => handleOTPSent(data));
+                              }
+                            }
+                          },
+                          child: Text(
+                            isWaiting
+                                ? '$min:$sec'
+                                : data.isOTPSent
+                                    ? 'Gửi lại'
+                                    : 'Gửi mã OTP',
+                            style: GoogleFonts.lexendExa(
+                                fontSize: 16,
+                                color: isWaiting
+                                    ? Colors.black.withOpacity(0.5)
+                                    : Colors.black),
+                          )),
+                    ),
+                    if (data.isOTPSent)
                       Column(
                         children: [
                           const SizedBox(
@@ -201,11 +246,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           const SizedBox(
                             height: 25,
                           ),
-                          if (otpError.isNotEmpty)
+                          if (data.otpError.isNotEmpty)
                             Column(
                               children: [
                                 Text(
-                                  otpError,
+                                  data.otpError,
                                   style: GoogleFonts.inter(
                                       color: AppColors.Red, fontSize: 12),
                                 ),
@@ -222,6 +267,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               elevation: 4,
                               shadowColor: Colors.black,
                               child: TextFormField(
+                                controller: otpController,
                                 textAlign: TextAlign.center,
                                 keyboardType: TextInputType.number,
                                 cursorColor: Colors.black,
@@ -233,21 +279,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     setState(() {
-                                      otpError = 'Vui lòng nhập mã OTP';
+                                      data.otpError = 'Vui lòng nhập mã OTP';
                                     });
                                     return '';
                                   }
                                   setState(() {
-                                    otpError = '';
+                                    data.otpError = '';
                                   });
                                   return null;
                                 },
                                 decoration: InputDecoration(
                                     counterText: '',
-                                    hintText: 'Nhập mã OTP',
-                                    hintStyle: const TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 16),
+                                    // hintText: 'Nhập mã OTP',
+                                    // hintStyle: const TextStyle(
+                                    //     fontWeight: FontWeight.w300,
+                                    //     fontSize: 16),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide.none,
@@ -267,8 +313,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                           color: Color(0xFFFF0000)),
                                     ),
                                     errorStyle: const TextStyle(height: 0),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 26)),
+                                    contentPadding:
+                                        const EdgeInsets.symmetric(
+                                            vertical: 26)),
                               ),
                             ),
                           ),
@@ -278,9 +325,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           ElevatedButton(
                             onPressed: () {
                               if (_otpKey.currentState!.validate()) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const UpdateNewPasswordScreen())));
+                                showLoading();
+                                provider!.checkPasswordResetOTP(
+                                    email, otpController.text, context);
                               }
                             },
                             child: Text(
