@@ -61,6 +61,22 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setEmptyUser() {
+    _mdUser = MDUser(
+        name: "",
+        surname: "",
+        email: "",
+        password: "",
+        gender: "",
+        idNumber: "",
+        fullName: "",
+        birthDate: "",
+        apartmentId: "",
+        otp: "");
+    _profilePicture = null;
+    notifyListeners();
+  }
+
   Future changePassword(BuildContext context, String? newPassword,
       String? newPassword1, String? curentPassword) async {
     String? password = AppPreferences.prefs.getString('password');
