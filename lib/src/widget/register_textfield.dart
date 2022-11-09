@@ -19,19 +19,19 @@ class RegisterTextField extends StatefulWidget {
   final bool isDisabled;
   final void Function(BuildContext context)? onTap;
 
-  RegisterTextField({
-    Key? key,
-    required this.labelText,
-    this.type,
-    this.validator,
-    this.controller,
-    this.maxLength,
-    this.autovalidateMode,
-    this.isCenter,
-    this.border,
-    this.isDisabled=false,
-    this.onTap
-  }) : super(key: key);
+  RegisterTextField(
+      {Key? key,
+      required this.labelText,
+      this.type,
+      this.validator,
+      this.controller,
+      this.maxLength,
+      this.autovalidateMode,
+      this.isCenter,
+      this.border,
+      this.isDisabled = false,
+      this.onTap})
+      : super(key: key);
 
   @override
   State<RegisterTextField> createState() => _RegisterTextFieldState();
@@ -112,13 +112,12 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           if (value.isEmpty) {
             errorText = 'Vui lòng nhập thông tin';
             return '';
-          }
-          else if (value.length != 9 && value.length != 12) {
+          } else if (value.length != 9 && value.length != 12) {
             errorText = 'Số CMND / CCCD không hợp lệ';
             return '';
           }
           break;
-        case null: 
+        case null:
           if (value.isEmpty) {
             errorText = 'Vui lòng nhập thông tin';
             return '';
@@ -163,7 +162,9 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                     key: _textformfieldkey,
                     validator: ((value) => getValidator(value, widget.type)),
                     controller: widget.controller,
-                    enabled: (widget.type == TextFieldType.date) ? false : !widget.isDisabled,
+                    enabled: (widget.type == TextFieldType.date)
+                        ? false
+                        : !widget.isDisabled,
                     textAlign:
                         (widget.isCenter != null && widget.isCenter == true)
                             ? TextAlign.center
