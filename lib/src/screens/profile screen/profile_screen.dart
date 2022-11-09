@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/change%20phone%20number%20screen/change_phone_number_screen.dart';
+import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
 import 'package:untitled/src/screens/profile%20screen/widgets/profile_picture.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/screens/profile%20screen/widgets/user_info.dart';
@@ -111,15 +112,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: height * 0.1,
+                height: height * 0.05,
               ),
               Flexible(
                 flex: 6,
                 child: Column(
                   children: [
-                    UserInfo(
-                      value: user.mdUser.email,
-                      info: 'Email',
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        border: Border.all(
+                            color: const Color(0x00000033).withOpacity(0.20),
+                            width: 1),
+                        color: AppColors.White,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: AppColors.Grey,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Email',
+                              style: AppTextStyle.lato.copyWith(fontSize: 16),
+                            ),
+                            Text(
+                              user.mdUser.email,
+                              style: AppTextStyle.lato.copyWith(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     SizedBox(height: height * 0.001),
                     UserInfo(
@@ -287,6 +320,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       info: 'Mã căn hộ',
                       value: user.mdUser.apartmentId ?? '',
                     ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0x00000033).withOpacity(0.20),
+                            width: 1),
+                        color: AppColors.White,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: AppColors.Grey,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Đổi mật khẩu",
+                              style: AppTextStyle.lato.copyWith(fontSize: 16),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: const Icon(Icons.lock_reset),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        border: Border.all(
+                            color: const Color(0x00000033).withOpacity(0.20),
+                            width: 1),
+                        color: AppColors.White,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: AppColors.Grey,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Đăng xuất",
+                              style: AppTextStyle.lato.copyWith(fontSize: 16),
+                            ),
+                            InkWell(
+                              onTap: () => showLogoutConfirmPopupDialog(
+                                  context, height, width),
+                              child: const Icon(Icons.logout),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -296,4 +398,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
   }
+
+  void showLogoutConfirmPopupDialog(BuildContext context, height, width) =>
+      showDialog(
+          context: context, builder: ((context) => LogOutConfirmDialog()));
 }
