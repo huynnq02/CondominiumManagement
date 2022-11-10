@@ -80,7 +80,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))$';
           RegExp regExp = RegExp(pattern);
           if (!regExp.hasMatch(value)) {
-            errorText = 'Định  dạng email không đúng, vui lòng nhập lại';
+            errorText = 'ĝịnh  dạng email không đúng, vui lòng nhập lại';
             return '';
           }
           break;
@@ -96,7 +96,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           break;
         case TextFieldType.name:
           if (value.isEmpty) {
-            errorText = 'Vui lòng nhập họ tên';
+            errorText = 'Vui lòng nhập hờ tên';
             return '';
           }
           RegExp exp = RegExp(r"[^a-z ]", caseSensitive: false);
@@ -104,7 +104,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Chỉ được bao gồm ký tự chữ';
             return '';
           } else if (value.split(' ').length < 2) {
-            errorText = 'Họ tên phải có ít nhất 2 từ';
+            errorText = 'Hờ tên phải có ít nhất 2 từ';
             return '';
           }
           break;
