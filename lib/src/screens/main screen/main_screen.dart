@@ -187,7 +187,7 @@ class _MainScreenState extends State<MainScreen> {
                           ? const Color(0xFF1D6D54)
                           : AppColors.Black,
                     ),
-                    label: "?",
+                    label: "Ý kiến",
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(
