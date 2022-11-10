@@ -23,96 +23,164 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
     final width = MediaQuery.of(context).size.width;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: const Color(0xFF57E4A9).withOpacity(0.3),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFC7E2D1).withOpacity(0.3),
+        elevation: 0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.White,
+          ),
+        ),
+        title: Stack(
+          children: [
+            Text(
+              "Tạo ý kiến",
+              style: AppTextStyle.tomorrow.copyWith(
+                fontSize: 25,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 1
+                  ..color = AppColors.Black,
+              ),
+            ),
+            Text(
+              "Tạo ý kiến",
+              style: AppTextStyle.tomorrow.copyWith(
+                fontSize: 25,
+                color: AppColors.White,
+                shadows: [
+                  Shadow(
+                    color: Colors.black.withOpacity(0.5),
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(top: 15, right: 10),
+            child: InkWell(
+              onTap: () {},
+              child: Text(
+                "Gửi",
+                style: AppTextStyle.lato.copyWith(
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.White,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+        centerTitle: true,
+      ),
+      backgroundColor: const Color(0xFFC7E2D1).withOpacity(0.3),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // SizedBox(
-                //   height: statusBarHeight,
-                // ),
-                SizedBox(
-                  height: height * 0.01,
+          child: Column(
+            children: [
+              // SizedBox(
+              //   height: statusBarHeight,
+              // ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       IconButton(
+              //         onPressed: () {
+              //           Navigator.pop(context);
+              //         },
+              //         icon: const Icon(
+              //           Icons.arrow_back_ios,
+              //           color: AppColors.White,
+              //         ),
+              //       ),
+              //       Stack(
+              //         children: [
+              //           Text(
+              //             "Tạo ý kiến",
+              //             style: AppTextStyle.tomorrow.copyWith(
+              //               fontSize: 25,
+              //               foreground: Paint()
+              //                 ..style = PaintingStyle.stroke
+              //                 ..strokeWidth = 1
+              //                 ..color = AppColors.Black,
+              //             ),
+              //           ),
+              //           Text(
+              //             "Tạo ý kiến",
+              //             style: AppTextStyle.tomorrow.copyWith(
+              //               fontSize: 25,
+              //               color: AppColors.White,
+              //               shadows: [
+              //                 Shadow(
+              //                   color: Colors.black.withOpacity(0.5),
+              //                   blurRadius: 5,
+              //                   offset: const Offset(0, 2),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //       Align(
+              //         alignment: Alignment.bottomCenter,
+              //         child: Padding(
+              //           padding: const EdgeInsets.only(right: 10),
+              //           child: Text(
+              //             "Gửi",
+              //             style: AppTextStyle.lato.copyWith(
+              //               fontSize: 20,
+              //               fontStyle: FontStyle.italic,
+              //               color: AppColors.White,
+              //               shadows: [
+              //                 Shadow(
+              //                   color: Colors.black.withOpacity(0.5),
+              //                   blurRadius: 5,
+              //                   offset: const Offset(0, 2),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       )
+              //     ],
+              //   ),
+              // ),
+              SizedBox(
+                height: height * 0.0001,
+              ),
+              SizedBox(
+                width: width * 0.7,
+                child: const Divider(
+                  thickness: 1,
+                  color: Color.fromRGBO(0, 0, 0, 0.3),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: AppColors.White,
-                        ),
-                      ),
-                      Stack(
-                        children: [
-                          Text(
-                            "Tạo ý kiến",
-                            style: AppTextStyle.tomorrow.copyWith(
-                              fontSize: 25,
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 1
-                                ..color = AppColors.Black,
-                            ),
-                          ),
-                          Text(
-                            "Tạo ý kiến",
-                            style: AppTextStyle.tomorrow.copyWith(
-                              fontSize: 25,
-                              color: AppColors.White,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black.withOpacity(0.5),
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Text(
-                          "Gửi",
-                          style: AppTextStyle.lato.copyWith(
-                            fontSize: 20,
-                            fontStyle: FontStyle.italic,
-                            color: AppColors.White,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 5,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.0001,
-                ),
-                SizedBox(
-                  width: width * 0.7,
-                  child: const Divider(
-                    thickness: 1,
-                    color: Color.fromRGBO(0, 0, 0, 0.3),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.005,
-                ),
-                Container(
+              ),
+              SizedBox(
+                height: height * 0.005,
+              ),
+              SingleChildScrollView(
+                child: Container(
                   decoration: const BoxDecoration(
                     color: AppColors.White,
                     borderRadius: BorderRadius.only(
@@ -413,8 +481,8 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
