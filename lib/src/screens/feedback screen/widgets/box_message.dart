@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class BoxMessage extends StatelessWidget {
   final Widget child;
   final double? width;

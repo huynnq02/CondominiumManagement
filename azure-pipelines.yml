@@ -6,7 +6,13 @@
 
 
 trigger:
+  - main
+  - sprint01
   - sprint02
+  - sprint03
+  - sprint04
+  - sprint05
+  - sprint06
 
 pool:
   vmImage: macOS-12

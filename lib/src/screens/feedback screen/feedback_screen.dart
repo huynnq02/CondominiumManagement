@@ -96,6 +96,13 @@ class FeedbackScreen extends StatelessWidget {
                       style: AppTextStyle.tomorrow.copyWith(
                         fontSize: 30,
                         color: AppColors.White,
+                        shadows: const [
+                          Shadow(
+                            blurRadius: 10.0,
+                            color: AppColors.Black,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -162,13 +169,40 @@ class FeedbackScreen extends StatelessWidget {
                               left: 20.0,
                               bottom: 10,
                             ),
-                            child: Text(
-                              'Có ${feedbacks.length} ý kiến của bạn',
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Có ',
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '${feedbacks.length}',
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF0029FF),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' ý kiến của bạn',
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+
+                            //  Text(
+                            //   'Có ${feedbacks.length} ý kiến của bạn',
+                            //   style: AppTextStyle.lato.copyWith(
+                            //     fontSize: 15,
+                            //     fontWeight: FontWeight.w700,
+                            //   ),
+                            // ),
                           );
                         }
 
