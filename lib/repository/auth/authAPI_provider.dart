@@ -44,4 +44,10 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
         await repository.resetPassword(email: email, password: password);
     return res.data['success'];
   }
+
+  Future changePassword({String? currentPw, String? newPw}) async {
+    final res =
+        await repository.changePassword(currentPw: currentPw, newPw: newPw);
+    return res.data;
+  }
 }

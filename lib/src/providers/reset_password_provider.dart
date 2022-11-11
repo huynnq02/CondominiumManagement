@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
 import 'package:untitled/src/screens/forget%20password%20screen/update_password_dialog.dart';
 import '../../repository/auth/authAPI_provider.dart';
@@ -55,7 +58,8 @@ class ResetPasswordProvider extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Xác thực OTP thành công.')));
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: ((context) => UpdateNewPasswordScreen(email: email))));
+          builder: ((context) =>
+              UpdateNewPasswordScreen(isLoggedIn: false, email: email))));
     } else {
       otpError = 'Mã OTP không đúng';
     }
@@ -79,5 +83,39 @@ class ResetPasswordProvider extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Đổi mật khẩu thất bại! Hãy kiểm tra lại thông tin.')));
     }
+  }
+
+  Future changePassword(
+      String currentPw, String newPw, BuildContext context) async {
+    var data = await authAPIProvider.changePassword(
+        currentPw: currentPw, newPw: newPw);
+
+    // kiểm tra reponse từ api
+    if (data['success'] == true) {
+      await logOut(context);
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const UpdatePasswordDialog();
+          });
+    } else {
+      Navigator.of(context).pop();
+      if (data['error']['message'] == '[Identity.Default error]') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Nhập sai mật khẩu hiện tại!')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content:
+                Text('Đổi mật khẩu thất bại! Hãy kiểm tra lại thông tin.')));
+      }
+    }
+  }
+
+  Future logOut(BuildContext context) async {
+    context.read<ProfileProvider>().setEmptyUser();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('userId');
+    prefs.remove('token');
   }
 }
