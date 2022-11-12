@@ -72,7 +72,7 @@ class ItemFeedback extends StatelessWidget {
                 const Spacer(),
                 // time
                 Text(
-                  DateFormat('HH:mm dd-MM-yyyy').format(feedback.createdAt),
+                  feedback.time,
                   style: AppTextStyle.lato.copyWith(
                     fontWeight: FontWeight.w300,
                     fontSize: 14,
@@ -141,7 +141,7 @@ class ItemFeedback extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      feedback.image,
+                      feedback.image!,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
@@ -202,7 +202,7 @@ class ItemFeedback extends StatelessWidget {
                     const SizedBox(height: 5),
                     // text response
                     Text(
-                      feedback.respone,
+                      feedback.respond!,
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyle.lato.copyWith(

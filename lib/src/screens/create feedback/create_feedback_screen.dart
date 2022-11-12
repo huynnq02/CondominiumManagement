@@ -2,6 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/models/feedback.dart' as fb;
+import 'package:untitled/src/providers/feedback_provider.dart';
+import 'package:untitled/src/providers/profile_provider.dart';
+import 'package:untitled/src/screens/create%20feedback/widgets/feedback_input.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
@@ -16,11 +21,28 @@ int _selectedIndex = 1;
 
 class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
   final ImagePicker _picker = ImagePicker();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+  bool? isEmptyTitle, isEmptyContent;
   PickedFile? _imageFile;
+  @override
+  void initState() {
+    super.initState();
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
+    profileProvider.getCurrentUserProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final feedbackProvider =
+        Provider.of<FeedbackProvider>(context, listen: false);
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     final statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: AppBar(
@@ -67,22 +89,70 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 15, right: 10),
             child: GestureDetector(
-              onTap: () {},
-              child: Text(
-                "Gửi",
-                style: AppTextStyle.lato.copyWith(
-                  fontSize: 20,
-                  fontStyle: FontStyle.italic,
-                  color: AppColors.White,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black.withOpacity(0.5),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
+              onTap: () {
+                print(feedbackProvider.isLoading);
+                if (_titleController.text.isEmpty) {
+                  setState(() {
+                    isEmptyTitle = true;
+                  });
+                } else {
+                  isEmptyTitle = false;
+                }
+                if (_contentController.text.isEmpty) {
+                  setState(() {
+                    isEmptyContent = true;
+                  });
+                } else {
+                  isEmptyContent = false;
+                }
+                print(isEmptyTitle);
+                print(isEmptyContent);
+                if (isEmptyContent != null &&
+                    isEmptyContent != true &&
+                    isEmptyTitle != null &&
+                    isEmptyTitle != true) {
+                  feedbackProvider.setIsLoading(true);
+                  print("dang loat");
+                  print(feedbackProvider.isLoading);
+                  fb.Feedback feedback = fb.Feedback(
+                    email: profileProvider.mdUser.email,
+                    time: DateTime.now().toIso8601String(),
+                    image: "",
+                    type: _selectedIndex == 1
+                        ? "Lỗi/sự cố"
+                        : _selectedIndex == 2
+                            ? "Phàn nàn"
+                            : "Thắc mắc",
+                    title: _titleController.text,
+                    status: "Chưa phản hồi",
+                    content: _contentController.text,
+                    respond: "",
+                  );
+                  feedbackProvider.createUserFeedback(
+                    context,
+                    feedback,
+                  );
+                }
+              },
+              child: feedbackProvider.isLoading == true
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Text(
+                      "Gửi",
+                      style: AppTextStyle.lato.copyWith(
+                        fontSize: 20,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.White,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
             ),
           )
         ],
@@ -359,14 +429,30 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                             SizedBox(
                               height: height * 0.01,
                             ),
-                            OpinionInput(
+                            FeedbackInput(
                               height: height,
                               width: width,
                               hintText: "Nhập tiêu đề",
                               maxLength: 100,
+                              controller: _titleController,
+                              isError: isEmptyTitle,
                             ),
                             SizedBox(
-                              height: height * 0.02,
+                              height: height * 0.01,
+                            ),
+                            if (isEmptyTitle == true)
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Vui lòng nhập tiêu đề",
+                                  style: AppTextStyle.lato.copyWith(
+                                    color: Colors.red,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            SizedBox(
+                              height: height * 0.005,
                             ),
                             Align(
                               alignment: Alignment.topLeft,
@@ -425,14 +511,30 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                             SizedBox(
                               height: height * 0.02,
                             ),
-                            OpinionInput(
+                            FeedbackInput(
                               height: height,
                               width: width,
                               hintText: "Nhập nội dung",
                               maxLength: 300,
+                              controller: _contentController,
+                              isError: isEmptyContent,
                             ),
                             SizedBox(
-                              height: height * 0.04,
+                              height: height * 0.01,
+                            ),
+                            if (isEmptyContent == true)
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Vui lòng nhập nội dung",
+                                  style: AppTextStyle.lato.copyWith(
+                                    color: Colors.red,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            SizedBox(
+                              height: height * 0.02,
                             ),
                           ],
                         ),
@@ -608,63 +710,5 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
       _imageFile = _pickedFile;
     });
     Navigator.pop(context);
-  }
-}
-
-class OpinionInput extends StatelessWidget {
-  OpinionInput(
-      {Key? key,
-      required this.height,
-      required this.width,
-      required this.hintText,
-      required this.maxLength})
-      : super(key: key);
-  String hintText;
-  int maxLength;
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: height * 0.1,
-      width: width * 0.9,
-      decoration: BoxDecoration(
-        color: AppColors.White,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
-        ),
-        border: Border.all(
-          color: AppColors.Black,
-          width: 1,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.25),
-            offset: Offset(0, 2),
-            blurRadius: 5,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: TextField(
-            textAlign: TextAlign.justify,
-            maxLength: maxLength,
-            maxLines: 3,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.all(0),
-              hintText: hintText,
-              hintStyle: AppTextStyle.lato.copyWith(
-                fontSize: 18,
-                color: AppColors.Black.withOpacity(0.5),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
