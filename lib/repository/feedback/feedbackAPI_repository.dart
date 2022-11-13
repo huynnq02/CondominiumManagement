@@ -29,4 +29,19 @@ class FeedbackAPIRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future<Response> getUserFeedbackAPIRepository() async {
+    try {
+      // print(feedback.toJson());
+      var client = init();
+      print("zo ne");
+      final feedbackResponse = await client.get(
+        '/api/UserFeedback',
+      );
+      print("ez qua");
+      return feedbackResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }

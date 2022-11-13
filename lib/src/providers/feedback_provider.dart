@@ -11,6 +11,14 @@ class FeedbackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  final List<fb.Feedback> _feedbacks = [];
+  List<fb.Feedback> get feedbacks => _feedbacks;
+  void setFeedbacks(List<fb.Feedback> feedbacks) {
+    _feedbacks.clear();
+    _feedbacks.addAll(feedbacks);
+    notifyListeners();
+  }
+
   void showSuccessfulDialog(BuildContext context, String message) => showDialog(
         context: context,
         builder: ((context) => (SuccessfulFeedbackDialog(
@@ -30,5 +38,20 @@ class FeedbackProvider extends ChangeNotifier {
       setIsLoading(false);
     }
     notifyListeners();
+  }
+
+  void getUserFeedback() async {
+    var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
+    print(res['result']);
+    // get list Feedback from res['result']
+
+    List<fb.Feedback> feedbacks = res['result']
+        .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
+        .toList();
+    // print list feedback
+    print("kq ne:");
+    print(feedbacks);
+
+    setFeedbacks(feedbacks);
   }
 }

@@ -1,57 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/src/models/feedback.dart' as f;
+import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/screens/create%20feedback/create_feedback_screen.dart';
 import 'package:untitled/src/screens/feedback%20screen/widgets/custom_button.dart';
 import 'package:untitled/src/screens/feedback%20screen/widgets/item_feedback.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
-class FeedbackScreen extends StatelessWidget {
-  const FeedbackScreen({Key? key}) : super(key: key);
+class FeedbackScreen extends StatefulWidget {
+  FeedbackScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FeedbackScreen> createState() => _FeedbackScreenState();
+}
+
+class _FeedbackScreenState extends State<FeedbackScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<f.Feedback> feedbacks = [
-      f.Feedback(
-        id: '123',
-        email: '123',
-        content: "oke",
-        time: DateTime.now().toIso8601String(),
-        image:
-            'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-        type: 'Thắc mắc',
-        title:
-            'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-        status: 'Chưa phản hồi',
-        respond: '',
-      ),
-      f.Feedback(
-        id: '123',
-        email: '123',
-        content: "oke",
-        time: DateTime.now().toIso8601String(),
-        image:
-            'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-        type: 'Thắc mắc',
-        title:
-            'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-        status: 'Chưa phản hồi',
-        respond: '',
-      ),
-      f.Feedback(
-        id: '123',
-        email: '123',
-        content: "oke",
-        time: DateTime.now().toIso8601String(),
-        image:
-            'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-        type: 'Thắc mắc',
-        title:
-            'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-        status: 'Chưa phản hồi',
-        respond: '',
-      ),
-    ];
+    final feedbacks = Provider.of<FeedbackProvider>(context).feedbacks;
+    // final List<f.Feedback> feedbacks = [
+    //   f.Feedback(
+    //     id: 123,
+    //     email: '123',
+    //     content: "oke",
+    //     time: DateTime.now().toIso8601String(),
+    //     image:
+    //         'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
+    //     type: 'Thắc mắc',
+    //     title:
+    //         'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
+    //     status: 'Chưa phản hồi',
+    //     respond: '',
+    //   ),
+    //   f.Feedback(
+    //     id: 123,
+    //     email: '123',
+    //     content: "oke",
+    //     time: DateTime.now().toIso8601String(),
+    //     image:
+    //         'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
+    //     type: 'Thắc mắc',
+    //     title:
+    //         'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
+    //     status: 'Chưa phản hồi',
+    //     respond: '',
+    //   ),
+    //   f.Feedback(
+    //     id: 123,
+    //     email: '123',
+    //     content: "oke",
+    //     time: DateTime.now().toIso8601String(),
+    //     image:
+    //         'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
+    //     type: 'Thắc mắc',
+    //     title:
+    //         'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
+    //     status: 'Chưa phản hồi',
+    //     respond: '',
+    //   ),
+    // ];
     final size = MediaQuery.of(context).size;
     late Color color = const Color(0xFF5C92FE).withOpacity(0.3);
 

@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Feedback {
-  final String? id;
-  final String email;
-  final String type;
-  final String time;
-  final String title;
-  final String status;
-  final String content;
-  final String? respond;
-  final String? image;
+  int? id;
+  String email;
+  String type;
+  String time;
+  String title;
+  String status;
+  String content;
+  String? respond;
+  String? image;
   Feedback({
     this.id,
     required this.email,
@@ -38,15 +37,15 @@ class Feedback {
 
   factory Feedback.fromMap(Map<String, dynamic> map) {
     return Feedback(
-      id: map['id'] as String,
+      id: map['id'],
       email: map['email'] as String,
       content: map['content'] as String,
       time: map['time'],
       image: map['image']?.toString(),
       type: map['type'] as String,
       title: map['title'] as String,
-      status: map['status'] as String,
-      respond: map['respond'] as String,
+      status: map['status'],
+      respond: map['respond']?.toString(),
     );
   }
 

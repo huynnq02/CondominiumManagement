@@ -140,11 +140,13 @@ class ItemFeedback extends StatelessWidget {
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      feedback.image!,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
+                    child: feedback.image == ""
+                        ? null
+                        : Image.network(
+                            feedback.image!,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ],
