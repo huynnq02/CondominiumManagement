@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/models/feedback.dart' as fb;
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
@@ -33,6 +34,12 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
       listen: false,
     );
     profileProvider.getCurrentUserProfile();
+    getEmail();
+  }
+
+  void getEmail() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    print(pref.getString('userID'));
   }
 
   @override
@@ -40,7 +47,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final feedbackProvider =
-        Provider.of<FeedbackProvider>(context, listen: false);
+        Provider.of<FeedbackProvider>(context, listen: true);
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
     final statusBarHeight = MediaQuery.of(context).padding.top;
@@ -111,7 +118,6 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                     isEmptyContent != true &&
                     isEmptyTitle != null &&
                     isEmptyTitle != true) {
-                  feedbackProvider.setIsLoading(true);
                   print("dang loat");
                   print(feedbackProvider.isLoading);
                   fb.Feedback feedback = fb.Feedback(

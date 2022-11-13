@@ -18,11 +18,10 @@ class FeedbackProvider extends ChangeNotifier {
             ))),
       );
   Future createUserFeedback(BuildContext context, fb.Feedback feedback) async {
+    setIsLoading(true);
     var success =
         await FeedbackAPIProvider().createFeedbackAPIProvider(feedback);
-    setIsLoading(true);
     if (success == true) {
-      print("success");
       showSuccessfulDialog(context, "Đã gửi ý kiến!");
       setIsLoading(false);
     } else if (success == false) {
