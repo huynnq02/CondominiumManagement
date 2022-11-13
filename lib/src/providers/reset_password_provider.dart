@@ -8,12 +8,18 @@ import '../../repository/auth/authAPI_provider.dart';
 
 class ResetPasswordProvider extends ChangeNotifier {
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
-  String _emailError = '', _otpError = '';
+  String _emailError = '', _otpError = '', _pwError = '';
   bool _isOTPSent = false;
 
   String get emailError => _emailError;
   set emailError(String value) {
     _emailError = value;
+    notifyListeners();
+  }
+
+  String get pwError => _pwError;
+  set pwError(String value) {
+    _pwError = value;
     notifyListeners();
   }
 
@@ -33,6 +39,10 @@ class ResetPasswordProvider extends ChangeNotifier {
     _isOTPSent = false;
     _emailError = '';
     _otpError = '';
+  }
+
+  void resetPwError() {
+    _pwError = '';
   }
 
   Future sendPasswordResetOTP(String email) async {
@@ -102,8 +112,7 @@ class ResetPasswordProvider extends ChangeNotifier {
     } else {
       Navigator.of(context).pop();
       if (data['error']['message'] == '[Identity.Default error]') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Nhập sai mật khẩu hiện tại!')));
+        pwError = 'Mật khẩu không đúng';
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content:

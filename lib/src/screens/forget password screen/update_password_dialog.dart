@@ -70,7 +70,7 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
                     fontSize: 20),
               ),
               const SizedBox(height: 21),
-              Text('Bạn sẽ được quay trở về màn hình đăng nhập sau $sec(s)',
+              Text('Bạn sẽ được quay trở về màn hình đăng nhập trong $sec(s)',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,

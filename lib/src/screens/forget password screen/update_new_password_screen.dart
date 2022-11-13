@@ -3,10 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/reset_password_provider.dart';
+import 'package:untitled/src/screens/forget%20password%20screen/widgets/change_password_input.dart';
 import 'package:untitled/src/screens/register%20screen/widget/widget_button.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
-import 'package:untitled/src/widget/register_textfield.dart';
-import 'package:untitled/utils/app_constant/app_shadows.dart';
 
 class UpdateNewPasswordScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -23,11 +22,9 @@ class UpdateNewPasswordScreen extends StatefulWidget {
 class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ResetPasswordProvider? provider;
-  TextEditingController pwController = TextEditingController();
   TextEditingController currentPwController = TextEditingController();
   TextEditingController newPwController = TextEditingController();
   TextEditingController confirmPwController = TextEditingController();
-  String currentErr = '';
   String confirmErr = '';
 
   @override
@@ -37,7 +34,14 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
   }
 
   @override
+  void dispose() {
+    provider!.resetPwError();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final data = Provider.of<ResetPasswordProvider>(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -45,7 +49,7 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
           height: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/register_bg.jpg"),
+                image: AssetImage("assets/register_light_bg.jpg"),
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter),
           ),
@@ -53,7 +57,7 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
             child: Stack(children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 38, vertical: 58),
+                    const EdgeInsets.symmetric(horizontal: 38, vertical: 60),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -65,89 +69,51 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                       isShadowed: true,
                     ),
                     const SizedBox(
-                      height: 32,
-                    ),
-                    Container(
-                      width: 248,
-                      margin: const EdgeInsets.only(left: 13),
-                      child: Text(
-                        'Mật khẩu mới của bạn phải khác so với mật khẩu cũ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            shadows: AppShadows.defaultShadows),
-                      ),
+                      height: 56,
                     ),
                     Expanded(
                         child: SizedBox(
                       width: double.infinity,
-                      child: widget.isLoggedIn
-                          ? Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RegisterTextField(
-                                    controller: currentPwController,
-                                    labelText: 'Mật khẩu hiện tại',
-                                    border: BorderRadius.circular(12),
-                                    type: TextFieldType.password,
-                                    maxLength: 20,
-                                    pwRule: false,
-                                    error: currentErr,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  RegisterTextField(
-                                    controller: newPwController,
-                                    labelText: 'Mật khẩu mới',
-                                    border: BorderRadius.circular(12),
-                                    type: TextFieldType.password,
-                                    maxLength: 20,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  RegisterTextField(
-                                    controller: confirmPwController,
-                                    labelText: 'Nhập lại mật khẩu',
-                                    border: BorderRadius.circular(12),
-                                    type: TextFieldType.password,
-                                    maxLength: 20,
-                                    pwRule: false,
-                                    showPw: false,
-                                    error: confirmErr,
-                                  ),
-                                ],
+                      child: Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (widget.isLoggedIn)
+                                Column(
+                                  children: [
+                                    ChangePasswordInput(
+                                      pwController: currentPwController,
+                                      label: 'Nhập mật khẩu hiện tại của bạn',
+                                      labelText: 'Mật khẩu hiện tại',
+                                      error: data.pwError,
+                                      pwRule: false,
+                                    ),
+                                    const SizedBox(
+                                      height: 18,
+                                    ),
+                                  ],
+                                ),
+                              ChangePasswordInput(
+                                pwController: newPwController,
+                                label: 'Nhập mật khẩu mới mà bạn muốn',
+                                labelText: 'Mật khẩu mới',
                               ),
-                            )
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Nhập mật khẩu mới',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300,
-                                      shadows: AppShadows.defaultShadows),
-                                ),
-                                const SizedBox(
-                                  height: 26,
-                                ),
-                                Form(
-                                  key: _formKey,
-                                  child: RegisterTextField(
-                                    controller: pwController,
-                                    labelText: 'Mật khẩu',
-                                    border: BorderRadius.circular(12),
-                                    type: TextFieldType.password,
-                                    maxLength: 20,
-                                  ),
-                                )
-                              ],
-                            ),
+                              const SizedBox(
+                                height: 18,
+                              ),
+                              ChangePasswordInput(
+                                pwController: confirmPwController,
+                                label: 'Nhập lại mật khẩu mới',
+                                labelText: 'Xác nhận mật khẩu',
+                                error: confirmErr,
+                                pwRule: false,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     )),
                     const SizedBox(
                       height: 26,
@@ -156,9 +122,15 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                       labelText: 'Đổi mật khẩu',
                       width: 185,
                       onPressed: () {
-                        setState(() {});
+                        setState(() {
+                          data.pwError = '';
+                        });
                         if (_formKey.currentState!.validate()) {
-                          if (!widget.isLoggedIn) {
+                          if (newPwController.text ==
+                              confirmPwController.text) {
+                            setState(() {
+                              confirmErr = '';
+                            });
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -166,28 +138,17 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            provider!.resetPassword(
-                                widget.email!, pwController.text, context);
-                          } else {
-                            if (newPwController.text ==
-                                confirmPwController.text) {
-                              setState(() {
-                                confirmErr = '';
-                              });
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  });
+                            if (!widget.isLoggedIn) {
+                              provider!.resetPassword(
+                                  widget.email!, newPwController.text, context);
+                            } else {
                               provider!.changePassword(currentPwController.text,
                                   newPwController.text, context);
-                            } else {
-                              setState(() {
-                                confirmErr = 'Mật khẩu phải khớp';
-                              });
                             }
+                          } else {
+                            setState(() {
+                              confirmErr = 'Mật khẩu phải khớp';
+                            });
                           }
                         }
                       },
