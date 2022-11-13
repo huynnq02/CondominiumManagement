@@ -34,7 +34,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   void dispose() {
-    timer!.cancel();
+    timer?.cancel();
     provider!.reset();
     super.dispose();
   }

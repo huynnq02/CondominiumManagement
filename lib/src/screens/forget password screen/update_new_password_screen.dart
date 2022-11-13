@@ -147,7 +147,7 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                             }
                           } else {
                             setState(() {
-                              confirmErr = 'Mật khẩu phải khớp';
+                              confirmErr = 'Mật khẩu không khớp';
                             });
                           }
                         }

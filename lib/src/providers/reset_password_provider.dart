@@ -85,6 +85,7 @@ class ResetPasswordProvider extends ChangeNotifier {
     // kiểm tra reponse từ api
     if (success == true) {
       showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) {
             return const UpdatePasswordDialog();
@@ -105,6 +106,7 @@ class ResetPasswordProvider extends ChangeNotifier {
       await logOut(context);
       Navigator.of(context).pop();
       showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) {
             return const UpdatePasswordDialog();

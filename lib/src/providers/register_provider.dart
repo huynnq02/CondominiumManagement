@@ -17,6 +17,7 @@ class RegisterProvider extends ChangeNotifier {
     if (data['success'] == true && data['result']['canLogin'] == true) {
       //đăng kí thành công chuyển về đăng nhập
       showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) {
             return const RegisterSuccessfulDialog();
