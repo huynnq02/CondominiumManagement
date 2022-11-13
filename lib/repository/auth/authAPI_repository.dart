@@ -119,4 +119,19 @@ class AuthAPIRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future<Response> changePassword({String? currentPw, String? newPw}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Profile/ChangePassword',
+        data: {"currentPassword": currentPw, "newPassword": newPw},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }

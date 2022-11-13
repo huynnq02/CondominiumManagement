@@ -17,6 +17,9 @@ class RegisterTextField extends StatefulWidget {
   final BorderRadiusGeometry? border;
   final bool isDisabled;
   final void Function(BuildContext context)? onTap;
+  final bool? pwRule;
+  final bool? showPw;
+  final String? error;
 
   const RegisterTextField(
       {Key? key,
@@ -29,7 +32,10 @@ class RegisterTextField extends StatefulWidget {
       this.isCenter,
       this.border,
       this.isDisabled = false,
-      this.onTap})
+      this.onTap,
+      this.pwRule,
+      this.showPw,
+      this.error})
       : super(key: key);
 
   @override
@@ -89,6 +95,9 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Vui lòng nhập mật khẩu';
             return '';
           }
+          if (widget.pwRule!=null && widget.pwRule==false) {
+            break;
+          }
           if (value.length < 6) {
             errorText = 'Tối thiểu 6 ký tự';
             return '';
@@ -142,7 +151,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           decoration: BoxDecoration(
-              border: (errorText != '')
+              border: (errorText != '' || (widget.error!=null && widget.error != ''))
                   ? Border.all(color: const Color(0xFFFF0000))
                   : null,
               color: Colors.white.withOpacity(0.8),
@@ -200,7 +209,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
-                    errorStyle: TextStyle(height: 0),
+                    errorStyle: const TextStyle(height: 0),
                     floatingLabelAlignment:
                         (widget.isCenter != null && widget.isCenter == true)
                             ? FloatingLabelAlignment.center
@@ -219,7 +228,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                     'assets/dropdown.png',
                     width: 7.18,
                   ))
-            else if (widget.type == TextFieldType.password)
+            else if (widget.type == TextFieldType.password && !(widget.showPw!=null && !widget.showPw!))
               Positioned(
                 right: 0,
                 bottom: 0,
@@ -251,7 +260,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
         ),
         Positioned(
             top: 0,
-            child: Text(errorText,
+            child: Text((widget.error!=null && widget.error!.isNotEmpty) ? widget.error! : errorText,
                 style:
                     GoogleFonts.inter(color: const Color(0xFFFF0000), fontSize: 8))),
       ]),
