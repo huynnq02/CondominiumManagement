@@ -13,7 +13,7 @@ class FeedbackScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<f.Feedback> feedbacks = [
       f.Feedback(
-        id: '123',
+        id: 123,
         email: '123',
         content: "oke",
         time: DateTime.now().toIso8601String(),
@@ -26,7 +26,7 @@ class FeedbackScreen extends StatelessWidget {
         respond: '',
       ),
       f.Feedback(
-        id: '123',
+        id: 123,
         email: '123',
         content: "oke",
         time: DateTime.now().toIso8601String(),
@@ -39,7 +39,7 @@ class FeedbackScreen extends StatelessWidget {
         respond: '',
       ),
       f.Feedback(
-        id: '123',
+        id: 123,
         email: '123',
         content: "oke",
         time: DateTime.now().toIso8601String(),
