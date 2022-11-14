@@ -5,10 +5,7 @@ import 'package:untitled/src/models/feedback.dart';
 class FeedbackAPIRepository extends BaseRepository {
   Future<Response> createFeedbackAPIRepository(Feedback feedback) async {
     try {
-      // print(feedback.toJson());
       var client = init();
-      print("zo ne");
-      print(feedback.toJson());
       final feedbackResponse = await client.post(
         '/api/UserFeedback',
         data: {
@@ -23,7 +20,6 @@ class FeedbackAPIRepository extends BaseRepository {
           "image": feedback.image,
         },
       );
-      print("ez qua");
       return feedbackResponse;
     } on DioError catch (error) {
       return error.response as Response;
@@ -34,11 +30,9 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       // print(feedback.toJson());
       var client = init();
-      print("zo ne");
       final feedbackResponse = await client.get(
-        '/api/UserFeedback',
+        '/api/UserFeedback/getCurrentUserFeedback',
       );
-      print("ez qua");
       return feedbackResponse;
     } on DioError catch (error) {
       return error.response as Response;

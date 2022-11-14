@@ -42,15 +42,10 @@ class FeedbackProvider extends ChangeNotifier {
 
   void getUserFeedback() async {
     var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
-    print(res['result']);
-    // get list Feedback from res['result']
 
     List<fb.Feedback> feedbacks = res['result']
         .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
         .toList();
-    // print list feedback
-    print("kq ne:");
-    print(feedbacks);
 
     setFeedbacks(feedbacks);
   }

@@ -24,47 +24,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     final feedbacks = Provider.of<FeedbackProvider>(context).feedbacks;
-    // final List<f.Feedback> feedbacks = [
-    //   f.Feedback(
-    //     id: 123,
-    //     email: '123',
-    //     content: "oke",
-    //     time: DateTime.now().toIso8601String(),
-    //     image:
-    //         'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-    //     type: 'Thắc mắc',
-    //     title:
-    //         'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-    //     status: 'Chưa phản hồi',
-    //     respond: '',
-    //   ),
-    //   f.Feedback(
-    //     id: 123,
-    //     email: '123',
-    //     content: "oke",
-    //     time: DateTime.now().toIso8601String(),
-    //     image:
-    //         'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-    //     type: 'Thắc mắc',
-    //     title:
-    //         'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-    //     status: 'Chưa phản hồi',
-    //     respond: '',
-    //   ),
-    //   f.Feedback(
-    //     id: 123,
-    //     email: '123',
-    //     content: "oke",
-    //     time: DateTime.now().toIso8601String(),
-    //     image:
-    //         'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-    //     type: 'Thắc mắc',
-    //     title:
-    //         'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-    //     status: 'Chưa phản hồi',
-    //     respond: '',
-    //   ),
-    // ];
     final size = MediaQuery.of(context).size;
     late Color color = const Color(0xFF5C92FE).withOpacity(0.3);
 
