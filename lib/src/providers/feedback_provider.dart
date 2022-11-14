@@ -49,4 +49,19 @@ class FeedbackProvider extends ChangeNotifier {
 
     setFeedbacks(feedbacks);
   }
+
+  Future updateFeedback(BuildContext context, fb.Feedback feedback) async {
+    setIsLoading(true);
+    var success =
+        await FeedbackAPIProvider().updateFeedbackAPIProvider(feedback);
+    if (success == true) {
+      showSuccessfulDialog(context, "Đã sửa ý kiến!");
+      setIsLoading(false);
+    } else if (success == false) {
+      print("fail");
+      showSuccessfulDialog(context, "Vui lòng thử lại sau!");
+      setIsLoading(false);
+    }
+    notifyListeners();
+  }
 }

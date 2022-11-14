@@ -23,8 +23,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    final feedbacks = Provider.of<FeedbackProvider>(context).feedbacks;
+    final feedbacks =
+        Provider.of<FeedbackProvider>(context, listen: true).feedbacks;
     final size = MediaQuery.of(context).size;
     late Color color = const Color(0xFF5C92FE).withOpacity(0.3);
 
@@ -102,7 +102,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 const SizedBox(height: 10),
                 // text ban co y kien hay than phien ?
                 Text(
-                  'Bạn có thắc mắc, ý kiến, than phiờn ?',
+                  'Bạn có thắc mắc, ý kiến, than phiền ?',
                   style: AppTextStyle.lato.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
