@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
 import '../../../utils/app_constant/app_colors.dart';
 
@@ -10,6 +12,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final feedbackProvider = Provider.of<FeedbackProvider>(
+      context,
+      listen: false,
+    );
+    feedbackProvider.getUserFeedback();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;

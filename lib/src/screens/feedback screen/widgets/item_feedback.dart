@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:untitled/src/models/feedback.dart' as f;
 import 'package:untitled/src/screens/feedback%20screen/widgets/box_message.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class ItemFeedback extends StatelessWidget {
   final f.Feedback feedback;
@@ -72,7 +73,7 @@ class ItemFeedback extends StatelessWidget {
                 const Spacer(),
                 // time
                 Text(
-                  feedback.time,
+                  feedback.time.formatDateTime(),
                   style: AppTextStyle.lato.copyWith(
                     fontWeight: FontWeight.w300,
                     fontSize: 14,
@@ -140,11 +141,13 @@ class ItemFeedback extends StatelessWidget {
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      feedback.image!,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
+                    child: feedback.image == ""
+                        ? null
+                        : Image.network(
+                            feedback.image!,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ],
