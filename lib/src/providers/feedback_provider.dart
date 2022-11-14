@@ -19,10 +19,12 @@ class FeedbackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showSuccessfulDialog(BuildContext context, String message) => showDialog(
+  void showSuccessfulDialog(BuildContext context, String message, int count) =>
+      showDialog(
         context: context,
         builder: ((context) => (SuccessfulFeedbackDialog(
               message: message,
+              count: count,
             ))),
       );
   Future createUserFeedback(BuildContext context, fb.Feedback feedback) async {
@@ -30,11 +32,11 @@ class FeedbackProvider extends ChangeNotifier {
     var success =
         await FeedbackAPIProvider().createFeedbackAPIProvider(feedback);
     if (success == true) {
-      showSuccessfulDialog(context, "Đã gửi ý kiến!");
+      showSuccessfulDialog(context, "Đã gửi ý kiến!", 1);
       setIsLoading(false);
     } else if (success == false) {
       print("fail");
-      showSuccessfulDialog(context, "Vui lòng thử lại sau!");
+      showSuccessfulDialog(context, "Vui lòng thử lại sau!", 1);
       setIsLoading(false);
     }
     notifyListeners();
@@ -55,11 +57,11 @@ class FeedbackProvider extends ChangeNotifier {
     var success =
         await FeedbackAPIProvider().updateFeedbackAPIProvider(feedback);
     if (success == true) {
-      showSuccessfulDialog(context, "Đã sửa ý kiến!");
+      showSuccessfulDialog(context, "Đã sửa ý kiến!", 2);
       setIsLoading(false);
     } else if (success == false) {
       print("fail");
-      showSuccessfulDialog(context, "Vui lòng thử lại sau!");
+      showSuccessfulDialog(context, "Vui lòng thử lại sau!", 2);
       setIsLoading(false);
     }
     notifyListeners();
