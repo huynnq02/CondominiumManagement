@@ -10,9 +10,8 @@ class FeedbackAPIRepository extends BaseRepository {
       print("zo ne");
       print(feedback.toJson());
       final feedbackResponse = await client.post(
-        '/api/UserFeedback',
+        '/api/UserFeedback/AddFeedBack',
         data: {
-          "id": 0,
           "email": feedback.email,
           "type": feedback.type,
           "time": feedback.time,
