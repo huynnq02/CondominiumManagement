@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:untitled/src/models/feedback.dart' as f;
 import 'package:untitled/src/screens/feedback%20screen/widgets/box_message.dart';
-import 'package:untitled/src/screens/update%20feedback%20screen/update_feedback_creen.dart';
+import 'package:untitled/src/screens/update%20feedback%20screen/update_feedback_screen.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 
