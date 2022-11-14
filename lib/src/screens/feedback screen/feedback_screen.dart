@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/feedback.dart' as f;
-// import 'package:untitled/src/screens/create%20feedback/create_feedback_screen.dart';
+import 'package:untitled/src/screens/create%20feedback/create_feedback_screen.dart';
 import 'package:untitled/src/screens/feedback%20screen/widgets/custom_button.dart';
 import 'package:untitled/src/screens/feedback%20screen/widgets/item_feedback.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
@@ -13,41 +13,43 @@ class FeedbackScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<f.Feedback> feedbacks = [
       f.Feedback(
-        id: '123',
-        feedback: 'feedback',
-        createdAt: DateTime.now(),
+        id: 123,
+        email: '123',
+        content: "oke",
+        time: DateTime.now().toIso8601String(),
         image:
             'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
         type: 'Thắc mắc',
         title:
             'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
         status: 'Chưa phản hồi',
-        respone: '',
+        respond: '',
       ),
       f.Feedback(
-        id: '123',
-        feedback: 'feedback',
-        createdAt: DateTime.now(),
+        id: 123,
+        email: '123',
+        content: "oke",
+        time: DateTime.now().toIso8601String(),
         image:
             'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-        type: 'Phàn nàn',
-        title:
-            'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
-        status: 'Đã phản hồi',
-        respone:
-            'Đây là một câu trả lời dài hơn ba dòng, với loại này từ dòng thứ tư trở đi sẽ bị che đi một nửa trên để người dùng biết được rằng là ta cần phải kéo xuống để nhìn thấy hết content,... mình sẽ viết thêm một chút gì đó v...',
-      ),
-      f.Feedback(
-        id: '123',
-        feedback: 'feedback',
-        createdAt: DateTime.now(),
-        image:
-            'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
-        type: 'Lỗi / Sự cố',
+        type: 'Thắc mắc',
         title:
             'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
         status: 'Chưa phản hồi',
-        respone: '',
+        respond: '',
+      ),
+      f.Feedback(
+        id: 123,
+        email: '123',
+        content: "oke",
+        time: DateTime.now().toIso8601String(),
+        image:
+            'https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60',
+        type: 'Thắc mắc',
+        title:
+            'Đây là một miêu tả chỉ dài từ một đến ba dòng, có hình ảnh và chưa phản hồi',
+        status: 'Chưa phản hồi',
+        respond: '',
       ),
     ];
     final size = MediaQuery.of(context).size;
@@ -137,11 +139,11 @@ class FeedbackScreen extends StatelessWidget {
                 // button tao y kien
                 InkWell(
                   onTap: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => CreateFeedbackScreen(),
-                    //   ),
-                    // );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CreateFeedbackScreen(),
+                      ),
+                    );
                   },
                   child: const CustomButton(text: 'Tạo ý kiến'),
                 ),

@@ -55,12 +55,15 @@ class ProfileRepository extends BaseRepository {
     try {
       var client = init();
       // upload image to asp.net core server
+      final _imageBytes = _image.readAsBytesSync();
+      final _imageBase64 = base64UrlEncode(_imageBytes);
+      print("sai ho bo: " + _imageBase64);
       var formData = FormData.fromMap({
-        "fileToken": await MultipartFile.fromFile(_image.path,
-            filename: _image.path.split('/').last),
+        "fileToken": _imageBase64,
+        "fileName": "ProfilePicture",
+        "fileType": "image/png",
       });
       print("fom data");
-      print(formData);
       final profileResponse = await client.put(
           '/api/services/app/Profile/UpdateProfilePicture',
           data: formData);

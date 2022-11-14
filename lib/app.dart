@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
+import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/filter_provider.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
@@ -101,6 +102,9 @@ class _AppState extends State<App> {
               return ResetPasswordProvider();
             },
           ),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return FeedbackProvider();
+          })
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

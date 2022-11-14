@@ -1,49 +1,51 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Feedback {
-  final String id;
-  final String feedback;
-  final DateTime createdAt;
-  final String image;
-  final String type;
-  final String title;
-  final String status;
-  final String respone;
+  int? id;
+  String email;
+  String type;
+  String time;
+  String title;
+  String status;
+  String content;
+  String? respond;
+  String? image;
   Feedback({
-    required this.id,
-    required this.feedback,
-    required this.createdAt,
-    required this.image,
+    this.id,
+    required this.email,
     required this.type,
+    required this.time,
     required this.title,
     required this.status,
-    required this.respone,
+    required this.content,
+    this.respond,
+    this.image,
   });
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'feedback': feedback,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'time': time,
+      'email': email,
       'image': image,
       'type': type,
       'title': title,
       'status': status,
-      'respone': respone,
+      'respond': respond,
+      'content': content,
     };
   }
 
   factory Feedback.fromMap(Map<String, dynamic> map) {
     return Feedback(
-      id: map['id'] as String,
-      feedback: map['feedback'] as String,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      image: map['image'] as String,
+      id: map['id'],
+      email: map['email'] as String,
+      content: map['content'] as String,
+      time: map['time'],
+      image: map['image']?.toString(),
       type: map['type'] as String,
       title: map['title'] as String,
-      status: map['status'] as String,
-      respone: map['respone'] as String,
+      status: map['status'],
+      respond: map['respond']?.toString(),
     );
   }
 
