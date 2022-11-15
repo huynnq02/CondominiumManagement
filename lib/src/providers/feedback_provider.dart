@@ -16,6 +16,20 @@ class FeedbackProvider extends ChangeNotifier {
   void setFeedbacks(List<fb.Feedback> feedbacks) {
     _feedbacks.clear();
     _feedbacks.addAll(feedbacks);
+    _feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    notifyListeners();
+  }
+
+  void createFeedback(fb.Feedback feedback) {
+    _feedbacks.add(feedback);
+    _feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    notifyListeners();
+  }
+
+  void editFeedback(fb.Feedback feedback) {
+    _feedbacks.removeWhere((element) => element.id == feedback.id);
+    _feedbacks.add(feedback);
+    _feedbacks.sort((a, b) => b.time.compareTo(a.time));
     notifyListeners();
   }
 
@@ -32,6 +46,7 @@ class FeedbackProvider extends ChangeNotifier {
     var success =
         await FeedbackAPIProvider().createFeedbackAPIProvider(feedback);
     if (success == true) {
+      createFeedback(feedback);
       showSuccessfulDialog(context, "Đã gửi ý kiến!", 1);
       setIsLoading(false);
     } else if (success == false) {
@@ -57,6 +72,7 @@ class FeedbackProvider extends ChangeNotifier {
     var success =
         await FeedbackAPIProvider().updateFeedbackAPIProvider(feedback);
     if (success == true) {
+      editFeedback(feedback);
       showSuccessfulDialog(context, "Đã sửa ý kiến!", 2);
       setIsLoading(false);
     } else if (success == false) {
