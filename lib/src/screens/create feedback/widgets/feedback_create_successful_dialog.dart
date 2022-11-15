@@ -5,8 +5,11 @@ import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class SuccessfulFeedbackDialog extends StatefulWidget {
-  SuccessfulFeedbackDialog({Key? key, required this.message}) : super(key: key);
+  SuccessfulFeedbackDialog(
+      {Key? key, required this.message, required this.count})
+      : super(key: key);
   String message;
+  int count;
   @override
   State<SuccessfulFeedbackDialog> createState() =>
       _SuccessfulFeedbackDialogState();
@@ -67,9 +70,10 @@ class _SuccessfulFeedbackDialogState extends State<SuccessfulFeedbackDialog> {
                   ),
                   child: Center(
                     child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                      onTap: () async {
+                        int temp = 0;
+                        Navigator.of(context)
+                            .popUntil((_) => temp++ >= widget.count + 1);
                       },
                       child: Text(
                         "Đóng",

@@ -8,19 +8,21 @@ import 'package:untitled/src/models/feedback.dart' as fb;
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/create%20feedback/widgets/feedback_input.dart';
+import 'package:untitled/src/screens/update%20feedback%20screen/widgets/update_feedback_confirm_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
-class CreateFeedbackScreen extends StatefulWidget {
-  const CreateFeedbackScreen({Key? key}) : super(key: key);
+class UpdateFeedbackScreen extends StatefulWidget {
+  final fb.Feedback feedback;
+  const UpdateFeedbackScreen({Key? key, required this.feedback})
+      : super(key: key);
 
   @override
-  State<CreateFeedbackScreen> createState() => _CreateFeedbackScreenState();
+  State<UpdateFeedbackScreen> createState() => _UpdateFeedbackScreenState();
 }
 
-int _selectedIndex = 1;
-
-class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
+class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
+  late int _selectedIndex;
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -29,16 +31,19 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
   @override
   void initState() {
     super.initState();
-    final profileProvider = Provider.of<ProfileProvider>(
-      context,
-      listen: false,
-    );
-    profileProvider.getCurrentUserProfile();
-    getEmail();
+    _selectedIndex = widget.feedback.type == "Lỗi/ Sự cố"
+        ? 1
+        : widget.feedback.type == "Phàn nàn"
+            ? 2
+            : 3;
+    _titleController.text = widget.feedback.title;
+    _contentController.text = widget.feedback.content;
+    print(widget.feedback.image);
   }
 
   void getEmail() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    print('email ne');
     print(pref.getString('userID'));
   }
 
@@ -80,17 +85,15 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: feedbackProvider.isLoading == false
-              ? const Icon(
-                  Icons.arrow_back_ios,
-                  color: AppColors.White,
-                )
-              : null,
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.White,
+          ),
         ),
         title: Stack(
           children: [
             Text(
-              "Tạo ý kiến",
+              "Chỉnh sửa ý kiến",
               style: AppTextStyle.tomorrow.copyWith(
                 fontSize: 30,
                 foreground: Paint()
@@ -100,7 +103,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
               ),
             ),
             Text(
-              "Tạo ý kiến",
+              "Chỉnh sửa ý kiến",
               style: AppTextStyle.tomorrow.copyWith(
                 fontSize: 30,
                 color: AppColors.White,
@@ -129,12 +132,11 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                     isEmptyContent != true &&
                     isEmptyTitle != null &&
                     isEmptyTitle != true) {
-                  print("dang loat");
-                  print(feedbackProvider.isLoading);
                   fb.Feedback feedback = fb.Feedback(
-                    email: profileProvider.mdUser.email,
+                    id: widget.feedback.id,
+                    email: widget.feedback.email,
                     time: DateTime.now().toIso8601String(),
-                    image: "",
+                    image: widget.feedback.image,
                     type: _selectedIndex == 1
                         ? "Lỗi/sự cố"
                         : _selectedIndex == 2
@@ -145,32 +147,27 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                     content: _contentController.text,
                     respond: "",
                   );
-                  feedbackProvider.createUserFeedback(
-                    context,
-                    feedback,
-                  );
+                  print(feedback);
+                  showUpdateConfirmPopupDialog(
+                      context, feedbackProvider, feedback);
                 }
               },
-              child: feedbackProvider.isLoading == true
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Text(
-                      "Gửi",
-                      style: AppTextStyle.lato.copyWith(
-                        fontSize: 20,
-                        fontStyle: FontStyle.italic,
-                        color: AppColors.White,
-                        fontWeight: FontWeight.w700,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.5),
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
+              child: Text(
+                "Lưu",
+                style: AppTextStyle.lato.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.White,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
                     ),
+                  ],
+                ),
+              ),
             ),
           )
         ],
@@ -518,12 +515,14 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                                     ? Image.file(
                                         File(_imageFile!.path),
                                       )
-                                    : Icon(
-                                        Icons.image,
-                                        color:
-                                            const Color.fromRGBO(0, 0, 0, 0.2),
-                                        size: height * 0.1,
-                                      ),
+                                    : widget.feedback.image == ""
+                                        ? Icon(
+                                            Icons.image,
+                                            color: const Color.fromRGBO(
+                                                0, 0, 0, 0.2),
+                                            size: height * 0.1,
+                                          )
+                                        : Image.network(widget.feedback.image!),
                               ),
                             ),
                             SizedBox(
@@ -729,4 +728,12 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
     });
     Navigator.pop(context);
   }
+
+  void showUpdateConfirmPopupDialog(BuildContext context,
+          FeedbackProvider feedbackProvider, fb.Feedback feedback) =>
+      showDialog(
+          context: context,
+          builder: ((context) => UpdateFeedbackConfirmDialog(
+                feedback: feedback,
+              )));
 }

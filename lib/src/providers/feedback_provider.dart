@@ -16,13 +16,29 @@ class FeedbackProvider extends ChangeNotifier {
   void setFeedbacks(List<fb.Feedback> feedbacks) {
     _feedbacks.clear();
     _feedbacks.addAll(feedbacks);
+    _feedbacks.sort((a, b) => b.time.compareTo(a.time));
     notifyListeners();
   }
 
-  void showSuccessfulDialog(BuildContext context, String message) => showDialog(
+  void createFeedback(fb.Feedback feedback) {
+    _feedbacks.add(feedback);
+    _feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    notifyListeners();
+  }
+
+  void editFeedback(fb.Feedback feedback) {
+    _feedbacks.removeWhere((element) => element.id == feedback.id);
+    _feedbacks.add(feedback);
+    _feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    notifyListeners();
+  }
+
+  void showSuccessfulDialog(BuildContext context, String message, int count) =>
+      showDialog(
         context: context,
         builder: ((context) => (SuccessfulFeedbackDialog(
               message: message,
+              count: count,
             ))),
       );
   Future createUserFeedback(BuildContext context, fb.Feedback feedback) async {
@@ -30,11 +46,12 @@ class FeedbackProvider extends ChangeNotifier {
     var success =
         await FeedbackAPIProvider().createFeedbackAPIProvider(feedback);
     if (success == true) {
-      showSuccessfulDialog(context, "Đã gửi ý kiến!");
+      createFeedback(feedback);
+      showSuccessfulDialog(context, "Đã gửi ý kiến!", 1);
       setIsLoading(false);
     } else if (success == false) {
       print("fail");
-      showSuccessfulDialog(context, "Vui lòng thử lại sau!");
+      showSuccessfulDialog(context, "Vui lòng thử lại sau!", 1);
       setIsLoading(false);
     }
     notifyListeners();
@@ -48,5 +65,21 @@ class FeedbackProvider extends ChangeNotifier {
         .toList();
 
     setFeedbacks(feedbacks);
+  }
+
+  Future updateFeedback(BuildContext context, fb.Feedback feedback) async {
+    setIsLoading(true);
+    var success =
+        await FeedbackAPIProvider().updateFeedbackAPIProvider(feedback);
+    if (success == true) {
+      editFeedback(feedback);
+      showSuccessfulDialog(context, "Đã sửa ý kiến!", 2);
+      setIsLoading(false);
+    } else if (success == false) {
+      print("fail");
+      showSuccessfulDialog(context, "Vui lòng thử lại sau!", 2);
+      setIsLoading(false);
+    }
+    notifyListeners();
   }
 }

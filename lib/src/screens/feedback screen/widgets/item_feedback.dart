@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'package:intl/intl.dart';
 import 'package:untitled/src/models/feedback.dart' as f;
 import 'package:untitled/src/screens/feedback%20screen/widgets/box_message.dart';
+import 'package:untitled/src/screens/update%20feedback%20screen/update_feedback_screen.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 
@@ -80,21 +81,41 @@ class ItemFeedback extends StatelessWidget {
                   ),
                 ),
                 // more button
-                PopupMenuButton<String>(
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(
-                    Icons.more_vert,
+                if (feedback.status == 'Chưa phản hồi')
+                  PopupMenuButton<String>(
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(
+                      Icons.more_vert,
+                    ),
+                    onSelected: (option) {
+                      //navigate
+                      if (option == 'Chỉnh sửa') {
+                        print("Chỉnh sửa");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateFeedbackScreen(
+                              feedback: feedback,
+                            ),
+                          ),
+                        );
+                      } else if (option == 'Xoá') {
+                        print("Xóa");
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return choices.map((String choice) {
+                        return PopupMenuItem<String>(
+                          value: choice,
+                          child: Text(choice),
+                        );
+                      }).toList();
+                    },
                   ),
-                  onSelected: (a) {},
-                  itemBuilder: (BuildContext context) {
-                    return choices.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
-                  },
-                )
+                if (feedback.status == 'Đã phản hồi')
+                  const SizedBox(
+                    width: 20,
+                  )
               ],
             ),
           ),
