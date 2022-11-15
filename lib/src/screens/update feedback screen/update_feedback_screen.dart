@@ -47,6 +47,27 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
     print(pref.getString('userID'));
   }
 
+  void validateInput() {
+    if (_titleController.text.isEmpty) {
+      setState(() {
+        isEmptyTitle = true;
+      });
+    } else {
+      setState(() {
+        isEmptyTitle = false;
+      });
+    }
+    if (_contentController.text.isEmpty) {
+      setState(() {
+        isEmptyContent = true;
+      });
+    } else {
+      setState(() {
+        isEmptyContent = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -74,7 +95,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
             Text(
               "Chỉnh sửa ý kiến",
               style: AppTextStyle.tomorrow.copyWith(
-                fontSize: 25,
+                fontSize: 30,
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 1
@@ -84,7 +105,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
             Text(
               "Chỉnh sửa ý kiến",
               style: AppTextStyle.tomorrow.copyWith(
-                fontSize: 25,
+                fontSize: 30,
                 color: AppColors.White,
                 shadows: [
                   Shadow(
@@ -99,24 +120,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(top: 15, right: 10),
+            padding: const EdgeInsets.only(top: 20, right: 15),
             child: GestureDetector(
               onTap: () {
                 print(feedbackProvider.isLoading);
-                if (_titleController.text.isEmpty) {
-                  setState(() {
-                    isEmptyTitle = true;
-                  });
-                } else {
-                  isEmptyTitle = false;
-                }
-                if (_contentController.text.isEmpty) {
-                  setState(() {
-                    isEmptyContent = true;
-                  });
-                } else {
-                  isEmptyContent = false;
-                }
+                validateInput();
+
                 print(isEmptyTitle);
                 print(isEmptyContent);
                 if (isEmptyContent != null &&
@@ -143,28 +152,22 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       context, feedbackProvider, feedback);
                 }
               },
-              child:
-              //  feedbackProvider.isLoading == true
-              //     ? const Center(
-              //         child: CircularProgressIndicator(),
-              //       )
-
-              //     :
-                   Text(
-                      "Lưu",
-                      style: AppTextStyle.lato.copyWith(
-                        fontSize: 20,
-                        fontStyle: FontStyle.italic,
-                        color: AppColors.White,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.5),
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
+              child: Text(
+                "Lưu",
+                style: AppTextStyle.lato.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.White,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
                     ),
+                  ],
+                ),
+              ),
             ),
           )
         ],
@@ -732,6 +735,5 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
           context: context,
           builder: ((context) => UpdateFeedbackConfirmDialog(
                 feedback: feedback,
-                feedbackProvider: feedbackProvider,
               )));
 }

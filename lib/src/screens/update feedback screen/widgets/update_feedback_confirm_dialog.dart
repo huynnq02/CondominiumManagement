@@ -5,10 +5,8 @@ import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 class UpdateFeedbackConfirmDialog extends StatefulWidget {
-  FeedbackProvider feedbackProvider;
   fb.Feedback feedback;
-  UpdateFeedbackConfirmDialog(
-      {Key? key, required this.feedbackProvider, required this.feedback})
+  UpdateFeedbackConfirmDialog({Key? key, required this.feedback})
       : super(key: key);
 
   @override
@@ -20,6 +18,7 @@ class _UpdateFeedbackConfirmDialogState
     extends State<UpdateFeedbackConfirmDialog> {
   @override
   Widget build(BuildContext context) {
+    final feedbackProvider = Provider.of<FeedbackProvider>(context);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Dialog(
@@ -48,26 +47,26 @@ class _UpdateFeedbackConfirmDialogState
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Bạn có muốn sửa ý kiến",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.023,
-                    ),
-                    widget.feedbackProvider.isLoading == true
-                        ? const CircularProgressIndicator()
-                        : Row(
+                child: feedbackProvider.isLoading == true
+                    ? const Center(child: CircularProgressIndicator())
+                    : Column(
+                        children: [
+                          const Text(
+                            "Bạn có muốn sửa ý kiến",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.023,
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  widget.feedbackProvider.updateFeedback(
+                                  feedbackProvider.updateFeedback(
                                     context,
                                     widget.feedback,
                                   );
@@ -113,8 +112,8 @@ class _UpdateFeedbackConfirmDialogState
                               )
                             ],
                           ),
-                  ],
-                ),
+                        ],
+                      ),
               ),
             ],
           ),

@@ -42,6 +42,27 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
     print(pref.getString('userID'));
   }
 
+  void validateInput() {
+    if (_titleController.text.isEmpty) {
+      setState(() {
+        isEmptyTitle = true;
+      });
+    } else {
+      setState(() {
+        isEmptyTitle = false;
+      });
+    }
+    if (_contentController.text.isEmpty) {
+      setState(() {
+        isEmptyContent = true;
+      });
+    } else {
+      setState(() {
+        isEmptyContent = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -71,7 +92,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
             Text(
               "Tạo ý kiến",
               style: AppTextStyle.tomorrow.copyWith(
-                fontSize: 25,
+                fontSize: 30,
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 1
@@ -81,7 +102,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
             Text(
               "Tạo ý kiến",
               style: AppTextStyle.tomorrow.copyWith(
-                fontSize: 25,
+                fontSize: 30,
                 color: AppColors.White,
                 shadows: [
                   Shadow(
@@ -96,24 +117,12 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(top: 15, right: 10),
+            padding: const EdgeInsets.only(top: 20, right: 15),
             child: GestureDetector(
               onTap: () {
                 print(feedbackProvider.isLoading);
-                if (_titleController.text.isEmpty) {
-                  setState(() {
-                    isEmptyTitle = true;
-                  });
-                } else {
-                  isEmptyTitle = false;
-                }
-                if (_contentController.text.isEmpty) {
-                  setState(() {
-                    isEmptyContent = true;
-                  });
-                } else {
-                  isEmptyContent = false;
-                }
+                validateInput();
+
                 print(isEmptyTitle);
                 print(isEmptyContent);
                 if (isEmptyContent != null &&
@@ -152,6 +161,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                         fontSize: 20,
                         fontStyle: FontStyle.italic,
                         color: AppColors.White,
+                        fontWeight: FontWeight.w700,
                         shadows: [
                           Shadow(
                             color: Colors.black.withOpacity(0.5),
