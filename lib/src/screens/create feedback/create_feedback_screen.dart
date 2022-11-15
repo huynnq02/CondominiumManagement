@@ -59,10 +59,12 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.White,
-          ),
+          child: feedbackProvider.isLoading == false
+              ? const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.White,
+                )
+              : null,
         ),
         title: Stack(
           children: [

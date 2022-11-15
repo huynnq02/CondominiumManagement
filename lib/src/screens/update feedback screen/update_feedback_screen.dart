@@ -143,11 +143,14 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                       context, feedbackProvider, feedback);
                 }
               },
-              child: feedbackProvider.isLoading == true
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Text(
+              child:
+              //  feedbackProvider.isLoading == true
+              //     ? const Center(
+              //         child: CircularProgressIndicator(),
+              //       )
+
+              //     :
+                   Text(
                       "Lưu",
                       style: AppTextStyle.lato.copyWith(
                         fontSize: 20,

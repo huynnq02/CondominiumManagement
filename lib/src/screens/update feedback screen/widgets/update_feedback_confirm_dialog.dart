@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/src/models/feedback.dart' as fb;
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
@@ -59,57 +60,59 @@ class _UpdateFeedbackConfirmDialogState
                     SizedBox(
                       height: height * 0.023,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            widget.feedbackProvider.updateFeedback(
-                              context,
-                              widget.feedback,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.LogoutButtonColor,
-                            fixedSize: Size(
-                              width * 0.28,
-                              height * 0.035,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14)),
-                            ),
+                    widget.feedbackProvider.isLoading == true
+                        ? const CircularProgressIndicator()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  widget.feedbackProvider.updateFeedback(
+                                    context,
+                                    widget.feedback,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.LogoutButtonColor,
+                                  fixedSize: Size(
+                                    width * 0.28,
+                                    height * 0.035,
+                                  ),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(14)),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Đồng ý",
+                                  style: TextStyle(
+                                      color: AppColors.White, fontSize: 14),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              ElevatedButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.Black,
+                                  fixedSize: Size(
+                                    width * 0.28,
+                                    height * 0.035,
+                                  ),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(14)),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Hủy",
+                                  style: TextStyle(
+                                      color: AppColors.White, fontSize: 14),
+                                ),
+                              )
+                            ],
                           ),
-                          child: const Text(
-                            "Đồng ý",
-                            style:
-                                TextStyle(color: AppColors.White, fontSize: 14),
-                          ),
-                        ),
-                        SizedBox(
-                          width: width * 0.08,
-                        ),
-                        ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.Black,
-                            fixedSize: Size(
-                              width * 0.28,
-                              height * 0.035,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14)),
-                            ),
-                          ),
-                          child: const Text(
-                            "Hủy",
-                            style:
-                                TextStyle(color: AppColors.White, fontSize: 14),
-                          ),
-                        )
-                      ],
-                    ),
                   ],
                 ),
               ),
