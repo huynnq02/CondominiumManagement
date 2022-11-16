@@ -10,6 +10,7 @@ import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/create%20feedback/widgets/feedback_input.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class CreateFeedbackScreen extends StatefulWidget {
   const CreateFeedbackScreen({Key? key}) : super(key: key);
@@ -121,13 +122,10 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
             child: GestureDetector(
               onTap: () {
                 validateInput();
-
                 if (isEmptyContent != null &&
                     isEmptyContent != true &&
                     isEmptyTitle != null &&
                     isEmptyTitle != true) {
-                  print("dang loat");
-                  print(feedbackProvider.isLoading);
                   fb.Feedback feedback = fb.Feedback(
                     email: profileProvider.mdUser.email,
                     time: DateTime.now().toIso8601String(),
@@ -137,9 +135,9 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                         : _selectedIndex == 2
                             ? "Phàn nàn"
                             : "Thắc mắc",
-                    title: _titleController.text,
+                    title: _titleController.text.standardlizeString(),
                     status: "Chưa phản hồi",
-                    content: _contentController.text,
+                    content: _contentController.text.standardlizeString(),
                     respond: "",
                   );
                   feedbackProvider.createUserFeedback(

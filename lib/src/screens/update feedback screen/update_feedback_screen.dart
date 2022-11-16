@@ -11,6 +11,7 @@ import 'package:untitled/src/screens/create%20feedback/widgets/feedback_input.da
 import 'package:untitled/src/screens/update%20feedback%20screen/widgets/update_feedback_confirm_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class UpdateFeedbackScreen extends StatefulWidget {
   final fb.Feedback feedback;
@@ -48,7 +49,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   }
 
   void validateInput() {
-    if (_titleController.text.isEmpty) {
+    if (_titleController.text.trim().isEmpty) {
       setState(() {
         isEmptyTitle = true;
       });
@@ -57,7 +58,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
         isEmptyTitle = false;
       });
     }
-    if (_contentController.text.isEmpty) {
+    if (_contentController.text.trim().isEmpty) {
       setState(() {
         isEmptyContent = true;
       });
@@ -123,11 +124,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
             padding: const EdgeInsets.only(top: 20, right: 15),
             child: GestureDetector(
               onTap: () {
-                print(feedbackProvider.isLoading);
                 validateInput();
-
-                print(isEmptyTitle);
-                print(isEmptyContent);
                 if (isEmptyContent != null &&
                     isEmptyContent != true &&
                     isEmptyTitle != null &&
@@ -142,12 +139,11 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                         : _selectedIndex == 2
                             ? "Phàn nàn"
                             : "Thắc mắc",
-                    title: _titleController.text,
+                    title: _titleController.text.standardlizeString(),
                     status: "Chưa phản hồi",
-                    content: _contentController.text,
+                    content: _contentController.text.standardlizeString(),
                     respond: "",
                   );
-                  print(feedback);
                   showUpdateConfirmPopupDialog(
                       context, feedbackProvider, feedback);
                 }

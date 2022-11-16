@@ -18,4 +18,10 @@ extension StringExtensions on String {
     final formattedDate = "$day/$month/${result.year}";
     return formattedDate;
   }
+
+  String standardlizeString() {
+    var result = this;
+    result = result.trim().replaceAll(RegExp(r"\s+"), " ");
+    return result;
+  }
 }
