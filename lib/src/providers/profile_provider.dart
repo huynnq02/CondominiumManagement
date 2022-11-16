@@ -109,7 +109,7 @@ class ProfileProvider extends ChangeNotifier {
     setMdUser(user); // notifyListeners();
   }
 
-  void getProfilePicture(BuildContext context) async {
+  void getProfilePicture() async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
     var bytesString = response['profilePicture'] as String;
     setProfilePicture(

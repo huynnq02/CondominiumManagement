@@ -38,8 +38,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         isLoading = true;
       });
-      profileProvider.getCurrentUserProfile();
-      profileProvider.getProfilePicture(context);
+      // profileProvider.getCurrentUserProfile();
+      // profileProvider.getProfilePicture();
     }
   }
 
@@ -348,7 +348,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: ((context) => const UpdateNewPasswordScreen(isLoggedIn: true,))));
+                                    builder: ((context) =>
+                                        const UpdateNewPasswordScreen(
+                                          isLoggedIn: true,
+                                        ))));
                               },
                               child: const Icon(Icons.lock_reset),
                             )
