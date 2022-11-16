@@ -11,6 +11,9 @@ class FeedbackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // int _numsOfFeedbacks = 0;
+
+  // int get numsOfFeedbacks => _numsOfFeedbacks;
   final List<fb.Feedback> _feedbacks = [];
   List<fb.Feedback> get feedbacks => _feedbacks;
   void setFeedbacks(List<fb.Feedback> feedbacks) {
@@ -20,6 +23,7 @@ class FeedbackProvider extends ChangeNotifier {
   }
 
   void setEmptyFeedback() {
+    // _numsOfFeedbacks = 0;
     _feedbacks.clear();
     notifyListeners();
   }
@@ -35,6 +39,17 @@ class FeedbackProvider extends ChangeNotifier {
     _feedbacks.add(feedback);
     _feedbacks.sort((a, b) => b.time.compareTo(a.time));
     notifyListeners();
+  }
+
+  void getUserFeedback() async {
+    var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
+
+    List<fb.Feedback> feedbacks = res['result']
+        .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
+        .toList();
+    feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    // _numsOfFeedbacks = feedbacks.length;
+    setFeedbacks(feedbacks);
   }
 
   void showSuccessfulDialog(BuildContext context, String message, int count) =>
@@ -60,16 +75,6 @@ class FeedbackProvider extends ChangeNotifier {
       setIsLoading(false);
     }
     notifyListeners();
-  }
-
-  void getUserFeedback() async {
-    var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
-
-    List<fb.Feedback> feedbacks = res['result']
-        .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
-        .toList();
-    feedbacks.sort((a, b) => b.time.compareTo(a.time));
-    setFeedbacks(feedbacks);
   }
 
   Future updateFeedback(BuildContext context, fb.Feedback feedback) async {

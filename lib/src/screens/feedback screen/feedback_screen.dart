@@ -153,7 +153,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: '${feedbacks.length}',
+                                    text:
+                                        '${context.watch<FeedbackProvider>().feedbacks.length}',
                                     style: AppTextStyle.lato.copyWith(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
