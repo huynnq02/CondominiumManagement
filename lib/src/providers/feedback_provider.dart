@@ -11,12 +11,21 @@ class FeedbackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // int _numsOfFeedbacks = 0;
+
+  // int get numsOfFeedbacks => _numsOfFeedbacks;
   final List<fb.Feedback> _feedbacks = [];
   List<fb.Feedback> get feedbacks => _feedbacks;
   void setFeedbacks(List<fb.Feedback> feedbacks) {
     _feedbacks.clear();
     _feedbacks.addAll(feedbacks);
     _feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    notifyListeners();
+  }
+
+  void setEmptyFeedback() {
+    // _numsOfFeedbacks = 0;
+    _feedbacks.clear();
     notifyListeners();
   }
 
@@ -33,6 +42,17 @@ class FeedbackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void getUserFeedback() async {
+    var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
+
+    List<fb.Feedback> feedbacks = res['result']
+        .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
+        .toList();
+    feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    // _numsOfFeedbacks = feedbacks.length;
+    setFeedbacks(feedbacks);
+  }
+
   void showSuccessfulDialog(BuildContext context, String message, int count) =>
       showDialog(
         context: context,
@@ -45,8 +65,9 @@ class FeedbackProvider extends ChangeNotifier {
     setIsLoading(true);
     var success =
         await FeedbackAPIProvider().createFeedbackAPIProvider(feedback);
+
     if (success == true) {
-      createFeedback(feedback);
+      getUserFeedback();
       showSuccessfulDialog(context, "Đã gửi ý kiến!", 1);
       setIsLoading(false);
     } else if (success == false) {
@@ -55,16 +76,6 @@ class FeedbackProvider extends ChangeNotifier {
       setIsLoading(false);
     }
     notifyListeners();
-  }
-
-  void getUserFeedback() async {
-    var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
-
-    List<fb.Feedback> feedbacks = res['result']
-        .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
-        .toList();
-
-    setFeedbacks(feedbacks);
   }
 
   Future updateFeedback(BuildContext context, fb.Feedback feedback) async {
