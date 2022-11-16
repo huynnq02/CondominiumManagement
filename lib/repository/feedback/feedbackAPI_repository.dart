@@ -59,4 +59,19 @@ class FeedbackAPIRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future<Response> deleteFeedbackAPIRepository(int id) async {
+    try {
+      var client = init();
+      final feedbackResponse = await client.delete(
+        '/api/UserFeedback/DeleteFeedback',
+        queryParameters: {
+          "id": id,
+        },
+      );
+      return feedbackResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }
