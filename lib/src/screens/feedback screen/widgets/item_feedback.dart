@@ -102,6 +102,7 @@ class ItemFeedback extends StatelessWidget {
                         );
                       } else if (option == 'Xoá') {
                         print("Xóa");
+                        print("feedback.id: ${feedback.id}");
                         showDeleteConfirmPopupDialog(context, feedback);
                       }
                     },

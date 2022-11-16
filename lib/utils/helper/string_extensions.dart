@@ -22,6 +22,8 @@ extension StringExtensions on String {
   String standardlizeString() {
     var result = this;
     result = result.trim().replaceAll(RegExp(r"((?!\n)\s){2,}"), " ");
+    // delete " " after "\n"
+    result = result.replaceAll(RegExp(r"\n\s"), "\n");
     return result;
   }
 }

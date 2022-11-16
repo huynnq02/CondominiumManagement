@@ -12,6 +12,7 @@ class FeedbackAPIProvider extends BaseProvider<FeedbackAPIRepository> {
 
   Future createFeedbackAPIProvider(Feedback feedback) async {
     var res = await repository.createFeedbackAPIRepository(feedback);
+
     return res.data['success'];
   }
 

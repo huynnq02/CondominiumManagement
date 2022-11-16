@@ -8,6 +8,7 @@ import 'package:untitled/src/models/feedback.dart' as fb;
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/create%20feedback/widgets/feedback_input.dart';
+import 'package:untitled/src/screens/create%20feedback/widgets/feedback_type_widget.dart';
 import 'package:untitled/src/screens/update%20feedback%20screen/widgets/update_feedback_confirm_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
@@ -246,39 +247,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                                   _selectedIndex = 1;
                                 });
                               },
-                              child: Container(
-                                height: height * 0.05,
-                                width: width * 0.25,
-                                decoration: BoxDecoration(
-                                  color: _selectedIndex == 1
-                                      ? const Color.fromRGBO(255, 0, 0, 0.5)
-                                      : const Color(0xFFD9D9D9),
-                                  borderRadius: BorderRadius.circular(20),
-                                  // set border for container
-                                  border: Border.all(
-                                    color: AppColors.Black.withOpacity(0.5),
-                                    width: 1,
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      offset: Offset(0, 2),
-                                      blurRadius: 5,
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Lỗi/sự cố',
-                                    style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: _selectedIndex == 1
-                                          ? AppColors.White
-                                          : AppColors.Black,
-                                    ),
-                                  ),
-                                ),
+                              child: FeedBackType(
+                                title: "Lỗi/sự cố",
+                                colorOntap:
+                                    const Color.fromRGBO(255, 0, 0, 0.5),
+                                selectedIndex: _selectedIndex,
+                                index: 1,
                               ),
                             ),
                             InkWell(
@@ -287,38 +261,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                                   _selectedIndex = 2;
                                 });
                               },
-                              child: Container(
-                                height: height * 0.05,
-                                width: width * 0.25,
-                                decoration: BoxDecoration(
-                                  color: _selectedIndex == 2
-                                      ? const Color.fromRGBO(245, 125, 0, 0.5)
-                                      : const Color(0xFFD9D9D9),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: AppColors.Black.withOpacity(0.5),
-                                    width: 1,
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      offset: Offset(0, 2),
-                                      blurRadius: 5,
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Phàn nàn',
-                                    style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: _selectedIndex == 2
-                                          ? AppColors.White
-                                          : AppColors.Black,
-                                    ),
-                                  ),
-                                ),
+                              child: FeedBackType(
+                                title: "Phàn nàn",
+                                colorOntap:
+                                    const Color.fromRGBO(245, 125, 0, 0.5),
+                                selectedIndex: _selectedIndex,
+                                index: 2,
                               ),
                             ),
                             InkWell(
@@ -327,38 +275,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                                   _selectedIndex = 3;
                                 });
                               },
-                              child: Container(
-                                height: height * 0.05,
-                                width: width * 0.25,
-                                decoration: BoxDecoration(
-                                  color: _selectedIndex == 3
-                                      ? const Color.fromRGBO(143, 0, 255, 1)
-                                      : const Color(0xFFD9D9D9),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: AppColors.Black.withOpacity(0.5),
-                                    width: 1,
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      offset: Offset(0, 2),
-                                      blurRadius: 5,
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Thắc mắc',
-                                    style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: _selectedIndex == 3
-                                          ? AppColors.White
-                                          : AppColors.Black,
-                                    ),
-                                  ),
-                                ),
+                              child: FeedBackType(
+                                title: "Thắc mắc",
+                                colorOntap:
+                                    const Color.fromRGBO(143, 0, 255, 1),
+                                selectedIndex: _selectedIndex,
+                                index: 3,
                               ),
                             ),
                           ],

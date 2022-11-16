@@ -66,6 +66,7 @@ class _DeleteFeedbackConfirmDialogState
                             children: [
                               ElevatedButton(
                                 onPressed: () {
+                                  print("id feedback: ${widget.feedback.id}");
                                   feedbackProvider.deleteFeedback(
                                     context,
                                     widget.feedback.id!,

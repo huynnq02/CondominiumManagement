@@ -49,8 +49,9 @@ class FeedbackProvider extends ChangeNotifier {
     setIsLoading(true);
     var success =
         await FeedbackAPIProvider().createFeedbackAPIProvider(feedback);
+
     if (success == true) {
-      createFeedback(feedback);
+      getUserFeedback();
       showSuccessfulDialog(context, "Đã gửi ý kiến!", 1);
       setIsLoading(false);
     } else if (success == false) {
@@ -67,7 +68,7 @@ class FeedbackProvider extends ChangeNotifier {
     List<fb.Feedback> feedbacks = res['result']
         .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
         .toList();
-
+    feedbacks.sort((a, b) => b.time.compareTo(a.time));
     setFeedbacks(feedbacks);
   }
 
