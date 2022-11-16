@@ -130,7 +130,7 @@ class ItemFeedback extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
-              'Tiêu đề',
+              feedback.title,
               style: AppTextStyle.lato.copyWith(
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
@@ -148,7 +148,7 @@ class ItemFeedback extends StatelessWidget {
                   width: 200,
                   height: 100,
                   child: Text(
-                    feedback.title,
+                    feedback.content,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.lato.copyWith(
