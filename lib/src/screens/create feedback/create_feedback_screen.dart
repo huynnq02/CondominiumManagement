@@ -43,7 +43,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
   }
 
   void validateInput() {
-    if (_titleController.text.isEmpty) {
+    if (_titleController.text.trim().isEmpty) {
       setState(() {
         isEmptyTitle = true;
       });
@@ -52,7 +52,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
         isEmptyTitle = false;
       });
     }
-    if (_contentController.text.isEmpty) {
+    if (_contentController.text.trim().isEmpty) {
       setState(() {
         isEmptyContent = true;
       });
@@ -120,11 +120,8 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
             padding: const EdgeInsets.only(top: 20, right: 15),
             child: GestureDetector(
               onTap: () {
-                print(feedbackProvider.isLoading);
                 validateInput();
 
-                print(isEmptyTitle);
-                print(isEmptyContent);
                 if (isEmptyContent != null &&
                     isEmptyContent != true &&
                     isEmptyTitle != null &&
