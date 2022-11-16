@@ -82,4 +82,19 @@ class FeedbackProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future deleteFeedback(BuildContext context, int id) async {
+    setIsLoading(true);
+    var success = await FeedbackAPIProvider().deleteFeedbackAPIProvider(id);
+    if (success == true) {
+      _feedbacks.removeWhere((element) => element.id == id);
+      showSuccessfulDialog(context, "Đã xóa ý kiến!", 1);
+      setIsLoading(false);
+    } else if (success == false) {
+      print("fail");
+      showSuccessfulDialog(context, "Vui lòng thử lại sau!", 1);
+      setIsLoading(false);
+    }
+    notifyListeners();
+  }
 }

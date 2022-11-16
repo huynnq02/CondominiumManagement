@@ -24,4 +24,10 @@ class FeedbackAPIProvider extends BaseProvider<FeedbackAPIRepository> {
     var res = await repository.updateFeedbackAPIRepository(feedback);
     return res.data['success'];
   }
+
+  Future deleteFeedbackAPIProvider(int id) async {
+    var res = await repository.deleteFeedbackAPIRepository(id);
+    print(res.data['success']);
+    return res.data['success'];
+  }
 }
