@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import '../../../utils/app_constant/app_colors.dart';
@@ -74,6 +75,7 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
                         ElevatedButton(
                           onPressed: () {
                             context.read<ProfileProvider>().setEmptyUser();
+                            context.read<FeedbackProvider>().setEmptyFeedback();
                             removeToken(); //remove token khi đăng xuất
                             loginProvider.check = false;
                             Navigator.of(context).push(MaterialPageRoute(

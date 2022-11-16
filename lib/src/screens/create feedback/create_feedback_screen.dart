@@ -198,386 +198,335 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                     topRight: Radius.circular(50),
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      child: SingleChildScrollView(
-                        physics: const ClampingScrollPhysics(),
-                        child: Column(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                  child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: height * 0.04,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Stack(
+                            children: [
+                              Text(
+                                "Loại ý kiến",
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 20,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ),
+                              Text(
+                                "Loại ý kiến",
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withOpacity(0.5),
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            SizedBox(
-                              height: height * 0.04,
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Stack(
-                                children: [
-                                  Text(
-                                    "Loại ý kiến",
-                                    style: AppTextStyle.lato.copyWith(
-                                      fontSize: 20,
-                                      color: Colors.black.withOpacity(0.5),
-                                    ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _selectedIndex = 1;
+                                });
+                              },
+                              child: Container(
+                                height: height * 0.05,
+                                width: width * 0.25,
+                                decoration: BoxDecoration(
+                                  color: _selectedIndex == 1
+                                      ? const Color.fromRGBO(255, 0, 0, 0.5)
+                                      : const Color(0xFFD9D9D9),
+                                  borderRadius: BorderRadius.circular(20),
+                                  // set border for container
+                                  border: Border.all(
+                                    color: AppColors.Black.withOpacity(0.5),
+                                    width: 1,
                                   ),
-                                  Text(
-                                    "Loại ý kiến",
-                                    style: AppTextStyle.lato.copyWith(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      shadows: [
-                                        Shadow(
-                                          color: Colors.black.withOpacity(0.5),
-                                          blurRadius: 5,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      offset: Offset(0, 2),
+                                      blurRadius: 5,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                // ListView.builder(
-                                //   scrollDirection: Axis.horizontal,
-                                //   itemCount: 2,
-                                //   itemBuilder: (context, index) => InkWell(
-                                //     onTap: () {
-                                //       setState(() {
-                                //         _selectedIndex = index + 1;
-                                //       });
-                                //     },
-                                //     child: Container(
-                                //       height: height * 0.05,
-                                //       width: width * 0.25,
-                                //       decoration: BoxDecoration(
-                                //         color: _selectedIndex == 1
-                                //             ? const Color.fromRGBO(255, 0, 0, 0.5)
-                                //             : _selectedIndex == 2
-                                //                 ? const Color.fromRGBO(
-                                //                     245, 125, 0, 0.5)
-                                //                 : _selectedIndex == 3
-                                //                     ? const Color.fromRGBO(
-                                //                         143, 0, 255, 1)
-                                //                     : const Color(0xFFD9D9D9),
-                                //         borderRadius: BorderRadius.circular(20),
-                                //         // set border for container
-                                //         border: Border.all(
-                                //           color: AppColors.Black.withOpacity(0.5),
-                                //           width: 1,
-                                //         ),
-                                //         boxShadow: const [
-                                //           BoxShadow(
-                                //             color: Color.fromRGBO(0, 0, 0, 0.25),
-                                //             offset: Offset(0, 2),
-                                //             blurRadius: 5,
-                                //           ),
-                                //         ],
-                                //       ),
-                                //       child: Center(
-                                //         child: Text(
-                                //           'Lỗi/sự cố',
-                                //           style: AppTextStyle.lato.copyWith(
-                                //             fontSize: 15,
-                                //             fontWeight: FontWeight.w400,
-                                //             color: _selectedIndex == 1
-                                //                 ? AppColors.White
-                                //                 : AppColors.Black,
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
-                                // het
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedIndex = 1;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: height * 0.05,
-                                    width: width * 0.25,
-                                    decoration: BoxDecoration(
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Lỗi/sự cố',
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
                                       color: _selectedIndex == 1
-                                          ? const Color.fromRGBO(255, 0, 0, 0.5)
-                                          : const Color(0xFFD9D9D9),
-                                      borderRadius: BorderRadius.circular(20),
-                                      // set border for container
-                                      border: Border.all(
-                                        color: AppColors.Black.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color.fromRGBO(0, 0, 0, 0.25),
-                                          offset: Offset(0, 2),
-                                          blurRadius: 5,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Lỗi/sự cố',
-                                        style: AppTextStyle.lato.copyWith(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: _selectedIndex == 1
-                                              ? AppColors.White
-                                              : AppColors.Black,
-                                        ),
-                                      ),
+                                          ? AppColors.White
+                                          : AppColors.Black,
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedIndex = 2;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: height * 0.05,
-                                    width: width * 0.25,
-                                    decoration: BoxDecoration(
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _selectedIndex = 2;
+                                });
+                              },
+                              child: Container(
+                                height: height * 0.05,
+                                width: width * 0.25,
+                                decoration: BoxDecoration(
+                                  color: _selectedIndex == 2
+                                      ? const Color.fromRGBO(245, 125, 0, 0.5)
+                                      : const Color(0xFFD9D9D9),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: AppColors.Black.withOpacity(0.5),
+                                    width: 1,
+                                  ),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      offset: Offset(0, 2),
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Phàn nàn',
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
                                       color: _selectedIndex == 2
-                                          ? const Color.fromRGBO(
-                                              245, 125, 0, 0.5)
-                                          : const Color(0xFFD9D9D9),
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: AppColors.Black.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color.fromRGBO(0, 0, 0, 0.25),
-                                          offset: Offset(0, 2),
-                                          blurRadius: 5,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Phàn nàn',
-                                        style: AppTextStyle.lato.copyWith(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: _selectedIndex == 2
-                                              ? AppColors.White
-                                              : AppColors.Black,
-                                        ),
-                                      ),
+                                          ? AppColors.White
+                                          : AppColors.Black,
                                     ),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedIndex = 3;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: height * 0.05,
-                                    width: width * 0.25,
-                                    decoration: BoxDecoration(
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _selectedIndex = 3;
+                                });
+                              },
+                              child: Container(
+                                height: height * 0.05,
+                                width: width * 0.25,
+                                decoration: BoxDecoration(
+                                  color: _selectedIndex == 3
+                                      ? const Color.fromRGBO(143, 0, 255, 1)
+                                      : const Color(0xFFD9D9D9),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: AppColors.Black.withOpacity(0.5),
+                                    width: 1,
+                                  ),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      offset: Offset(0, 2),
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Thắc mắc',
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
                                       color: _selectedIndex == 3
-                                          ? const Color.fromRGBO(143, 0, 255, 1)
-                                          : const Color(0xFFD9D9D9),
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: AppColors.Black.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color.fromRGBO(0, 0, 0, 0.25),
-                                          offset: Offset(0, 2),
-                                          blurRadius: 5,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Thắc mắc',
-                                        style: AppTextStyle.lato.copyWith(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: _selectedIndex == 3
-                                              ? AppColors.White
-                                              : AppColors.Black,
-                                        ),
-                                      ),
+                                          ? AppColors.White
+                                          : AppColors.Black,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Tiêu đề",
-                                style: AppTextStyle.lato.copyWith(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black.withOpacity(0.5),
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            FeedbackInput(
-                              height: height,
-                              width: width,
-                              hintText: "Nhập tiêu đề",
-                              maxLength: 100,
-                              controller: _titleController,
-                              isError: isEmptyTitle,
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            if (isEmptyTitle == true)
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Vui lòng nhập tiêu đề",
-                                  style: AppTextStyle.lato.copyWith(
-                                    color: Colors.red,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            SizedBox(
-                              height: height * 0.005,
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Nội dung",
-                                style: AppTextStyle.lato.copyWith(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black.withOpacity(0.5),
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            Container(
-                              height: height * 0.2,
-                              width: width * 0.9,
-                              decoration: BoxDecoration(
-                                color: AppColors.White,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                border: Border.all(
-                                  color: AppColors.Black,
-                                  width: 1,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                    offset: Offset(0, 2),
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),
-                              child: InkWell(
-                                onTap: _showModalBottomSheet,
-                                child: _imageFile != null
-                                    ? Image.file(
-                                        File(_imageFile!.path),
-                                      )
-                                    : Icon(
-                                        Icons.image,
-                                        color:
-                                            const Color.fromRGBO(0, 0, 0, 0.2),
-                                        size: height * 0.1,
-                                      ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            FeedbackInput(
-                              height: height,
-                              width: width,
-                              hintText: "Nhập nội dung",
-                              maxLength: 300,
-                              controller: _contentController,
-                              isError: isEmptyContent,
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            if (isEmptyContent == true)
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Vui lòng nhập nội dung",
-                                  style: AppTextStyle.lato.copyWith(
-                                    color: Colors.red,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            SizedBox(
-                              height: height * 0.02,
                             ),
                           ],
                         ),
-                      ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Tiêu đề",
+                            style: AppTextStyle.lato.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        FeedbackInput(
+                          height: height,
+                          width: width,
+                          hintText: "Nhập tiêu đề",
+                          maxLength: 100,
+                          controller: _titleController,
+                          isError: isEmptyTitle,
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        if (isEmptyTitle == true)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Vui lòng nhập tiêu đề",
+                              style: AppTextStyle.lato.copyWith(
+                                color: Colors.red,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        SizedBox(
+                          height: height * 0.005,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Nội dung",
+                            style: AppTextStyle.lato.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        Container(
+                          height: height * 0.2,
+                          width: width * 0.9,
+                          decoration: BoxDecoration(
+                            color: AppColors.White,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            border: Border.all(
+                              color: AppColors.Black,
+                              width: 1,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 2),
+                                blurRadius: 5,
+                              ),
+                            ],
+                          ),
+                          child: InkWell(
+                            onTap: _showModalBottomSheet,
+                            child: _imageFile != null
+                                ? Image.file(
+                                    File(_imageFile!.path),
+                                  )
+                                : Icon(
+                                    Icons.image,
+                                    color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                    size: height * 0.1,
+                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        FeedbackInput(
+                          height: height,
+                          width: width,
+                          hintText: "Nhập nội dung",
+                          maxLength: 300,
+                          controller: _contentController,
+                          isError: isEmptyContent,
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        if (isEmptyContent == true)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Vui lòng nhập nội dung",
+                              style: AppTextStyle.lato.copyWith(
+                                color: Colors.red,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Image.asset(
+                            "assets/apato-logo.png",
+                            height: height * 0.15,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // Stack(
+                        //   children: [
+                        //     Positioned(
+                        //       left: -100,
+                        //       child: Image.asset(
+                        //         "assets/icon-message-left.png",
+                        //         fit: BoxFit.cover,
+                        //       ),
+                        //     ),
+                        //     Positioned(
+                        //       child: Image.asset(
+                        //         "assets/icon-message-right.png",
+                        //         fit: BoxFit.cover,
+                        //       ),
+                        //     ),
+                        //     Positioned(
+                        //       child: Image.asset(
+                        //         "assets/apato-logo.png",
+                        //         height: height * 0.2,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // )
+                      ],
                     ),
-                    Positioned(
-                      bottom: height * 0.06,
-                      left: 20,
-                      child: Image.asset(
-                        "assets/icon-message-left.png",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      right: 20,
-                      bottom: height * 0.05,
-                      child: Image.asset(
-                        "assets/icon-message-right.png",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: width / 2 - 25,
-                      child: Image.asset(
-                        "assets/apato-logo.png",
-                        height: height * 0.2,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

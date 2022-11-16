@@ -14,9 +14,13 @@ class FeedbackProvider extends ChangeNotifier {
   final List<fb.Feedback> _feedbacks = [];
   List<fb.Feedback> get feedbacks => _feedbacks;
   void setFeedbacks(List<fb.Feedback> feedbacks) {
-    _feedbacks.clear();
     _feedbacks.addAll(feedbacks);
     _feedbacks.sort((a, b) => b.time.compareTo(a.time));
+    notifyListeners();
+  }
+
+  void setEmptyFeedback() {
+    _feedbacks.clear();
     notifyListeners();
   }
 
