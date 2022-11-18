@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
+import 'package:untitled/src/screens/feedback%20screen/feedback_screen.dart';
 import 'package:untitled/src/screens/home%20screen/home_screen.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/widgets/information.dart';
@@ -37,9 +37,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final pages = [
     const HomeScreen(),
-    const Center(
-      child: Text("Screen 2"),
-    ),
+    FeedbackScreen(),
     const Center(
       child: Text("Screen 3"),
     ),
@@ -189,7 +187,7 @@ class _MainScreenState extends State<MainScreen> {
                           ? const Color(0xFF1D6D54)
                           : AppColors.Black,
                     ),
-                    label: "?",
+                    label: "Ý kiến",
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(

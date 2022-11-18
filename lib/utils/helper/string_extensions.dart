@@ -5,4 +5,25 @@ extension StringExtensions on String {
 
   bool isValidPhoneNumber() =>
       RegExp(r"^(?:[+84][0])?[0-9]{10,12}$").hasMatch(this);
+
+  String formatDateTime() {
+    final result = DateTime.parse(this);
+    String day = result.day / 10 < 1
+        ? "0" + result.day.toString()
+        : result.day.toString();
+    String month = result.month / 10 < 1
+        ? "0" + result.month.toString()
+        : result.month.toString();
+
+    final formattedDate = "$day/$month/${result.year}";
+    return formattedDate;
+  }
+
+  String standardlizeString() {
+    var result = this;
+    result = result.trim().replaceAll(RegExp(r"((?!\n)\s){2,}"), " ");
+    // delete " " after "\n"
+    result = result.replaceAll(RegExp(r"\n\s"), "\n");
+    return result;
+  }
 }

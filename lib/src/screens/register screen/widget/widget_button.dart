@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WidgetButton extends StatelessWidget {
   final String labelText;
   final void Function()? onPressed;
-  const WidgetButton({Key? key, required this.labelText, this.onPressed})
+  final double? width;
+  const WidgetButton({Key? key, required this.labelText, this.onPressed,this.width})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        width: width,
         decoration:
             BoxDecoration(borderRadius: BorderRadius.circular(12), boxShadow: [
           BoxShadow(
@@ -24,10 +27,10 @@ class WidgetButton extends StatelessWidget {
             color: Colors.white,
             onPressed: onPressed,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+              padding: width!=null ? const EdgeInsets.symmetric(vertical: 14) : const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
               child: Text(
                 labelText,
-                style: TextStyle(fontSize: 16),
+                style: GoogleFonts.lexendExa(fontSize: 16),
               ),
             )),
       ),

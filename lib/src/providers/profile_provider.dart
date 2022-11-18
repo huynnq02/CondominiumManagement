@@ -61,6 +61,22 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setEmptyUser() {
+    _mdUser = MDUser(
+        name: "",
+        surname: "",
+        email: "",
+        password: "",
+        gender: "",
+        idNumber: "",
+        fullName: "",
+        birthDate: "",
+        apartmentId: "",
+        otp: "");
+    _profilePicture = null;
+    notifyListeners();
+  }
+
   Future changePassword(BuildContext context, String? newPassword,
       String? newPassword1, String? curentPassword) async {
     String? password = AppPreferences.prefs.getString('password');
@@ -93,7 +109,7 @@ class ProfileProvider extends ChangeNotifier {
     setMdUser(user); // notifyListeners();
   }
 
-  void getProfilePicture(BuildContext context) async {
+  void getProfilePicture() async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
     var bytesString = response['profilePicture'] as String;
     setProfilePicture(

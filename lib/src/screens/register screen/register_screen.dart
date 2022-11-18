@@ -131,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
           image: AssetImage("assets/register_bg.jpg"),
-          fit: BoxFit.fitWidth,
+          fit: BoxFit.cover,
           alignment: Alignment.topCenter),
         ),
         child: Form(

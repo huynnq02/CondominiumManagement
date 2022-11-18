@@ -4,13 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
+import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/filter_provider.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
-import 'package:untitled/src/screens/logout%20screen/logout_screen.dart';
+import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
@@ -96,6 +97,14 @@ class _AppState extends State<App> {
               return OTPProvider();
             },
           ),
+          ChangeNotifierProvider(
+            create: (BuildContext context) {
+              return ResetPasswordProvider();
+            },
+          ),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return FeedbackProvider();
+          })
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -105,7 +114,7 @@ class _AppState extends State<App> {
                   ? MainScreen(
                       checkScreen: true,
                     )
-                  : LoginScreen()),
+                  : const LoginScreen()),
         ));
   }
 }

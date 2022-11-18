@@ -19,13 +19,35 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     return res.data;
   }
 
-  Future register({MDUser? mdUser,String? otp}) async {
-    final res = await repository.register(mdUser: mdUser,otp: otp);
+  Future register({MDUser? mdUser, String? otp}) async {
+    final res = await repository.register(mdUser: mdUser, otp: otp);
     return res.data;
   }
 
   Future sendOTP({MDUser? mdUser}) async {
     final res = await repository.sendOTP(mdUser: mdUser);
     return res?.data['success'];
+  }
+
+  Future sendPasswordResetOTP({String? email}) async {
+    final res = await repository.sendPasswordResetOTP(email: email);
+    return res.data['success'];
+  }
+
+  Future checkPasswordResetOTP({String? email, String? otp}) async {
+    final res = await repository.checkPasswordResetOTP(email: email, otp: otp);
+    return res.data['result']['otpIsCorrect'];
+  }
+
+  Future resetPassword({String? email, String? password}) async {
+    final res =
+        await repository.resetPassword(email: email, password: password);
+    return res.data['success'];
+  }
+
+  Future changePassword({String? currentPw, String? newPw}) async {
+    final res =
+        await repository.changePassword(currentPw: currentPw, newPw: newPw);
+    return res.data;
   }
 }
