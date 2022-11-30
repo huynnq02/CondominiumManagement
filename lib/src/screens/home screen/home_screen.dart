@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
@@ -24,9 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       listen: false,
     );
+    final billProvider = Provider.of<BillProvider>(
+      context,
+      listen: false,
+    );
     feedbackProvider.getUserFeedback();
     profileProvider.getCurrentUserProfile();
     profileProvider.getProfilePicture();
+    billProvider.getAllEAndWBill();
+    billProvider.getAllServiceBill();
   }
 
   @override

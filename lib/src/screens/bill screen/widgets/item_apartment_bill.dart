@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class ItemApartmentBill extends StatefulWidget {
-  final Bill bill;
-  const ItemApartmentBill({Key? key, required this.bill}) : super(key: key);
+  final EandWBill eAndWBill;
+  const ItemApartmentBill({Key? key, required this.eAndWBill})
+      : super(key: key);
 
   @override
   State<ItemApartmentBill> createState() => _ItemApartmentBillState();
@@ -22,9 +24,9 @@ class _ItemApartmentBillState extends State<ItemApartmentBill> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: widget.bill.state == "Đã thanh toán"
+          color: widget.eAndWBill.state == "Đã thanh toán"
               ? const Color(0xFF2AC956)
-              : widget.bill.state == "Chưa thanh toán"
+              : widget.eAndWBill.state == "Chưa thanh toán"
                   ? const Color(0xFFFFC000)
                   : const Color(0xFF5C92FE),
           width: 2,
@@ -34,13 +36,9 @@ class _ItemApartmentBillState extends State<ItemApartmentBill> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Expanded(
-            child: widget.bill.type == "Electricity"
+            child: widget.eAndWBill.billType == "Điện"
                 ? Image.asset("assets/electricity-icon.png")
-                : widget.bill.type == "Water"
-                    ? Image.asset("assets/water-icon.png")
-                    : widget.bill.type == "Garbage"
-                        ? Image.asset("assets/garbage-icon.png")
-                        : Image.asset("assets/management-icon.png"),
+                : Image.asset("assets/water-icon.png"),
             flex: 1,
           ),
           Expanded(
@@ -50,7 +48,7 @@ class _ItemApartmentBillState extends State<ItemApartmentBill> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.bill.name,
+                  widget.eAndWBill.billName,
                   style: AppTextStyle.lato.copyWith(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
@@ -60,7 +58,7 @@ class _ItemApartmentBillState extends State<ItemApartmentBill> {
                   height: 10,
                 ),
                 Text(
-                  "Hạn: " + widget.bill.deadline,
+                  "Hạn: " + widget.eAndWBill.paymentTerm.formatDateTime(),
                   style: AppTextStyle.lato.copyWith(
                     fontSize: 11,
                     color: const Color(0xFFFF8A00),
@@ -74,7 +72,7 @@ class _ItemApartmentBillState extends State<ItemApartmentBill> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                widget.bill.price,
+                widget.eAndWBill.price.toString() + "đ",
                 style: AppTextStyle.lato.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
@@ -84,22 +82,22 @@ class _ItemApartmentBillState extends State<ItemApartmentBill> {
               ),
               Row(
                 children: [
-                  widget.bill.state == "Đã thanh toán"
+                  widget.eAndWBill.state == "Đã thanh toán"
                       ? Image.asset("assets/done-icon.png")
-                      : widget.bill.state == "Chưa thanh toán"
+                      : widget.eAndWBill.state == "Chưa thanh toán"
                           ? Image.asset("assets/warning-icon.png")
                           : Image.asset("assets/waiting-icon.png"),
                   const SizedBox(
                     width: 10,
                   ),
-                  widget.bill.state == "Đã thanh toán"
+                  widget.eAndWBill.state == "Đã thanh toán"
                       ? Text(
                           "Đã thanh toán",
                           style: AppTextStyle.lato.copyWith(
                             color: const Color(0xFF2AC956),
                           ),
                         )
-                      : widget.bill.state == "Chưa thanh toán"
+                      : widget.eAndWBill.state == "Chưa thanh toán"
                           ? Container(
                               height: height * 0.03,
                               width: width * 0.20,

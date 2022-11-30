@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/string_extensions.dart';
 
 class ItemServiceBill extends StatefulWidget {
-  final Bill bill;
-  const ItemServiceBill({Key? key, required this.bill}) : super(key: key);
+  final ServiceBill serviceBill;
+  const ItemServiceBill({Key? key, required this.serviceBill})
+      : super(key: key);
 
   @override
   State<ItemServiceBill> createState() => _ItemServiceBillState();
@@ -22,9 +24,9 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: widget.bill.state == "Đã thanh toán"
+          color: widget.serviceBill.state == "Đã thanh toán"
               ? const Color(0xFF2AC956)
-              : widget.bill.state == "Chưa thanh toán"
+              : widget.serviceBill.state == "Chưa thanh toán"
                   ? const Color(0xFFFFC000)
                   : const Color(0xFF5C92FE),
           width: 2,
@@ -39,7 +41,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.bill.name,
+                  widget.serviceBill.billName,
                   style: AppTextStyle.lato.copyWith(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -77,7 +79,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                     Column(
                       children: [
                         Text(
-                          widget.bill.type,
+                          widget.serviceBill.serviceName,
                           style: AppTextStyle.lato.copyWith(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -87,7 +89,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                           height: height * 0.01,
                         ),
                         Text(
-                          widget.bill.deadline,
+                          widget.serviceBill.paymentTerm.formatDateTime(),
                           style: AppTextStyle.lato.copyWith(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -102,7 +104,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   height: height * 0.02,
                 ),
                 Text(
-                  widget.bill.price,
+                  widget.serviceBill.price.toString() + "đ",
                   style: AppTextStyle.lato.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
@@ -139,22 +141,22 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                 ),
                 Row(
                   children: [
-                    widget.bill.state == "Đã thanh toán"
+                    widget.serviceBill.state == "Đã thanh toán"
                         ? Image.asset("assets/done-icon.png")
-                        : widget.bill.state == "Chưa thanh toán"
+                        : widget.serviceBill.state == "Chưa thanh toán"
                             ? Image.asset("assets/warning-icon.png")
                             : Image.asset("assets/waiting-icon.png"),
                     const SizedBox(
                       width: 10,
                     ),
-                    widget.bill.state == "Đã thanh toán"
+                    widget.serviceBill.state == "Đã thanh toán"
                         ? Text(
                             "Đã thanh toán",
                             style: AppTextStyle.lato.copyWith(
                               color: const Color(0xFF2AC956),
                             ),
                           )
-                        : widget.bill.state == "Chưa thanh toán"
+                        : widget.serviceBill.state == "Chưa thanh toán"
                             ? Container(
                                 height: height * 0.03,
                                 width: width * 0.20,
