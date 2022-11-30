@@ -19,4 +19,5 @@ class AppTextStyle {
   static final tomorrow = GoogleFonts.tomorrow(color: AppColors.White);
   static final lato = GoogleFonts.lato(color: AppColors.Black);
   static final lexendExa = GoogleFonts.lexendExa(color: AppColors.Black);
+  static final montserrat = GoogleFonts.montserrat(color: AppColors.Black);
 }

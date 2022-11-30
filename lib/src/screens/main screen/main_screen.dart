@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
+import 'package:untitled/src/screens/bill%20screen/bill_screen.dart';
 import 'package:untitled/src/screens/feedback%20screen/feedback_screen.dart';
 import 'package:untitled/src/screens/home%20screen/home_screen.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
@@ -41,9 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     const Center(
       child: Text("Screen 3"),
     ),
-    const Center(
-      child: Text("Screen 4"),
-    ),
+    BillScreen(),
     ProfileScreen(),
   ];
   @override
@@ -202,12 +201,12 @@ class _MainScreenState extends State<MainScreen> {
                   BottomNavigationBarItem(
                     icon: ImageIcon(
                       const AssetImage(
-                          'assets/bottom_navigation_bar_icon/4.png'),
+                          'assets/bottom_navigation_bar_icon/bill.png'),
                       color: _selectedIndex == 3
                           ? const Color(0xFF1D6D54)
                           : AppColors.Black,
                     ),
-                    label: '?',
+                    label: 'Hóa đơn',
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(
