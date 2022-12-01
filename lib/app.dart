@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled/src/providers/apartment_provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
@@ -104,6 +105,9 @@ class _AppState extends State<App> {
           ),
           ChangeNotifierProvider(create: (BuildContext context) {
             return FeedbackProvider();
+          }),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return ApartmentProvider();
           })
         ],
         child: MaterialApp(
