@@ -113,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             topLeft: Radius.circular(12.0),
                                             topRight: Radius.circular(12.0),
                                           ),
+                                          borderColor: false,
                                         ),
                                         RegisterTextField(
                                           labelText: 'Mật khẩu',
@@ -122,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             bottomLeft: Radius.circular(12.0),
                                             bottomRight: Radius.circular(12.0),
                                           ),
+                                          borderColor: false,
                                         ),
                                       ],
                                     ),
