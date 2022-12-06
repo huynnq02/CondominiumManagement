@@ -102,6 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               password: passwordController.text,
               birthDate: selectedDate.toIso8601String(),
               fullName: nameController.text,
+              buildingId: buildingIdController.text,
               apartmentId: apartmentIdController.text);
           inspect(mdUser);
 
