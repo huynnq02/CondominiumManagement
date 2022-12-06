@@ -113,12 +113,11 @@ class _AppState extends State<App> {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: 'Lato'),
-          home: Scaffold(
-              body: isLoggedIn
-                  ? MainScreen(
-                      checkScreen: true,
-                    )
-                  : const LoginScreen()),
+          home: isLoggedIn
+              ? MainScreen(
+                  checkScreen: true,
+                )
+              : const LoginScreen(),
         ));
   }
 }
