@@ -32,9 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    // final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    loginProvider = Provider.of<LoginProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
@@ -45,11 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white,
             child: Stack(
               children: [
-                Positioned(
-                  top: 0,
+                Positioned.fill(
                   child: Container(
-                    height: height,
-                    width: width,
                     decoration: BoxDecoration(
                         // image: DecorationImage(
                         //   image:
@@ -131,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: height * 0.03,
+                                    height: 22,
                                   ),
                                   SizedBox(
                                     height: 48,
@@ -178,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: height * 0.028),
+                                  SizedBox(height: 22),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: GestureDetector(
