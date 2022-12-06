@@ -84,16 +84,16 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
       switch (type) {
         case TextFieldType.email:
           if (value.isEmpty) {
-            errorText = 'Vui lòng nhập email';
+            errorText = 'Vui lòng nhập email hoặc số điện thoại';
             return '';
           }
-          String pattern =
-              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))$';
-          RegExp regExp = RegExp(pattern);
-          if (!regExp.hasMatch(value)) {
-            errorText = 'ĝịnh  dạng email không đúng, vui lòng nhập lại';
-            return '';
-          }
+          // String pattern =
+          //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))$';
+          // RegExp regExp = RegExp(pattern);
+          // if (!regExp.hasMatch(value)) {
+          //   errorText = 'Định  dạng email không đúng, vui lòng nhập lại';
+          //   return '';
+          // }
           break;
         case TextFieldType.password:
           if (value.isEmpty) {
@@ -160,7 +160,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                       (widget.error != null && widget.error != ''))
                   ? Border.all(color: const Color(0xFFFF0000))
                   : null,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white,
               borderRadius: widget.border),
           child: Stack(alignment: Alignment.center, children: [
             Column(
@@ -247,7 +247,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                                 selection: controller.selection);
                           }
                         },
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 16),
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
@@ -278,32 +278,17 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                 bottom: 0,
                 child: GestureDetector(
                   onTap: _toggle,
-                  child: _obscureText == true
-                      ? SvgPicture.asset(
-                          'assets/eye.svg',
-                          width: 17,
-                          height: 17,
-                        )
-                      : const Icon(
-                          Icons.visibility_off,
-                          size: 17,
-                          color: AppColors.Black,
-                        ),
+                  child: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    size: 17,
+                    color: AppColors.Black,
+                  ),
                 ),
               )
-            else if (widget.type == TextFieldType.email)
-              Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Text(
-                    '@gmail.com',
-                    style: TextStyle(
-                        fontSize: 19, color: Colors.black.withOpacity(0.2)),
-                  ))
           ]),
         ),
         Positioned(
-            top: 0,
+            top: 3,
             child: Text(
                 (widget.error != null && widget.error!.isNotEmpty)
                     ? widget.error!
