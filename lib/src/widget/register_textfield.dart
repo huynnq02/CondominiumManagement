@@ -81,6 +81,13 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     return result;
   }
 
+  bool isEmail(String input) => RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(input);
+
+  bool isPhone(String input) =>
+      RegExp(r'(^(?:[+0]9)?[0-9]{10,11}$)').hasMatch(input);
+
   String? getValidator(String? value, TextFieldType? type) {
     if (value != null) {
       switch (type) {
@@ -89,13 +96,18 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Vui lòng nhập email hoặc số điện thoại';
             return '';
           }
-          // String pattern =
-          //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))$';
-          // RegExp regExp = RegExp(pattern);
-          // if (!regExp.hasMatch(value)) {
-          //   errorText = 'Định  dạng email không đúng, vui lòng nhập lại';
-          //   return '';
-          // }
+          final isNum = num.tryParse(value) is num;
+          if (!isNum) {
+            if (!isEmail(value)) {
+              errorText = 'Định dạng email không đúng, vui lòng nhập lại';
+              return '';
+            }
+          } else {
+            if (!isPhone(value) || !value.startsWith('0')) {
+              errorText = 'Định dạng không hợp lệ, vui lòng nhập lại';
+              return '';
+            }
+          }
           break;
         case TextFieldType.password:
           if (value.isEmpty) {
