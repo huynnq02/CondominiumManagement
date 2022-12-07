@@ -53,7 +53,7 @@ class _AparmentBilllState extends State<AparmentBilll> {
   @override
   Widget build(BuildContext context) {
     final aparmentBills =
-        Provider.of<BillProvider>(context, listen: true).apartmentBills;
+        Provider.of<BillProvider>(context, listen: false).apartmentBills;
 
     return Container(
       child: ListView.builder(

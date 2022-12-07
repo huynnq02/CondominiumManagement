@@ -12,17 +12,52 @@ class ServiceBill extends StatefulWidget {
 }
 
 class _ServiceBillState extends State<ServiceBill> {
+  int itemCount(String state) {
+    if (state == 'Tất cả') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .serviceBills
+          .length;
+    } else if (state == 'Chưa thanh toán') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .unpaidServiceBills
+          .length;
+    } else if (state == 'Đã thanh toán') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .paidServiceBills
+          .length;
+    } else {
+      return Provider.of<BillProvider>(context, listen: false)
+          .waitingServiceBills
+          .length;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final serviceBills =
-        Provider.of<BillProvider>(context, listen: true).serviceBills;
+    final serviceBills = Provider.of<BillProvider>(context).serviceBills;
+    final paidServiceBills =
+        Provider.of<BillProvider>(context).paidServiceBills;
+    final unpaidServiceBills =
+        Provider.of<BillProvider>(context).unpaidServiceBills;
+    final waitingServiceBills =
+        Provider.of<BillProvider>(context).waitingServiceBills;
+
     return Container(
       child: ListView.builder(
-        itemCount: serviceBills.length,
+        itemCount: itemCount(Provider.of<BillProvider>(context).billState),
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
           child: ItemServiceBill(
-            serviceBill: serviceBills[index],
+            serviceBill:
+                Provider.of<BillProvider>(context).billState == 'Tất cả'
+                    ? serviceBills[index]
+                    : Provider.of<BillProvider>(context).billState ==
+                            'Chưa thanh toán'
+                        ? unpaidServiceBills[index]
+                        : Provider.of<BillProvider>(context).billState ==
+                                'Đã thanh toán'
+                            ? paidServiceBills[index]
+                            : waitingServiceBills[index],
           ),
         ),
       ),

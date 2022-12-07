@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/drop_down_menu.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/apartment_bill.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/service_bill.dart';
@@ -25,6 +27,47 @@ class _BillScreenState extends State<BillScreen>
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  int getNumOfBills(int index, BuildContext context) {
+    if (index == 0) {
+      if (Provider.of<BillProvider>(context).billState == "Tất cả") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .apartmentBills
+            .length;
+      } else if (Provider.of<BillProvider>(context).billState ==
+          "Chưa thanh toán") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .unpaidApartmentBills
+            .length;
+      } else if (Provider.of<BillProvider>(context).billState ==
+          "Đã thanh toán") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .paidApartmentBills
+            .length;
+      }
+    } else {
+      if (Provider.of<BillProvider>(context).billState == "Tất cả") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .serviceBills
+            .length;
+      } else if (Provider.of<BillProvider>(context).billState ==
+          "Chưa thanh toán") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .unpaidServiceBills
+            .length;
+      } else if (Provider.of<BillProvider>(context).billState ==
+          "Đã thanh toán") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .paidServiceBills
+            .length;
+      } else {
+        return Provider.of<BillProvider>(context, listen: false)
+            .waitingServiceBills
+            .length;
+      }
+    }
+    return 0;
   }
 
   @override
@@ -60,6 +103,10 @@ class _BillScreenState extends State<BillScreen>
                 child: Padding(
                   padding: const EdgeInsets.all(3),
                   child: TabBar(
+                    onTap: (index) {
+                      Provider.of<BillProvider>(context, listen: false)
+                          .setCurrentTab(index);
+                    },
                     controller: tabController,
                     indicatorColor: Colors.transparent,
                     labelColor: Colors.red,
@@ -98,7 +145,7 @@ class _BillScreenState extends State<BillScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Có 6 hóa đơn",
+                    "Có ${getNumOfBills(Provider.of<BillProvider>(context).currentTab, context)} hóa đơn",
                     style: AppTextStyle.lato.copyWith(
                       fontSize: 14,
                       color: const Color(0xFF1D6D54),

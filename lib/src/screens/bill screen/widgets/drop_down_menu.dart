@@ -22,7 +22,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final billProvider = Provider.of<BillProvider>(context);
+    // final billProvider = Provider.of<BillProvider>(context);
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
@@ -57,7 +57,11 @@ class _DropDownMenuState extends State<DropDownMenu> {
                     child: Text(choice),
                     value: choice,
                     onTap: () {
-                      context.read<BillProvider>().setStateProvider(choice);
+                      print("ok");
+                      Provider.of<BillProvider>(context, listen: false)
+                          .setStateProvider(choice);
+                      print(Provider.of<BillProvider>(context, listen: false)
+                          .billState);
                     },
                   ),
               ],
