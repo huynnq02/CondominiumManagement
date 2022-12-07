@@ -36,6 +36,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_format_money_vietnam: ^0.0.2
+  firebase_auth: ^4.1.5
+  firebase_core: ^2.3.0
+  firebase_storage: ^11.0.6
   flutter_screenutil: ^5.2.0
   flutter_svg: ^1.0.3
   flutter_typeahead: ^4.1.1
@@ -44,7 +47,6 @@ dependencies:
   html: ^0.15.0
   image_cropper: ^3.0.0
   image_picker: ^0.8.6
-  intl: ^0.17.0
   pie_chart: ^5.1.0
   provider: ^6.0.2
   shared_preferences: ^2.0.13
@@ -80,6 +82,7 @@ flutter:
   assets:
     - assets/
     - assets/bottom_navigation_bar_icon/
+    - assets/home_icons/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
