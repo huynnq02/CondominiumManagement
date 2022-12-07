@@ -7,6 +7,9 @@ class Bill {
   String ownerName;
   String paymentTerm;
   String? state;
+  String startDay;
+  String endDay;
+  int price;
   Bill({
     this.billID,
     required this.billName,
@@ -14,6 +17,9 @@ class Bill {
     required this.ownerName,
     required this.paymentTerm,
     this.state,
+    required this.startDay,
+    required this.endDay,
+    required this.price,
   });
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -23,6 +29,9 @@ class Bill {
       'ownerName': ownerName,
       'paymentTerm': paymentTerm,
       'state': state,
+      'startDay': startDay,
+      'endDay': endDay,
+      'price': price,
     };
   }
 
@@ -34,6 +43,9 @@ class Bill {
       ownerName: map['ownerName'],
       paymentTerm: map['paymentTerm'],
       state: map['state'],
+      startDay: map['startDay'],
+      endDay: map['endDay'],
+      price: map['price'] as int,
     );
   }
 
@@ -48,19 +60,15 @@ class ServiceBill extends Bill {
   String createDay;
   String? createName;
   String? cycle;
-  String startDay;
-  String endDay;
+
   String? note;
   String serviceName;
-  int price;
+
   ServiceBill({
     this.serviceId,
     required this.createDay,
     this.createName,
     this.cycle,
-    required this.startDay,
-    required this.endDay,
-    required this.price,
     this.note,
     String? billID,
     required String billName,
@@ -69,6 +77,7 @@ class ServiceBill extends Bill {
     required String paymentTerm,
     required String state,
     required this.serviceName,
+    required int price,
   }) : super(
           billID: billID,
           billName: billName,
@@ -76,6 +85,9 @@ class ServiceBill extends Bill {
           ownerName: ownerName,
           paymentTerm: paymentTerm,
           state: state,
+          startDay: '',
+          endDay: '',
+          price: price,
         );
 
   @override
@@ -105,17 +117,15 @@ class ServiceBill extends Bill {
       createDay: map['createDay'],
       createName: map['createName'],
       cycle: map['cycle'],
-      startDay: map['startDay'],
-      endDay: map['endDay'],
       note: map['note'],
       billID: map['billID'],
       billName: map['billName'],
       emailAddress: map['emailAddress'],
       ownerName: map['ownerName'],
       paymentTerm: map['paymentTerm'],
-      price: map['price'] as int,
       state: map['state'].toString(),
       serviceName: map['serviceName'],
+      price: map['price'] as int,
     );
   }
 
@@ -126,24 +136,30 @@ class ServiceBill extends Bill {
       ServiceBill.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
-class ManageBill extends Bill {
+class AparmentBill extends Bill {
   String billType;
   String apartmentID;
-  String createName;
+  int oldIndex;
+  int newIndex;
+  String? createName;
   String invoicePeriod;
-  int price;
-  ManageBill({
+  String createDay;
+
+  AparmentBill({
     required this.billType,
     required this.apartmentID,
-    required this.createName,
+    required this.oldIndex,
+    required this.newIndex,
+    this.createName,
     required this.invoicePeriod,
-    required this.price,
+    required this.createDay,
     String? billID,
     required String billName,
     required String emailAddress,
     required String ownerName,
     required String paymentTerm,
     required String state,
+    required int price,
   }) : super(
           billID: billID,
           billName: billName,
@@ -151,6 +167,9 @@ class ManageBill extends Bill {
           ownerName: ownerName,
           paymentTerm: paymentTerm,
           state: state,
+          startDay: '',
+          endDay: '',
+          price: price,
         );
 
   @override
@@ -158,82 +177,11 @@ class ManageBill extends Bill {
     return <String, dynamic>{
       'billType': billType,
       'apartmentID': apartmentID,
-      'createName': createName,
-      'invoicePeriod': invoicePeriod,
-      'billID': billID,
-      'billName': billName,
-      'emailAddress': emailAddress,
-      'ownerName': ownerName,
-      'paymentTerm': paymentTerm,
-      'price': price,
-      'state': state,
-    };
-  }
-
-  factory ManageBill.fromMap(Map<String, dynamic> map) {
-    return ManageBill(
-      billType: map['billType'],
-      apartmentID: map['apartmentID'],
-      createName: map['createName'],
-      invoicePeriod: map['invoicePeriod'],
-      billID: map['billID'],
-      billName: map['billName'],
-      emailAddress: map['emailAddress'],
-      ownerName: map['ownerName'],
-      paymentTerm: map['paymentTerm'],
-      price: map['price'] as int,
-      state: map['state'],
-    );
-  }
-
-  @override
-  String toJson() => json.encode(toMap());
-
-  factory ManageBill.fromJson(String source) =>
-      ManageBill.fromMap(json.decode(source) as Map<String, dynamic>);
-}
-
-class EandWBill extends Bill {
-  String billType;
-  String apartmentID;
-  String startDay;
-  String endDay;
-  String price;
-  int oldIndex;
-  int newIndex;
-
-  EandWBill({
-    required this.billType,
-    required this.apartmentID,
-    required this.startDay,
-    required this.endDay,
-    required this.oldIndex,
-    required this.newIndex,
-    required this.price,
-    String? billID,
-    required String billName,
-    required String emailAddress,
-    required String ownerName,
-    required String paymentTerm,
-    String? state,
-  }) : super(
-          billID: billID,
-          billName: billName,
-          emailAddress: emailAddress,
-          ownerName: ownerName,
-          paymentTerm: paymentTerm,
-          state: state,
-        );
-
-  @override
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'billType': billType,
-      'apartmentID': apartmentID,
-      'startDay': startDay,
-      'endDay': endDay,
       'oldIndex': oldIndex,
       'newIndex': newIndex,
+      'createName': createName,
+      'invoicePeriod': invoicePeriod,
+      'createDay': createDay,
       'billID': billID,
       'billName': billName,
       'emailAddress': emailAddress,
@@ -241,30 +189,33 @@ class EandWBill extends Bill {
       'paymentTerm': paymentTerm,
       'price': price,
       'state': state,
+      'startDay': startDay,
+      'endDay': endDay,
     };
   }
 
-  factory EandWBill.fromMap(Map<String, dynamic> map) {
-    return EandWBill(
+  factory AparmentBill.fromMap(Map<String, dynamic> map) {
+    return AparmentBill(
       billType: map['billType'],
       apartmentID: map['apartmentID'],
-      startDay: map['startDay'],
-      endDay: map['endDay'],
       oldIndex: map['oldIndex'] as int,
       newIndex: map['newIndex'] as int,
+      createName: map['createName']?.toString(),
+      invoicePeriod: map['invoicePeriod'],
+      createDay: map['createDay'],
       billID: map['billID'],
       billName: map['billName'],
       emailAddress: map['emailAddress'],
       ownerName: map['ownerName'],
       paymentTerm: map['paymentTerm'],
-      price: map['price'],
-      state: map['state'],
+      state: map['state'].toString(),
+      price: map['price'] as int,
     );
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory EandWBill.fromJson(String source) =>
-      EandWBill.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AparmentBill.fromJson(String source) =>
+      AparmentBill.fromMap(json.decode(source) as Map<String, dynamic>);
 }

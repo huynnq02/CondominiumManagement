@@ -7,13 +7,16 @@ class BillAPIProvider extends BaseProvider<BillRepository> {
     return BillRepository();
   }
 
-  Future getAllEAndWAPIRepository() async {
-    final res = await repository.getAllEAndWBillAPIRepository();
+  Future getAllApartmentBillAPIProvider() async {
+    final res = await repository.getAllAparmentBilllAPIRepository();
     // print("kq ne:");
     // print(res.data['result']['items']);
+    print("info");
+    print(res.data);
     return res.data['result']['items'];
   }
-  Future getAllServiceBillAPIRepository() async {
+
+  Future getAllServiceBillAPIProvider() async {
     final res = await repository.getAllServiceBillAPIRepository();
     // print("kq ne:");
     // print(res.data['result']['items']);

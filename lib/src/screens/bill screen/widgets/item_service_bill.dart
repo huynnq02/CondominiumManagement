@@ -19,8 +19,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
-      padding: EdgeInsets.fromLTRB(width * 0.02, 0, 10, 0),
-      height: height * 0.2,
+      // padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
@@ -33,8 +32,8 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
         ),
       ),
       child: Padding(
-        padding:
-            EdgeInsets.fromLTRB(width * 0.015, height * 0.02, width * 0.015, 0),
+        padding: EdgeInsets.fromLTRB(
+            width * 0.015, height * 0.01, width * 0.01, height * 0.01),
         child: Row(
           children: [
             Column(
@@ -53,6 +52,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                 Row(
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Loại dịch vụ:",
@@ -74,9 +74,10 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                       ],
                     ),
                     SizedBox(
-                      height: height * 0.02,
+                      width: width * 0.02,
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           widget.serviceBill.serviceName,
@@ -104,7 +105,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   height: height * 0.02,
                 ),
                 Text(
-                  widget.serviceBill.price.toString() + "đ",
+                  widget.serviceBill.price.toString(),
                   style: AppTextStyle.lato.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
@@ -116,26 +117,21 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // widget.bill.type == "Ăn uống"
-                //     ? const Image(
-                //         image: AssetImage("assets/bbq.png"),
-                //       )
-                //     : widget.bill.type == "An ninh"
-                //         ? const Image(
-                //             image: AssetImage("assets/parking.png"),
-                //           )
-                //         : widget.bill.type == "Giải trí"
-                //             ? const Image(
-                //                 image: AssetImage("assets/game.png"),
-                //               )
-                //             : const Image(
-                //                 image: AssetImage("assets/gym.png"),
-                //               ),
-                Image(
-                  image: const AssetImage("assets/water-icon.png"),
-                  height: height * 0.1,
-                  width: width * 0.4,
-                ),
+                widget.serviceBill.serviceName == "Ăn uống"
+                    ? const Image(
+                        image: AssetImage("assets/bbq.png"),
+                      )
+                    : widget.serviceBill.serviceName == "An ninh"
+                        ? const Image(
+                            image: AssetImage("assets/parking.png"),
+                          )
+                        : widget.serviceBill.serviceName == "Giải trí"
+                            ? const Image(
+                                image: AssetImage("assets/game.png"),
+                              )
+                            : const Image(
+                                image: AssetImage("assets/gym.png"),
+                              ),
                 SizedBox(
                   height: height * 0.023,
                 ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
@@ -13,11 +15,14 @@ class _DropDownMenuState extends State<DropDownMenu> {
   String _selected = "Tất cả";
   List<String> choices = <String>[
     'Tất cả',
-    'Đã thanh toán',
     'Chưa thanh toán',
+    'Chờ tiếp nhận',
+    'Đã thanh toán',
   ];
+
   @override
   Widget build(BuildContext context) {
+    final billProvider = Provider.of<BillProvider>(context);
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
@@ -51,6 +56,9 @@ class _DropDownMenuState extends State<DropDownMenu> {
                   DropdownMenuItem(
                     child: Text(choice),
                     value: choice,
+                    onTap: () {
+                      context.read<BillProvider>().setStateProvider(choice);
+                    },
                   ),
               ],
             ),

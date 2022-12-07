@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     feedbackProvider.getUserFeedback();
     profileProvider.getCurrentUserProfile();
     profileProvider.getProfilePicture();
-    billProvider.getAllEAndWBill();
+    billProvider.getAllApartmentBill();
     billProvider.getAllServiceBill();
   }
 

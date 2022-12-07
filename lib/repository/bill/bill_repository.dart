@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:untitled/repository/base/base_repository.dart';
 
 class BillRepository extends BaseRepository {
-  Future<Response> getAllEAndWBillAPIRepository() async {
+  Future<Response> getAllAparmentBilllAPIRepository() async {
     try {
       var client = init();
 
       final authRespone = await client.get(
-        '/api/services/app/Bill/GetAllEAndWBill',
+        '/api/services/app/Bill/GetCurrentUserApartmentBill',
       );
       return authRespone;
     } on DioError catch (error) {
@@ -20,7 +20,7 @@ class BillRepository extends BaseRepository {
       var client = init();
 
       final authRespone = await client.get(
-        '/api/services/app/Bill/GetAllServiceBill',
+        '/api/services/app/Bill/GetCurrentUserServiceBill',
       );
       return authRespone;
     } on DioError catch (error) {

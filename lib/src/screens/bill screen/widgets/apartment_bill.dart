@@ -4,14 +4,14 @@ import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/item_apartment_bill.dart';
 
-class ApartmentBill extends StatefulWidget {
-  const ApartmentBill({Key? key}) : super(key: key);
+class AparmentBilll extends StatefulWidget {
+  const AparmentBilll({Key? key}) : super(key: key);
 
   @override
-  State<ApartmentBill> createState() => _ApartmentBillState();
+  State<AparmentBilll> createState() => _AparmentBilllState();
 }
 
-class _ApartmentBillState extends State<ApartmentBill> {
+class _AparmentBilllState extends State<AparmentBilll> {
   // final List<Bill> bills = [
   //   Bill(
   //       name: "Hóa đơn điện 10/2022",
@@ -52,17 +52,22 @@ class _ApartmentBillState extends State<ApartmentBill> {
   // ];
   @override
   Widget build(BuildContext context) {
-    final eAndWBill =
-        Provider.of<BillProvider>(context, listen: true).eAndWBills;
+    final aparmentBills =
+        Provider.of<BillProvider>(context, listen: true).apartmentBills;
+
     return Container(
       child: ListView.builder(
-        itemCount: eAndWBill.length,
+        itemCount: aparmentBills.length,
         itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-          child: ItemApartmentBill(
-            eAndWBill: eAndWBill[index],
-          ),
-        ),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+            child: ItemAparmentBill(
+              aparmentBill: aparmentBills[index],
+            )
+
+            // ItemAparmentBilll(
+            //     manageBill: bills[index],
+            //   ),
+            ),
       ),
     );
   }

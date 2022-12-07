@@ -15,7 +15,7 @@ class _ServiceBillState extends State<ServiceBill> {
   @override
   Widget build(BuildContext context) {
     final serviceBills =
-        Provider.of<BillProvider>(context, listen: true).ServiceBills;
+        Provider.of<BillProvider>(context, listen: true).serviceBills;
     return Container(
       child: ListView.builder(
         itemCount: serviceBills.length,

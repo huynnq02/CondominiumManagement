@@ -4,16 +4,15 @@ import 'package:untitled/repository/bill/billAPI_provider.dart';
 import 'package:untitled/src/models/bill.dart' as bill;
 
 class BillProvider extends ChangeNotifier {
-  final List<bill.EandWBill> _eAndWBills = []; // Water and Electricity
+  final List<bill.AparmentBill> _apartmentBills = []; // Water and Electricity
   final List<bill.ServiceBill> _serviceBills = [];
-  final List<bill.ManageBill> _manageBills = [];
   String _billState = "Tất cả";
-  List<bill.EandWBill> get eAndWBills => _eAndWBills;
-  List<bill.ServiceBill> get ServiceBills => _serviceBills;
+  List<bill.AparmentBill> get apartmentBills => _apartmentBills;
+  List<bill.ServiceBill> get serviceBills => _serviceBills;
   String get billState => _billState;
-  void setEAndWBill(List<bill.EandWBill> eAndWBills) {
-    _eAndWBills.clear();
-    _eAndWBills.addAll(eAndWBills);
+  void setApartmentBill(List<bill.AparmentBill> apartmentBills) {
+    _apartmentBills.clear();
+    _apartmentBills.addAll(apartmentBills);
     notifyListeners();
   }
 
@@ -28,19 +27,19 @@ class BillProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getAllEAndWBill() async {
+  Future getAllApartmentBill() async {
     print("ok");
-    var res = await BillAPIProvider().getAllEAndWAPIRepository();
+    var res = await BillAPIProvider().getAllApartmentBillAPIProvider();
     // print(res);
-    List<bill.EandWBill> eAndWBills = [];
+    List<bill.AparmentBill> apartmentBills = [];
     for (var item in res) {
-      eAndWBills.add(bill.EandWBill.fromMap(item));
+      apartmentBills.add(bill.AparmentBill.fromMap(item));
     }
-    setEAndWBill(eAndWBills);
+    setApartmentBill(apartmentBills);
   }
 
   Future getAllServiceBill() async {
-    final res = await BillAPIProvider().getAllServiceBillAPIRepository();
+    final res = await BillAPIProvider().getAllServiceBillAPIProvider();
     print(res);
     List<bill.ServiceBill> serviceBills = [];
     for (var item in res) {

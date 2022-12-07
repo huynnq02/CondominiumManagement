@@ -114,7 +114,7 @@ class _BillScreenState extends State<BillScreen>
                 child: TabBarView(
                   controller: tabController,
                   children: const [
-                    ApartmentBill(),
+                    AparmentBilll(),
                     ServiceBill(),
                   ],
                 ),
