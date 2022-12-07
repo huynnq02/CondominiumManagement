@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/repository/service/serviceAPI_provider.dart';
+import 'package:untitled/src/models/user.dart';
+import 'package:untitled/src/screens/home screen/widgets/custom_button.dart';
 import 'package:untitled/src/models/apartment_service.dart';
 import 'package:untitled/src/models/user_service.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/user_service_provider.dart';
-import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
+import 'package:untitled/src/screens/home%20screen/widgets/home_item.dart';
 import '../../../utils/app_constant/app_colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +20,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final DateTime now = DateTime.now();
+  MDUser user = MDUser(
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+      gender: '',
+      idNumber: '',
+      birthDate: '');
+  List<String> apartment = ['', ''];
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
       listen: false,
     );
     await profileProvider.getCurrentUserProfile();
+
+    String apartmentId = profileProvider.mdUser.apartmentId ??
+        'Acc không có apartmentId.Acc không có apartmentId';
+    setState(() {
+      user = profileProvider.mdUser;
+      apartment = apartmentId.split('.');
+    });
   }
 
   void getProfilePicture() async {
@@ -69,20 +89,192 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    return Container(
-      color: AppColors.White,
-      child: Center(
-        child: ElevatedButton(
-          onPressed: () => showLogoutConfirmPopupDialog(context, height, width),
-          child: const Text("Show confirm logout popup"),
+    return Scaffold(
+      backgroundColor: AppColors.White,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        flexibleSpace: SafeArea(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Xin chào! ${user.surname + user.name}',
+              style: TextStyle(fontSize: 15, shadows: [
+                Shadow(
+                    color: Colors.black.withOpacity(0.1),
+                    offset: const Offset(0, 4),
+                    blurRadius: 4)
+              ]),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              'Tòa ${apartment[0]} - ${apartment[1]}',
+              style: const TextStyle(fontSize: 12),
+            )
+          ],
+        )),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(top: 22, bottom: 86),
+          child: Column(children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 30,
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 19),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        offset: const Offset(0, 4),
+                        blurRadius: 4)
+                  ]),
+              child: Column(
+                children: [
+                  Text(
+                    'Tổng thanh toán tháng ${now.month}/${now.year}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: '1.690.000',
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: const Color(0xFFFF8A00),
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: const Offset(0, 4),
+                                      blurRadius: 4)
+                                ])),
+                        const TextSpan(
+                            text: ' vnđ',
+                            style:
+                                TextStyle(fontSize: 15, color: Colors.black)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButton(
+                        label: 'Chi tiết',
+                        onPressed: () {},
+                      ),
+                      CustomButton(
+                        label: 'Thanh toán',
+                        onPressed: () {},
+                        backgroundColor: const Color(0xFF5FC5FF),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 46),
+            CustomButton(
+              label: 'Chung cư APATO',
+              onPressed: () {},
+              width: 240,
+              backgroundColor: const Color(0xFFFFC000),
+            ),
+            const SizedBox(
+              height: 42,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 33),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  HomeItem(
+                    title: 'Ban quản lý',
+                    iconPath: 'assets/home_icons/office-building.png',
+                  ),
+                  HomeItem(
+                    title: 'Nội quy',
+                    iconPath: 'assets/home_icons/rules.png',
+                  ),
+                  HomeItem(
+                    title: 'Bảng tin',
+                    iconPath: 'assets/home_icons/newspaper.png',
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 47,
+            ),
+            CustomButton(
+              label: 'Các tính năng thường dùng',
+              onPressed: () {},
+              width: 240,
+              backgroundColor: const Color(0xFFFFC000),
+            ),
+            const SizedBox(
+              height: 42,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 33),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  HomeItem(
+                    title: 'Đăng ký khách',
+                    iconPath: 'assets/home_icons/guest-list.png',
+                  ),
+                  HomeItem(
+                    title: 'Giặt ủi',
+                    iconPath: 'assets/home_icons/laundry-machine.png',
+                  ),
+                  HomeItem(
+                    title: 'Góp ý',
+                    iconPath: 'assets/home_icons/feedback.png',
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 33),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  HomeItem(
+                    title: 'Đăng ký thẻ xe',
+                    iconPath: 'assets/home_icons/credit.png',
+                  ),
+                  HomeItem(
+                    title: 'Đăng ký phòng gym',
+                    iconPath: 'assets/home_icons/gym.png',
+                  ),
+                  HomeItem(
+                    title: 'Đăng ký vệ sinh phòng',
+                    iconPath: 'assets/home_icons/cleaning.png',
+                  ),
+                ],
+              ),
+            ),
+          ]),
         ),
       ),
     );
   }
-
-  void showLogoutConfirmPopupDialog(BuildContext context, height, width) =>
-      showDialog(
-          context: context, builder: ((context) => LogOutConfirmDialog()));
 }
