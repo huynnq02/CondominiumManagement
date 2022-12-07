@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import '../../utils/app_constant/app_colors.dart';
 
-enum TextFieldType { email, password, number, date, name }
+enum TextFieldType { email, password, number, date, name, autocomplete }
 
 class RegisterTextField extends StatefulWidget {
   final String labelText;
@@ -20,6 +21,9 @@ class RegisterTextField extends StatefulWidget {
   final bool? pwRule;
   final bool? showPw;
   final String? error;
+  final List<String>? items;
+  final dynamic Function(String)? onSuggestionSelected;
+  final bool? borderColor;
 
   const RegisterTextField(
       {Key? key,
@@ -30,12 +34,15 @@ class RegisterTextField extends StatefulWidget {
       this.maxLength,
       this.autovalidateMode,
       this.isCenter,
-      this.border,
+      this.border = BorderRadius.zero,
       this.isDisabled = false,
       this.onTap,
       this.pwRule,
       this.showPw,
-      this.error})
+      this.error,
+      this.items,
+      this.onSuggestionSelected,
+      this.borderColor})
       : super(key: key);
 
   @override
@@ -74,20 +81,32 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     return result;
   }
 
+  bool isEmail(String input) => RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(input);
+
+  bool isPhone(String input) =>
+      RegExp(r'(^(?:[+0]9)?[0-9]{10,11}$)').hasMatch(input);
+
   String? getValidator(String? value, TextFieldType? type) {
     if (value != null) {
       switch (type) {
         case TextFieldType.email:
           if (value.isEmpty) {
-            errorText = 'Vui lòng nhập email';
+            errorText = 'Vui lòng nhập email hoặc số điện thoại';
             return '';
           }
-          String pattern =
-              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))$';
-          RegExp regExp = RegExp(pattern);
-          if (!regExp.hasMatch(value)) {
-            errorText = 'ĝịnh  dạng email không đúng, vui lòng nhập lại';
-            return '';
+          final isNum = num.tryParse(value) is num;
+          if (!isNum) {
+            if (!isEmail(value)) {
+              errorText = 'Định dạng email không đúng, vui lòng nhập lại';
+              return '';
+            }
+          } else {
+            if (!isPhone(value) || !value.startsWith('0')) {
+              errorText = 'Định dạng không hợp lệ, vui lòng nhập lại';
+              return '';
+            }
           }
           break;
         case TextFieldType.password:
@@ -95,7 +114,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Vui lòng nhập mật khẩu';
             return '';
           }
-          if (widget.pwRule!=null && widget.pwRule==false) {
+          if (widget.pwRule != null && widget.pwRule == false) {
             break;
           }
           if (value.length < 6) {
@@ -113,7 +132,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Chỉ được bao gồm ký tự chữ';
             return '';
           } else if (value.split(' ').length < 2) {
-            errorText = 'Hờ tên phải có ít nhất 2 từ';
+            errorText = 'Họ tên phải có ít nhất 2 từ';
             return '';
           }
           break;
@@ -147,122 +166,169 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     return GestureDetector(
       onTap: handleOnTap,
       child: Stack(alignment: Alignment.center, children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          decoration: BoxDecoration(
-              border: (errorText != '' || (widget.error!=null && widget.error != ''))
+        ClipPath(
+          clipper: ShapeBorderClipper(
+              shape: RoundedRectangleBorder(borderRadius: widget.border!)),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            decoration: BoxDecoration(
+              border: (errorText != '' ||
+                      (widget.error != null && widget.error != ''))
                   ? Border.all(color: const Color(0xFFFF0000))
+                  : widget.borderColor != null
+                      ? null
+                      : Border(
+                          top:
+                              BorderSide(color: Colors.black.withOpacity(0.2))),
+              borderRadius: (errorText != '' ||
+                      (widget.error != null && widget.error != ''))
+                  ? widget.border
                   : null,
               color: Colors.white.withOpacity(0.8),
-              borderRadius: widget.border),
-          child: Stack(alignment: Alignment.center, children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.labelText,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                TextFormField(
-                  key: _textformfieldkey,
-                  validator: ((value) => getValidator(value, widget.type)),
-                  controller: widget.controller,
-                  focusNode: unitCodeCtrlFocusNode,
-                  enabled: (widget.type == TextFieldType.date)
-                      ? false
-                      : !widget.isDisabled,
-                  textAlign:
-                      (widget.isCenter != null && widget.isCenter == true)
-                          ? TextAlign.center
-                          : TextAlign.start,
-                  textCapitalization: widget.type == TextFieldType.name
-                      ? TextCapitalization.words
-                      : TextCapitalization.none,
-                  keyboardType: widget.type == TextFieldType.email
-                      ? TextInputType.emailAddress
-                      : widget.type == TextFieldType.number
-                          ? TextInputType.number
-                          : TextInputType.text,
-                  obscureText: widget.type == TextFieldType.password
-                      ? _obscureText
-                      : false,
-                  obscuringCharacter: '*',
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(widget.maxLength),
-                    if (widget.type == TextFieldType.number)
-                      FilteringTextInputFormatter.digitsOnly
-                  ],
-                  onChanged: (value) {
-                    if (widget.type != TextFieldType.name) return;
-                    final controller = widget.controller;
-                    if (controller != null) {
-                      controller.value = TextEditingValue(
-                          text: formatedName(value),
-                          selection: controller.selection);
-                    }
-                  },
-                  style: const TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    border: InputBorder.none,
-                    errorStyle: const TextStyle(height: 0),
-                    floatingLabelAlignment:
-                        (widget.isCenter != null && widget.isCenter == true)
-                            ? FloatingLabelAlignment.center
-                            : FloatingLabelAlignment.start,
-                    contentPadding: widget.type != TextFieldType.date
-                        ? const EdgeInsets.symmetric(horizontal: 10)
-                        : EdgeInsets.zero,
-                  ),
-                ),
-              ],
             ),
-            if (widget.type == TextFieldType.date)
-              Positioned(
-                  right: 0,
-                  child: Image.asset(
-                    'assets/dropdown.png',
-                    width: 7.18,
-                  ))
-            else if (widget.type == TextFieldType.password && !(widget.showPw!=null && !widget.showPw!))
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: GestureDetector(
-                  onTap: _toggle,
-                  child: _obscureText == true
-                      ? SvgPicture.asset(
-                          'assets/eye.svg',
-                          width: 17,
-                          height: 17,
+            child: Stack(alignment: Alignment.center, children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.labelText,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w300),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  widget.type == TextFieldType.autocomplete
+                      ? TypeAheadFormField(
+                          validator: (value) {
+                            if (value != null && value.isEmpty) {
+                              errorText = 'Vui lòng chọn thông tin thích hợp';
+                              return '';
+                            }
+                            errorText = '';
+                            return null;
+                          },
+                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          textFieldConfiguration: TextFieldConfiguration(
+                              controller: widget.controller,
+                              style: const TextStyle(fontSize: 18),
+                              focusNode: unitCodeCtrlFocusNode,
+                              decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  errorStyle: TextStyle(height: 0),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 10))),
+                          itemBuilder: (BuildContext context, String itemData) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Text(
+                                itemData,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            );
+                          },
+                          onSuggestionSelected: (String suggestion) =>
+                              widget.onSuggestionSelected?.call(suggestion),
+                          suggestionsCallback: (pattern) async {
+                            return widget.items!.where(
+                                (element) => element.toLowerCase().contains(
+                                      pattern.toLowerCase(),
+                                    ));
+                          },
                         )
-                      : const Icon(
-                          Icons.visibility_off,
-                          size: 17,
-                          color: AppColors.Black,
+                      : TextFormField(
+                          key: _textformfieldkey,
+                          validator: ((value) =>
+                              getValidator(value, widget.type)),
+                          controller: widget.controller,
+                          focusNode: unitCodeCtrlFocusNode,
+                          enabled: (widget.type == TextFieldType.date)
+                              ? false
+                              : !widget.isDisabled,
+                          textAlign: (widget.isCenter != null &&
+                                  widget.isCenter == true)
+                              ? TextAlign.center
+                              : TextAlign.start,
+                          textCapitalization: widget.type == TextFieldType.name
+                              ? TextCapitalization.words
+                              : TextCapitalization.none,
+                          keyboardType: widget.type == TextFieldType.email
+                              ? TextInputType.emailAddress
+                              : widget.type == TextFieldType.number
+                                  ? TextInputType.number
+                                  : TextInputType.text,
+                          obscureText: widget.type == TextFieldType.password
+                              ? _obscureText
+                              : false,
+                          obscuringCharacter: '*',
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(widget.maxLength),
+                            if (widget.type == TextFieldType.number)
+                              FilteringTextInputFormatter.digitsOnly
+                          ],
+                          onChanged: (value) {
+                            if (widget.type != TextFieldType.name) return;
+                            final controller = widget.controller;
+                            if (controller != null) {
+                              controller.value = TextEditingValue(
+                                  text: formatedName(value),
+                                  selection: controller.selection);
+                            }
+                          },
+                          style: const TextStyle(fontSize: 18),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: InputBorder.none,
+                            errorStyle: const TextStyle(height: 0),
+                            floatingLabelAlignment: (widget.isCenter != null &&
+                                    widget.isCenter == true)
+                                ? FloatingLabelAlignment.center
+                                : FloatingLabelAlignment.start,
+                            contentPadding: widget.type != TextFieldType.date
+                                ? const EdgeInsets.symmetric(horizontal: 10)
+                                : EdgeInsets.zero,
+                          ),
                         ),
-                ),
-              )
-            else if (widget.type == TextFieldType.email)
-              Positioned(
+                ],
+              ),
+              if (widget.type == TextFieldType.date ||
+                  widget.type == TextFieldType.autocomplete)
+                Positioned(
+                    right: 0,
+                    child: Image.asset(
+                      'assets/dropdown.png',
+                      width: 7.18,
+                    ))
+              else if (widget.type == TextFieldType.password &&
+                  !(widget.showPw != null && !widget.showPw!))
+                Positioned(
                   right: 0,
                   bottom: 0,
-                  child: Text(
-                    '@gmail.com',
-                    style: TextStyle(
-                        fontSize: 19, color: Colors.black.withOpacity(0.2)),
-                  ))
-          ]),
+                  child: GestureDetector(
+                    onTap: _toggle,
+                    child: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                      size: 17,
+                      color: AppColors.Black,
+                    ),
+                  ),
+                )
+            ]),
+          ),
         ),
         Positioned(
-            top: 0,
-            child: Text((widget.error!=null && widget.error!.isNotEmpty) ? widget.error! : errorText,
-                style:
-                    GoogleFonts.inter(color: const Color(0xFFFF0000), fontSize: 8))),
+            top: 3,
+            child: Text(
+                (widget.error != null && widget.error!.isNotEmpty)
+                    ? widget.error!
+                    : errorText,
+                style: GoogleFonts.inter(
+                    color: const Color(0xFFFF0000), fontSize: 8))),
       ]),
     );
   }

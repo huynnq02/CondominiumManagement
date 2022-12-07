@@ -10,6 +10,7 @@ import 'package:untitled/src/screens/home%20screen/home_screen.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/widgets/information.dart';
 import 'package:untitled/src/screens/profile%20screen/profile_screen.dart';
+import 'package:untitled/src/screens/service%20screen/service_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import '../../../utils/app_constant/app_text_style.dart';
 import '../../../utils/helper/app_preference.dart';
@@ -39,11 +40,9 @@ class _MainScreenState extends State<MainScreen> {
   final pages = [
     const HomeScreen(),
     FeedbackScreen(),
-    const Center(
-      child: Text("Screen 3"),
-    ),
+    const ServiceScreen(),
     BillScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
   @override
   void initState() {
@@ -191,12 +190,12 @@ class _MainScreenState extends State<MainScreen> {
                   BottomNavigationBarItem(
                     icon: ImageIcon(
                       const AssetImage(
-                          'assets/bottom_navigation_bar_icon/global.png'),
+                          'assets/bottom_navigation_bar_icon/ic_service.png'),
                       color: _selectedIndex == 2
                           ? const Color(0xFF1D6D54)
                           : AppColors.Black,
                     ),
-                    label: '?',
+                    label: 'Dịch vụ',
                   ),
                   BottomNavigationBarItem(
                     icon: ImageIcon(
