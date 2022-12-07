@@ -4,7 +4,6 @@ import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/drop_down_menu.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/apartment_bill.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/service_bill.dart';
-import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class BillScreen extends StatefulWidget {
@@ -45,6 +44,10 @@ class _BillScreenState extends State<BillScreen>
         return Provider.of<BillProvider>(context, listen: false)
             .paidApartmentBills
             .length;
+      } else {
+        return Provider.of<BillProvider>(context, listen: false)
+            .waitingApartmentBills
+            .length;
       }
     } else {
       if (Provider.of<BillProvider>(context).billState == "Tất cả") {
@@ -67,7 +70,6 @@ class _BillScreenState extends State<BillScreen>
             .length;
       }
     }
-    return 0;
   }
 
   @override

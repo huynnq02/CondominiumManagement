@@ -4,10 +4,10 @@ import 'package:untitled/repository/bill/billAPI_provider.dart';
 import 'package:untitled/src/models/bill.dart' as bill;
 
 class BillProvider extends ChangeNotifier {
-  final List<bill.AparmentBill> _apartmentBills = [];
-  final List<bill.AparmentBill> _paidApartmentBills = [];
-  final List<bill.AparmentBill> _unpaidApartmentBills = [];
-  final List<bill.AparmentBill> _waitingApartmentBills = [];
+  final List<bill.ApartmentBill> _apartmentBills = [];
+  final List<bill.ApartmentBill> _paidApartmentBills = [];
+  final List<bill.ApartmentBill> _unpaidApartmentBills = [];
+  final List<bill.ApartmentBill> _waitingApartmentBills = [];
 
   final List<bill.ServiceBill> _serviceBills = [];
   final List<bill.ServiceBill> _paidServiceBills = [];
@@ -16,10 +16,10 @@ class BillProvider extends ChangeNotifier {
   int _currentTab = 0;
   String _billState = "Tất cả";
   int get currentTab => _currentTab;
-  List<bill.AparmentBill> get apartmentBills => _apartmentBills;
-  List<bill.AparmentBill> get paidApartmentBills => _paidApartmentBills;
-  List<bill.AparmentBill> get unpaidApartmentBills => _unpaidApartmentBills;
-  List<bill.AparmentBill> get waitingApartmentBills => _waitingApartmentBills;
+  List<bill.ApartmentBill> get apartmentBills => _apartmentBills;
+  List<bill.ApartmentBill> get paidApartmentBills => _paidApartmentBills;
+  List<bill.ApartmentBill> get unpaidApartmentBills => _unpaidApartmentBills;
+  List<bill.ApartmentBill> get waitingApartmentBills => _waitingApartmentBills;
 
   List<bill.ServiceBill> get serviceBills => _serviceBills;
   List<bill.ServiceBill> get paidServiceBills => _paidServiceBills;
@@ -27,11 +27,12 @@ class BillProvider extends ChangeNotifier {
   List<bill.ServiceBill> get waitingServiceBills => _waitingServiceBills;
 
   String get billState => _billState;
-  void setApartmentBill(List<bill.AparmentBill> apartmentBills) {
+  void setApartmentBill(List<bill.ApartmentBill> apartmentBills) {
     _apartmentBills.clear();
     _apartmentBills.addAll(apartmentBills);
     setApartmentBillWithState();
     notifyListeners();
+    print(waitingApartmentBills.length);
   }
 
   void setStateProvider(String billState) {
@@ -87,9 +88,9 @@ class BillProvider extends ChangeNotifier {
     print("ok");
     var res = await BillAPIProvider().getAllApartmentBillAPIProvider();
     // print(res);
-    List<bill.AparmentBill> apartmentBills = [];
+    List<bill.ApartmentBill> apartmentBills = [];
     for (var item in res) {
-      apartmentBills.add(bill.AparmentBill.fromMap(item));
+      apartmentBills.add(bill.ApartmentBill.fromMap(item));
     }
     setApartmentBill(apartmentBills);
   }

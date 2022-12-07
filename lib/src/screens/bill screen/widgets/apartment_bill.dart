@@ -12,44 +12,26 @@ class AparmentBilll extends StatefulWidget {
 }
 
 class _AparmentBilllState extends State<AparmentBilll> {
-  // final List<Bill> bills = [
-  //   Bill(
-  //       name: "Hóa đơn điện 10/2022",
-  //       type: "Electricity",
-  //       deadline: "15/10/2022",
-  //       price: "500.000đ",
-  //       state: "Chưa thanh toán"),
-  //   Bill(
-  //       name: "Hóa đơn nước 10/2022",
-  //       type: "Water",
-  //       deadline: "15/10/2022",
-  //       price: "200.000đ",
-  //       state: "Chờ tiếp nhận"),
-  //   Bill(
-  //       name: "Phí dọn rác 09/2022",
-  //       type: "Garbage",
-  //       deadline: "15/10/2022",
-  //       price: "50.000đ",
-  //       state: "Đã thanh toán"),
-  //   Bill(
-  //       name: "Phí QL chung cư 09/2022",
-  //       type: "Management",
-  //       deadline: "15/10/2022",
-  //       price: "100.000đ",
-  //       state: "Đã thanh toán"),
-  //   Bill(
-  //       name: "Hóa đơn điện 09/2022",
-  //       type: "Electricity",
-  //       deadline: "15/10/2022",
-  //       price: "500.000đ",
-  //       state: "Chưa thanh toán"),
-  //   Bill(
-  //       name: "Hóa đơn nước 09/2022",
-  //       type: "Water",
-  //       deadline: "15/10/2022",
-  //       price: "200.000đ",
-  //       state: "Chờ tiếp nhận"),
-  // ];
+  int itemCount(String state) {
+    if (state == 'Tất cả') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .apartmentBills
+          .length;
+    } else if (state == 'Chưa thanh toán') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .unpaidApartmentBills
+          .length;
+    } else if (state == 'Đã thanh toán') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .paidApartmentBills
+          .length;
+    } else {
+      return Provider.of<BillProvider>(context, listen: false)
+          .waitingApartmentBills
+          .length;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final aparmentBills =
@@ -57,17 +39,24 @@ class _AparmentBilllState extends State<AparmentBilll> {
 
     return Container(
       child: ListView.builder(
-        itemCount: aparmentBills.length,
+        itemCount: itemCount(Provider.of<BillProvider>(context).billState),
         itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-            child: ItemAparmentBill(
-              aparmentBill: aparmentBills[index],
-            )
-
-            // ItemAparmentBilll(
-            //     manageBill: bills[index],
-            //   ),
-            ),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+          child: ItemAparmentBill(
+              apartmentBill:
+                  Provider.of<BillProvider>(context).billState == 'Tất cả'
+                      ? aparmentBills[index]
+                      : Provider.of<BillProvider>(context).billState ==
+                              'Chưa thanh toán'
+                          ? Provider.of<BillProvider>(context)
+                              .unpaidApartmentBills[index]
+                          : Provider.of<BillProvider>(context).billState ==
+                                  'Đã thanh toán'
+                              ? Provider.of<BillProvider>(context)
+                                  .paidApartmentBills[index]
+                              : Provider.of<BillProvider>(context)
+                                  .waitingApartmentBills[index]),
+        ),
       ),
     );
   }

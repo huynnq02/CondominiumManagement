@@ -7,8 +7,8 @@ import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 
 class ItemAparmentBill extends StatefulWidget {
-  final AparmentBill aparmentBill;
-  const ItemAparmentBill({Key? key, required this.aparmentBill})
+  final ApartmentBill apartmentBill;
+  const ItemAparmentBill({Key? key, required this.apartmentBill})
       : super(key: key);
 
   @override
@@ -23,12 +23,14 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
 
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder:
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ApartmentBillDetailScreen(
+              apartmentBill: widget.apartmentBill,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(width * 0.02, 0, width * 0.02, 0),
@@ -36,9 +38,9 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: widget.aparmentBill.state == "Đã thanh toán"
+            color: widget.apartmentBill.state == "Đã thanh toán"
                 ? const Color(0xFF2AC956)
-                : widget.aparmentBill.state == "Chưa thanh toán"
+                : widget.apartmentBill.state == "Chưa thanh toán"
                     ? const Color(0xFFFFC000)
                     : const Color(0xFF5C92FE),
             width: 2,
@@ -48,9 +50,13 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
-              child: widget.aparmentBill.billType == "Điện"
+              child: widget.apartmentBill.billType == "Điện"
                   ? Image.asset("assets/electricity-icon.png")
-                  : Image.asset("assets/water-icon.png"),
+                  : widget.apartmentBill.billType == "Nước"
+                      ? Image.asset("assets/water-icon.png")
+                      : widget.apartmentBill.billType == "Rác"
+                          ? Image.asset("assets/garbage-icon.png")
+                          : Image.asset("assets/management-icon.png"),
               flex: 1,
             ),
             Expanded(
@@ -60,7 +66,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.aparmentBill.billName,
+                    widget.apartmentBill.billName,
                     style: AppTextStyle.lato.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
@@ -70,7 +76,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                     height: 10,
                   ),
                   Text(
-                    "Hạn: " + widget.aparmentBill.paymentTerm.formatDateTime(),
+                    "Hạn: " + widget.apartmentBill.paymentTerm.formatDateTime(),
                     style: AppTextStyle.lato.copyWith(
                       fontSize: 11,
                       color: const Color(0xFFFF8A00),
@@ -84,7 +90,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  widget.aparmentBill.price.toString() + "đ",
+                  widget.apartmentBill.price.toString() + "đ",
                   style: AppTextStyle.lato.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -94,22 +100,22 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                 ),
                 Row(
                   children: [
-                    widget.aparmentBill.state == "Đã thanh toán"
+                    widget.apartmentBill.state == "Đã thanh toán"
                         ? Image.asset("assets/done-icon.png")
-                        : widget.aparmentBill.state == "Chưa thanh toán"
+                        : widget.apartmentBill.state == "Chưa thanh toán"
                             ? Image.asset("assets/warning-icon.png")
                             : Image.asset("assets/waiting-icon.png"),
                     const SizedBox(
                       width: 10,
                     ),
-                    widget.aparmentBill.state == "Đã thanh toán"
+                    widget.apartmentBill.state == "Đã thanh toán"
                         ? Text(
                             "Đã thanh toán",
                             style: AppTextStyle.lato.copyWith(
                               color: const Color(0xFF2AC956),
                             ),
                           )
-                        : widget.aparmentBill.state == "Chưa thanh toán"
+                        : widget.apartmentBill.state == "Chưa thanh toán"
                             ? Container(
                                 height: height * 0.03,
                                 width: width * 0.20,

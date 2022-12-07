@@ -63,7 +63,7 @@ class ServiceBill extends Bill {
 
   String? note;
   String serviceName;
-
+  String? phoneNumber;
   ServiceBill({
     this.serviceId,
     required this.createDay,
@@ -78,6 +78,9 @@ class ServiceBill extends Bill {
     required String state,
     required this.serviceName,
     required int price,
+    required String startDay,
+    required String endDay,
+    this.phoneNumber,
   }) : super(
           billID: billID,
           billName: billName,
@@ -85,8 +88,8 @@ class ServiceBill extends Bill {
           ownerName: ownerName,
           paymentTerm: paymentTerm,
           state: state,
-          startDay: '',
-          endDay: '',
+          startDay: startDay,
+          endDay: endDay,
           price: price,
         );
 
@@ -108,6 +111,7 @@ class ServiceBill extends Bill {
       'price': price,
       'state': state,
       'serviceName': serviceName,
+      'phoneNumber': phoneNumber,
     };
   }
 
@@ -126,6 +130,9 @@ class ServiceBill extends Bill {
       state: map['state'].toString(),
       serviceName: map['serviceName'],
       price: map['price'] as int,
+      phoneNumber: map['phoneNumber']?.toString(),
+      startDay: map['startDay'],
+      endDay: map['endDay'],
     );
   }
 
@@ -136,7 +143,7 @@ class ServiceBill extends Bill {
       ServiceBill.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
-class AparmentBill extends Bill {
+class ApartmentBill extends Bill {
   String billType;
   String apartmentID;
   int oldIndex;
@@ -145,7 +152,7 @@ class AparmentBill extends Bill {
   String invoicePeriod;
   String createDay;
 
-  AparmentBill({
+  ApartmentBill({
     required this.billType,
     required this.apartmentID,
     required this.oldIndex,
@@ -160,6 +167,8 @@ class AparmentBill extends Bill {
     required String paymentTerm,
     required String state,
     required int price,
+    required String startDay,
+    required String endDay,
   }) : super(
           billID: billID,
           billName: billName,
@@ -167,8 +176,8 @@ class AparmentBill extends Bill {
           ownerName: ownerName,
           paymentTerm: paymentTerm,
           state: state,
-          startDay: '',
-          endDay: '',
+          startDay: startDay,
+          endDay: endDay,
           price: price,
         );
 
@@ -194,8 +203,8 @@ class AparmentBill extends Bill {
     };
   }
 
-  factory AparmentBill.fromMap(Map<String, dynamic> map) {
-    return AparmentBill(
+  factory ApartmentBill.fromMap(Map<String, dynamic> map) {
+    return ApartmentBill(
       billType: map['billType'],
       apartmentID: map['apartmentID'],
       oldIndex: map['oldIndex'] as int,
@@ -210,12 +219,14 @@ class AparmentBill extends Bill {
       paymentTerm: map['paymentTerm'],
       state: map['state'].toString(),
       price: map['price'] as int,
+      startDay: map['startDay'],
+      endDay: map['endDay'],
     );
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory AparmentBill.fromJson(String source) =>
-      AparmentBill.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApartmentBill.fromJson(String source) =>
+      ApartmentBill.fromMap(json.decode(source) as Map<String, dynamic>);
 }

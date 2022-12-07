@@ -17,12 +17,14 @@ class RowDetail extends StatelessWidget {
         Text(
           title,
           style: AppTextStyle.lato.copyWith(
+            fontSize: 14,
             fontWeight: FontWeight.w700,
           ),
         ),
         Text(
           data,
           style: AppTextStyle.lato.copyWith(
+            fontSize: 14,
             fontWeight: FontWeight.w700,
           ),
         ),

@@ -26,4 +26,12 @@ extension StringExtensions on String {
     result = result.replaceAll(RegExp(r"\n\s"), "\n");
     return result;
   }
+
+  String formatMoney() {
+    var result = this;
+    result = result.replaceAllMapped(
+        RegExp(r"(\d)(?=(\d{3})+(?!\d))"), (match) => "${match[1]}.");
+    result += "đ";
+    return result;
+  }
 }
