@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/src/screens/bill%20detail%20screen/apartment_bill_detail.dart';
+import 'package:untitled/src/screens/payment%20screen/payment_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
@@ -115,17 +116,28 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                             ),
                           )
                         : widget.apartmentBill.state == "Chưa thanh toán"
-                            ? Container(
-                                height: height * 0.03,
-                                width: width * 0.20,
-                                child: Center(
-                                  child: Text(
-                                    "Thanh toán",
-                                    style: AppTextStyle.lato
-                                        .copyWith(color: AppColors.White),
+                            ? InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PaymentScreen(
+                                        apartmentBill: widget.apartmentBill,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.20,
+                                  child: Center(
+                                    child: Text(
+                                      "Thanh toán",
+                                      style: AppTextStyle.lato
+                                          .copyWith(color: AppColors.White),
+                                    ),
                                   ),
-                                ),
-                                decoration: BoxDecoration(
+                                  decoration: BoxDecoration(
                                     color: const Color(0xFFFFC000),
                                     borderRadius: BorderRadius.circular(5),
                                     boxShadow: const [
@@ -134,7 +146,9 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                                         offset: Offset(0, 3),
                                         blurRadius: 6,
                                       ),
-                                    ]),
+                                    ],
+                                  ),
+                                ),
                               )
                             : Text(
                                 "Chờ tiếp nhận",
