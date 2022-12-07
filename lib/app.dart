@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/apartment_provider.dart';
+import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
@@ -13,6 +14,7 @@ import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/providers/login_provider.dart';
 import 'package:untitled/src/providers/repository_provider.dart';
 import 'package:untitled/src/providers/reset_password_provider.dart';
+import 'package:untitled/src/providers/user_service_provider.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
@@ -108,6 +110,12 @@ class _AppState extends State<App> {
           }),
           ChangeNotifierProvider(create: (BuildContext context) {
             return ApartmentProvider();
+          }),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return ApartmentServiceProvider();
+          }),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return UserServiceProvider();
           })
         ],
         child: MaterialApp(
