@@ -102,14 +102,14 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getCurrentUserProfile() async {
+  void getCurrentUserProfile() async {
     var response = await ProfilePro().getCurrentUserProfileAPIProvider();
-    print('a : ${response['result']}');
+    print(response['result']);
     MDUser user = MDUser.fromMap(response['result']);
     setMdUser(user); // notifyListeners();
   }
 
-  Future<void> getProfilePicture() async {
+  void getProfilePicture() async {
     var response = await ProfilePro().getProfilePictureAPIProvider();
     var bytesString = response['profilePicture'] as String;
     setProfilePicture(
