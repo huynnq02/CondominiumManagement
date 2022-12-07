@@ -268,7 +268,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                                   selection: controller.selection);
                             }
                           },
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 18),
                           decoration: InputDecoration(
                             isDense: true,
                             border: InputBorder.none,
