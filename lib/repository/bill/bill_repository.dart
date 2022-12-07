@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:untitled/repository/base/base_repository.dart';
 
-class BillRepository extends BaseRepository {
+class BillAPIRepository extends BaseRepository {
   Future<Response> getAllAparmentBilllAPIRepository() async {
     try {
       var client = init();

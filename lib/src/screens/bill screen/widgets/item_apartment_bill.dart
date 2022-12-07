@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/src/screens/bill%20detail%20screen/apartment_bill_detail.dart';
-import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';

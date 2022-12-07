@@ -1,10 +1,10 @@
 import 'package:untitled/repository/base/base_provider.dart';
 import 'package:untitled/repository/bill/bill_repository.dart';
 
-class BillAPIProvider extends BaseProvider<BillRepository> {
+class BillAPIProvider extends BaseProvider<BillAPIRepository> {
   @override
-  BillRepository initRepository() {
-    return BillRepository();
+  BillAPIRepository initRepository() {
+    return BillAPIRepository();
   }
 
   Future getAllApartmentBillAPIProvider() async {

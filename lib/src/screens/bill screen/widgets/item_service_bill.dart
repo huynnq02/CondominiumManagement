@@ -31,7 +31,6 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
         );
       },
       child: Container(
-        // padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
@@ -45,7 +44,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
         ),
         child: Padding(
           padding: EdgeInsets.fromLTRB(
-              width * 0.015, height * 0.01, width * 0.01, height * 0.01),
+              width * 0.018, height * 0.01, width * 0.03, height * 0.01),
           child: Row(
             children: [
               Column(
@@ -54,7 +53,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   Text(
                     widget.serviceBill.billName,
                     style: AppTextStyle.lato.copyWith(
-                      fontSize: 17,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -69,7 +68,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                           Text(
                             "Loại dịch vụ:",
                             style: AppTextStyle.lato.copyWith(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w100,
                             ),
                           ),
@@ -79,7 +78,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                           Text(
                             "Hạn đóng:",
                             style: AppTextStyle.lato.copyWith(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w100,
                             ),
                           ),
@@ -94,7 +93,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                           Text(
                             widget.serviceBill.serviceName,
                             style: AppTextStyle.lato.copyWith(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -104,7 +103,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                           Text(
                             widget.serviceBill.paymentTerm.formatDateTime(),
                             style: AppTextStyle.lato.copyWith(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xFFFF8A00),
                             ),
@@ -119,7 +118,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   Text(
                     widget.serviceBill.price.toString(),
                     style: AppTextStyle.lato.copyWith(
-                        fontSize: 15,
+                        fontSize: 13,
                         fontWeight: FontWeight.w500,
                         color: AppColors.Black),
                   ),
