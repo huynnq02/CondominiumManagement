@@ -156,8 +156,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
       child: Stack(alignment: Alignment.center, children: [
         ClipPath(
           clipper: ShapeBorderClipper(
-              shape: RoundedRectangleBorder(
-                  borderRadius: widget.border!)),
+              shape: RoundedRectangleBorder(borderRadius: widget.border!)),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -170,7 +169,8 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                       : Border(
                           top:
                               BorderSide(color: Colors.black.withOpacity(0.2))),
-              borderRadius: (errorText != '' || (widget.error != null && widget.error != ''))
+              borderRadius: (errorText != '' ||
+                      (widget.error != null && widget.error != ''))
                   ? widget.border
                   : null,
               color: Colors.white.withOpacity(0.8),

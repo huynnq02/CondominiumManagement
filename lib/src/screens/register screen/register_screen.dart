@@ -1,19 +1,15 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/apartment_provider.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
-import 'package:untitled/src/providers/register_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled/src/widget/custom_boxshadow.dart';
 import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import '../../widget/register_textfield.dart';
-import 'widget/widget_button.dart';
 
 const List<String> genderList = <String>['Nam', 'Nữ'];
 
@@ -27,7 +23,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   OTPProvider? otpProvider;
-  RegisterProvider? provider;
   ApartmentProvider? apartmentProvider;
   String? password;
   String dropdownValue = genderList.first;
@@ -55,9 +50,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     otpProvider = Provider.of<OTPProvider>(context, listen: false);
-    provider = Provider.of<RegisterProvider>(context, listen: false);
     apartmentProvider = Provider.of<ApartmentProvider>(context, listen: false);
     apartmentProvider!.getAllApartments();
+  }
+
+  @override
+  void dispose() {
+    otpProvider!.reset();
+    super.dispose();
   }
 
   void dropdownCallback(String? selectedValue) {
@@ -85,9 +85,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> sendOTP() async {
+  Future<void> sendOTP(data) async {
     setState(() {});
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        data.emailError= '';
+      });
       if (passwordController.text == confirmPasswordController.text) {
         setState(() {
           confirmErr = '';
@@ -129,6 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = Provider.of<OTPProvider>(context);
     final height = MediaQuery.of(context).size.height;
     final apartmentData = Provider.of<ApartmentProvider>(context);
     return Scaffold(
@@ -210,6 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         topLeft: Radius.circular(12.0),
                                         topRight: Radius.circular(12.0),
                                       ),
+                                      error: data.emailError,
                                       borderColor: false,
                                       controller: emailController,
                                     ),
@@ -430,7 +435,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       width: 1, color: Colors.white),
                                   backgroundColor: AppColors.DarkBlue,
                                   elevation: 4),
-                              onPressed: () => sendOTP(),
+                              onPressed: () => sendOTP(data),
                             ),
                           ),
                         ),
