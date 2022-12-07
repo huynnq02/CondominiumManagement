@@ -33,11 +33,12 @@ dependencies:
   dio: ^4.0.4
   dropdown_button2: ^1.8.4
   equatable: ^2.0.3
+  flutter:
+    sdk: flutter
+  flutter_format_money_vietnam: ^0.0.2
   firebase_auth: ^4.1.5
   firebase_core: ^2.3.0
   firebase_storage: ^11.0.6
-  flutter:
-    sdk: flutter
   flutter_screenutil: ^5.2.0
   flutter_svg: ^1.0.3
   flutter_typeahead: ^4.1.1

@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:untitled/repository/service/serviceAPI_provider.dart';
 import 'package:untitled/src/models/apartment_service.dart';
+import 'package:untitled/src/screens/service%20screen/widgets/register_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
@@ -131,7 +132,16 @@ class ServiceDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return RegisterDialog(
+                        apartmentService: service,
+                      );
+                    },
+                  );
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
@@ -147,7 +157,7 @@ class ServiceDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
