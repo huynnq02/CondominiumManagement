@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SafeArea(
+                  bottom: false,
                   child: Column(
                     children: [
                       const SizedBox(height: 29),
