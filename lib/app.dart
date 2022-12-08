@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/apartment_provider.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
@@ -107,6 +108,9 @@ class _AppState extends State<App> {
           ),
           ChangeNotifierProvider(create: (BuildContext context) {
             return FeedbackProvider();
+          }),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return BillProvider();
           }),
           ChangeNotifierProvider(create: (BuildContext context) {
             return ApartmentProvider();
