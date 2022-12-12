@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/src/screens/bill%20detail%20screen/service_bill_detail.dart';
-import 'package:untitled/src/screens/payment%20screen/payment_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
@@ -165,39 +164,26 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                               ),
                             )
                           : widget.serviceBill.state == "Chưa thanh toán"
-                              ? InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => PaymentScreen(
-                                          serviceBill: widget.serviceBill,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: height * 0.03,
-                                    width: width * 0.20,
-                                    child: Center(
-                                      child: Text(
-                                        "Thanh toán",
-                                        style: AppTextStyle.lato
-                                            .copyWith(color: AppColors.White),
-                                      ),
+                              ? Container(
+                                  height: height * 0.03,
+                                  width: width * 0.20,
+                                  child: Center(
+                                    child: Text(
+                                      "Thanh toán",
+                                      style: AppTextStyle.lato
+                                          .copyWith(color: AppColors.White),
                                     ),
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFFFFC000),
-                                        borderRadius: BorderRadius.circular(5),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.25),
-                                            offset: Offset(0, 3),
-                                            blurRadius: 6,
-                                          ),
-                                        ]),
                                   ),
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFFFC000),
+                                      borderRadius: BorderRadius.circular(5),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                                          offset: Offset(0, 3),
+                                          blurRadius: 6,
+                                        ),
+                                      ]),
                                 )
                               : Text(
                                   "Chờ tiếp nhận",
