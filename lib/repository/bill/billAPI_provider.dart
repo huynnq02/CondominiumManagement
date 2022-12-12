@@ -1,6 +1,5 @@
 import 'package:untitled/repository/base/base_provider.dart';
-
-import 'package:untitled/repository/bill/billAPI_repository.dart';
+import 'package:untitled/repository/bill/bill_repository.dart';
 
 class BillAPIProvider extends BaseProvider<BillAPIRepository> {
   @override
@@ -22,10 +21,5 @@ class BillAPIProvider extends BaseProvider<BillAPIRepository> {
     // print("kq ne:");
     // print(res.data['result']['items']);
     return res.data['result']['items'];
-  }
-
-  Future getBillId() async {
-    final res = await repository.getBill();
-    return res.data['result'];
   }
 }

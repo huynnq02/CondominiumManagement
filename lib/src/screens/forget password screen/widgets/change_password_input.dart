@@ -40,17 +40,17 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text(
-        //   widget.label,
-        //   style: TextStyle(
-        //       fontSize: 20,
-        //       color: Colors.white,
-        //       fontWeight: FontWeight.w300,
-        //       shadows: AppShadows.defaultShadows),
-        // ),
-        // const SizedBox(
-        //   height: 10,
-        // ),
+        Text(
+          widget.label,
+          style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.w300,
+              shadows: AppShadows.defaultShadows),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
         GestureDetector(
           onTap: () {
             unitCodeCtrlFocusNode.requestFocus();
@@ -63,17 +63,8 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                   border: (errorText != '' ||
                           (widget.error != null && widget.error != ''))
                       ? Border.all(color: const Color(0xFFFF0000))
-                      : Border.all(
-                          color: Color.fromARGB(
-                              Color.getAlphaFromOpacity(0.2), 42, 48, 114)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      offset: const Offset(0, 4),
-                      blurRadius: 4
-                    )
-                  ],
-                  color: Colors.white,
+                      : null,
+                  color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(12)),
               child: Stack(alignment: Alignment.center, children: [
                 Column(
@@ -98,7 +89,6 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                       obscureText: _obscureText,
                       obscuringCharacter: '*',
                       style: const TextStyle(fontSize: 18),
-                      maxLength: 20,
                       validator: (value) {
                         if (value!.isEmpty) {
                           setState(() {
@@ -125,7 +115,6 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                         errorStyle: TextStyle(height: 0),
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.zero,
-                        counterText: ''
                       ),
                     ),
                   ],

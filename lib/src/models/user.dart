@@ -11,7 +11,6 @@ class MDUser {
   String? fullName;
   String birthDate;
   String? phoneNumber;
-  String? buildingId;
   String? apartmentId;
   String? otp;
 
@@ -26,7 +25,6 @@ class MDUser {
       this.fullName,
       required this.birthDate,
       this.phoneNumber,
-      this.buildingId,
       this.apartmentId,
       this.otp});
 
@@ -41,7 +39,6 @@ class MDUser {
       "idNumber": idNumber,
       "fullName": fullName,
       "birthDate": birthDate,
-      "buildingId": buildingId,
       "apartmentId": apartmentId,
       "otp": otp,
     };
@@ -59,7 +56,6 @@ class MDUser {
       fullName: map['fullName']?.toString(),
       birthDate: map['birthDate'],
       phoneNumber: map['phoneNumber']?.toString(),
-      buildingId: map['buildingId']?.toString(),
       apartmentId: map['apartmentId']?.toString(),
       otp: map['otp']?.toString(),
     );

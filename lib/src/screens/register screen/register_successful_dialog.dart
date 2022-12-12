@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../login screen/login_screen.dart';
 
 class RegisterSuccessfulDialog extends StatelessWidget {
@@ -6,66 +7,59 @@ class RegisterSuccessfulDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return Dialog(
-      insetPadding: EdgeInsets.symmetric(horizontal: width*0.06),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
-        side: const BorderSide(color: Colors.black)
       ),
       child: Container(
-        padding: EdgeInsets.only(top: 22,bottom: 18,left: width*0.04,right: width*0.04),
+        padding: const EdgeInsets.symmetric(vertical: 22),
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
-          ),
-          // image: DecorationImage(
-          //   image: AssetImage("assets/logout-confirm-dialog-background.png"),
-          //   fit: BoxFit.cover,
-          // ),
-        ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+            image: DecorationImage(
+              image: AssetImage("assets/logout-confirm-dialog-background.png"),
+              fit: BoxFit.cover,
+            )),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Đăng ký thành công!',
+                'Bạn đã đăng ký thành công!',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFFF57D00),
-                    fontSize: 20),
+                    color: Color.fromARGB(255, 26, 6, 255),
+                    fontSize: 16),
               ),
-              const SizedBox(height: 14),
-              const Text(
-                'Tài khoản của bạn sẽ được duyệt và hãy đợi thông báo được gửi qua số điện thoại/ email mà bạn đã đăng ký nhé!',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 12),
-                textAlign: TextAlign.center
-              ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 10),
+              const Text('Vui lòng đợi để được xét duyệt!',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 26, 6, 255),
+                      fontSize: 16)),
+              const SizedBox(height: 28),
               OutlinedButton(
                 onPressed: (() {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: ((context) => const LoginScreen())));
+                      MaterialPageRoute(builder: ((context) => LoginScreen())));
                 }),
                 child: const Text(
-                  "Đóng",
+                  "Đồng ý",
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold),
                 ),
                 style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: const Color(0xFFEAE6F4),
                     side: const BorderSide(color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 33),
-                    shadowColor: Colors.black.withOpacity(0.25),
+                    shadowColor: Colors.black,
                     elevation: 4),
               ),
             ]),
