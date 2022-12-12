@@ -47,7 +47,7 @@ class LoginProvider extends ChangeNotifier {
 
     //Dừng trạng thái loading
     Navigator.of(context).pop();
-
+    
     if (valueEmail.isEmpty || valuePassword.isEmpty) {
       showDialog(
         context: context,
@@ -66,8 +66,8 @@ class LoginProvider extends ChangeNotifier {
             )
           : showDialog(
               context: context,
-              builder: ((context) => LoginErrorDialog(
-                  content: authAPIProvider?.data['error']['message'])),
+              builder: ((context) => const LoginErrorDialog(
+                  content: "Email hoặc mật khẩu không hợp lệ!")),
             );
     }
     // ScaffoldMessenger.of(context).showSnackBar(

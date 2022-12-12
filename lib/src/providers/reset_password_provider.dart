@@ -113,7 +113,13 @@ class ResetPasswordProvider extends ChangeNotifier {
           });
     } else {
       Navigator.of(context).pop();
-      pwError = 'Mật khẩu không đúng';
+      if (data['error']['message'] == '[Identity.Default error]') {
+        pwError = 'Mật khẩu không đúng';
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content:
+                Text('Đổi mật khẩu thất bại! Hãy kiểm tra lại thông tin.')));
+      }
     }
   }
 

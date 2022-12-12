@@ -1,15 +1,13 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
-import 'package:untitled/src/providers/apartment_provider.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
+import 'package:untitled/src/providers/register_provider.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/src/widget/custom_boxshadow.dart';
-import 'package:untitled/src/widget/outlined_text.dart';
-import 'package:untitled/utils/app_constant/app_colors.dart';
 import '../../widget/register_textfield.dart';
+import 'widget/widget_button.dart';
 
 const List<String> genderList = <String>['Nam', 'Nữ'];
 
@@ -22,8 +20,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
   OTPProvider? otpProvider;
-  ApartmentProvider? apartmentProvider;
+  RegisterProvider? provider;
   String? password;
   String dropdownValue = genderList.first;
   final TextEditingController emailController = TextEditingController();
@@ -32,32 +31,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController idController = TextEditingController();
-  final TextEditingController buildingIdController = TextEditingController();
   final TextEditingController apartmentIdController = TextEditingController();
   final TextEditingController dateController = TextEditingController(
       text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
   final ScrollController _controller = ScrollController();
   bool? checkBoxValue = false;
   bool? showError = false;
+  bool? isValid = false;
   bool? validOTP;
+  bool _isButtonDisabled = false;
   DateTime selectedDate = DateTime.now();
   bool isLoading = false;
   String? otp;
   MDUser? mdUser;
-  String confirmErr = '';
 
   @override
   void initState() {
     super.initState();
     otpProvider = Provider.of<OTPProvider>(context, listen: false);
-    apartmentProvider = Provider.of<ApartmentProvider>(context, listen: false);
-    apartmentProvider!.getAllApartments();
-  }
-
-  @override
-  void dispose() {
-    otpProvider!.reset();
-    super.dispose();
+    provider = Provider.of<RegisterProvider>(context, listen: false);
   }
 
   void dropdownCallback(String? selectedValue) {
@@ -71,6 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String getDateString(DateTime date) => DateFormat('d/M/yyyy').format(date);
 
   Future<void> _selectDate(BuildContext context) async {
+    if (_isButtonDisabled) return;
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -85,377 +78,398 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> sendOTP(data) async {
-    setState(() {});
+  Future<void> sendOTP() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        data.emailError= '';
+        isValid = true;
+        _isButtonDisabled = true;
+        scrollToOTP();
       });
-      if (passwordController.text == confirmPasswordController.text) {
-        setState(() {
-          confirmErr = '';
-        });
-        if (checkBoxValue == true) {
-          mdUser = MDUser(
-              name: nameController.text,
-              surname: nameController.text,
-              email: emailController.text,
-              gender: dropdownValue,
-              idNumber: idController.text,
-              password: passwordController.text,
-              birthDate: selectedDate.toIso8601String(),
-              fullName: nameController.text,
-              buildingId: buildingIdController.text,
-              apartmentId: apartmentIdController.text);
-          inspect(mdUser);
-
-          //Hiển thị trạng thái loading
-          showDialog(
-              context: context,
-              builder: (context) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              });
-          await otpProvider!.sendOTP(mdUser!, context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Vui lòng chấp nhận điều khoản.')));
-        }
-      } else {
-        setState(() {
-          confirmErr = 'Mật khẩu không khớp';
-        });
-      }
+      String fullName = nameController.text;
+      String email = emailController.text + '@gmail.com';
+      String gender = dropdownValue;
+      String idNumber = idController.text;
+      String password = passwordController.text;
+      String birthDate = selectedDate.toIso8601String();
+      String apartmentId = apartmentIdController.text;
+      mdUser = MDUser(
+        name: fullName,
+        surname: fullName,
+        email: email,
+        gender: gender,
+        idNumber: idNumber,
+        password: password,
+        birthDate: birthDate,
+        fullName: fullName,
+        apartmentId: apartmentId
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Hãy kiểm tra hộp thư của bạn.')));
+      await otpProvider!.sendOTP(mdUser!, context);
+    } else {
+      setState(() {
+        isValid = false;
+      });
     }
+  }
+
+  void scrollToOTP() {
+    _controller.animateTo(
+      300,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<OTPProvider>(context);
-    final height = MediaQuery.of(context).size.height;
-    final apartmentData = Provider.of<ApartmentProvider>(context);
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Container(
-            color: AppColors.White,
-            child: Stack(children: [
-              Positioned(top: 28, right: -147, child: circlePattern()),
-              Positioned(
-                  bottom: height * 0.16, left: -128, child: circlePattern()),
-              Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 39, vertical: 23),
-                decoration: const BoxDecoration(
-                    // image: DecorationImage(
-                    //     image: AssetImage("assets/register_bg.jpg"),
-                    //     fit: BoxFit.cover,
-                    //     alignment: Alignment.topCenter),
-                    ),
-                child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    controller: _controller,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        OutlinedText(
-                          text: 'Đăng ký',
-                          fontSize: 48,
-                          style: GoogleFonts.tomorrow(),
-                          color: Colors.black,
-                          strokeColor: Colors.white,
-                          isShadowed: true,
-                        ),
-                        const SizedBox(
-                          height: 11,
-                        ),
-                        Text(
-                          'Hãy điền thông tin cần thiết',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 4)
-                            ],
+        body: Stack(children: [
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 42),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+          image: AssetImage("assets/register_bg.jpg"),
+          fit: BoxFit.cover,
+          alignment: Alignment.topCenter),
+        ),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+        controller: _controller,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 53),
+            Stack(
+              children: <Widget>[
+                Text(
+                  'Đăng kí',
+                  style: GoogleFonts.tomorrow(
+                    fontSize: 48,
+                    shadows: [
+                      Shadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4)
+                    ],
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 1
+                      ..color = Colors.black,
+                  ),
+                ),
+                Text(
+                  'Đăng kí',
+                  style: GoogleFonts.tomorrow(
+                    fontSize: 48,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 13,
+                ),
+                Text(
+                  'Hãy điền thông tin cần thiết',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    shadows: [
+                      Shadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 46),
+            Column(
+              children: [
+                RegisterTextField(
+                  labelText: 'Email',
+                  type: TextFieldType.email,
+                  isDisabled: _isButtonDisabled,
+                  border: const BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    topRight: Radius.circular(12.0),
+                  ),
+                  controller: emailController,
+                ),
+                RegisterTextField(
+                  labelText: 'Mật khẩu',
+                  type: TextFieldType.password,
+                  isDisabled: _isButtonDisabled,
+                  controller: passwordController,
+                  maxLength: 20,
+                ),
+                RegisterTextField(
+                  labelText: 'Họ và tên',
+                  type: TextFieldType.name,
+                  isDisabled: _isButtonDisabled,
+                  controller: nameController,
+                  maxLength: 50,
+                ),
+                RegisterTextField(
+                  labelText: 'CMND/CCCD',
+                  controller: idController,
+                  type: TextFieldType.number,
+                  isDisabled: _isButtonDisabled,
+                  maxLength: 12,
+                ),
+                RegisterTextField(
+                  labelText: 'Mã căn hộ',
+                  controller: apartmentIdController,
+                  border: const BorderRadius.only(
+                    bottomLeft: Radius.circular(12.0),
+                    bottomRight: Radius.circular(12.0),
+                  ),
+                  isDisabled: _isButtonDisabled,
+                  maxLength: 15,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButtonFormField(
+                        borderRadius: BorderRadius.circular(12),
+                        value: dropdownValue,
+                        iconSize: 0,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                          suffixIcon: Image.asset(
+                            'assets/dropdown.png',
+                            width: 7.18,
                           ),
+                          contentPadding: const EdgeInsets.only(
+                              top: 14, bottom: 14, left: 18),
+                          labelText: 'Giới tính',
+                          labelStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w300),
                         ),
-                        const SizedBox(height: 23),
-                        Column(
-                          children: [
-                            ClipPath(
-                              clipper: ShapeBorderClipper(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                    left: 2.5, right: 2.5, bottom: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    CustomBoxShadow(
-                                        color: Colors.black.withOpacity(0.25),
-                                        blurRadius: 4,
-                                        offset: const Offset(0, 4),
-                                        blurStyle: BlurStyle.outer)
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    RegisterTextField(
-                                      labelText: 'Email/ Số điện thoại',
-                                      type: TextFieldType.email,
-                                      border: const BorderRadius.only(
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
-                                      ),
-                                      error: data.emailError,
-                                      borderColor: false,
-                                      controller: emailController,
-                                    ),
-                                    RegisterTextField(
-                                      labelText: 'Mật khẩu',
-                                      type: TextFieldType.password,
-                                      controller: passwordController,
-                                      maxLength: 20,
-                                    ),
-                                    RegisterTextField(
-                                      labelText: 'Nhập lại mật khẩu',
-                                      type: TextFieldType.password,
-                                      controller: confirmPasswordController,
-                                      maxLength: 20,
-                                      error: confirmErr,
-                                    ),
-                                    RegisterTextField(
-                                      labelText: 'Họ và tên',
-                                      type: TextFieldType.name,
-                                      controller: nameController,
-                                      maxLength: 50,
-                                    ),
-                                    RegisterTextField(
-                                      labelText: 'CMND / CCCD',
-                                      controller: idController,
-                                      type: TextFieldType.number,
-                                      maxLength: 12,
-                                    ),
-                                    RegisterTextField(
-                                      labelText: 'Tòa',
-                                      controller: buildingIdController,
-                                      type: TextFieldType.autocomplete,
-                                      onSuggestionSelected: (suggestion) {
-                                        if (suggestion !=
-                                            buildingIdController.text) {
-                                          setState(() {
-                                            buildingIdController.text =
-                                                suggestion;
-                                            apartmentIdController.clear();
-                                          });
-                                        }
-                                      },
-                                      items: apartmentData.apartmentList
-                                          .map((e) => e.buildingId)
-                                          .toSet()
-                                          .toList(),
-                                      maxLength: 15,
-                                    ),
-                                    RegisterTextField(
-                                      labelText: 'Mã căn hộ',
-                                      controller: apartmentIdController,
-                                      type: TextFieldType.autocomplete,
-                                      items: apartmentData.apartmentList
-                                          .where((element) =>
-                                              element.apartmentId.contains(
-                                                  buildingIdController.text))
-                                          .map((e) => e.apartmentId)
-                                          .toList(),
-                                      border: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(12.0),
-                                        bottomRight: Radius.circular(12.0),
-                                      ),
-                                      onSuggestionSelected: (suggestion) {
-                                        apartmentIdController.text = suggestion;
-                                      },
-                                      maxLength: 15,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 14,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.25),
-                                          blurRadius: 4,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: ButtonTheme(
-                                      alignedDropdown: true,
-                                      child: DropdownButtonFormField(
-                                        borderRadius: BorderRadius.circular(12),
-                                        value: dropdownValue,
-                                        iconSize: 0,
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          border: InputBorder.none,
-                                          suffixIcon: Image.asset(
-                                            'assets/dropdown.png',
-                                            width: 7.18,
-                                          ),
-                                          contentPadding: const EdgeInsets.only(
-                                              top: 14, bottom: 14, left: 18),
-                                          labelText: 'Giới tính',
-                                          labelStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w300),
-                                        ),
-                                        items: genderList
-                                            .map<DropdownMenuItem<String>>(
-                                                (value) => DropdownMenuItem(
-                                                      child: Text(
-                                                        value,
-                                                        style: const TextStyle(
-                                                            fontSize: 18),
-                                                      ),
-                                                      value: value,
-                                                    ))
-                                            .toList(),
-                                        onChanged: dropdownCallback,
-                                      ),
-                                    ),
+                        items: genderList
+                            .map<DropdownMenuItem<String>>((value) =>
+                                DropdownMenuItem(
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(fontSize: 18),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 19,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.25),
-                                          blurRadius: 4,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: RegisterTextField(
-                                      labelText: 'Ngày sinh',
-                                      onTap: (context) => _selectDate(context),
-                                      type: TextFieldType.date,
-                                      controller: dateController,
-                                      border: BorderRadius.circular(12),
-                                      borderColor: false,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 28,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Checkbox(
-                                  activeColor: Colors.black,
-                                  value: checkBoxValue,
-                                  onChanged: ((value) {
-                                    setState(() {
-                                      checkBoxValue = value;
-                                    });
-                                  })),
-                            ),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Expanded(
-                                flex: 15,
-                                child: RichText(
-                                  text: const TextSpan(
-                                    text:
-                                        'Bằng việc sử dụng Apato, bạn đồng ý rằng bạn đã đọc và chấp nhận ',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 13),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: 'điều khoản',
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          )),
-                                      TextSpan(text: ' của chúng tôi'),
-                                    ],
-                                  ),
+                                  value: value,
                                 ))
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 14,
-                        ),
-                        Center(
-                          child: SizedBox(
-                            width: 185,
-                            height: 48,
-                            child: OutlinedButton(
-                              child: OutlinedText(
-                                text: 'Đăng ký',
-                                style: GoogleFonts.lexendExa(),
-                                fontSize: 16,
-                                strokeColor: Colors.white.withOpacity(0.5),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12),
-                                    ),
-                                  ),
-                                  side: const BorderSide(
-                                      width: 1, color: Colors.white),
-                                  backgroundColor: AppColors.DarkBlue,
-                                  elevation: 4),
-                              onPressed: () => sendOTP(data),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                      ],
+                            .toList(),
+                        onChanged:
+                            _isButtonDisabled ? null : dropdownCallback,
+                      ),
                     ),
                   ),
                 ),
+                const SizedBox(
+                  width: 19,
+                ),
+                Expanded(
+                  child: RegisterTextField(
+                    labelText: 'Ngày sinh',
+                    onTap: (context) => _selectDate(context),
+                    type: TextFieldType.date,
+                    isDisabled: _isButtonDisabled,
+                    controller: dateController,
+                    border: BorderRadius.circular(12),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 17,
+            ),
+            WidgetButton(
+              labelText: 'Gửi mã OTP',
+              onPressed: _isButtonDisabled
+                  ? () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Hệ thống đã gửi OTP')));
+                    }
+                  : (() => sendOTP()),
+            ),
+            if (isValid == true)
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 35),
+                    child: Text(
+                      'Đã gửi OTP, vui lòng check trong hộp thư của bạn và điền mã OTP vào ô dưới đây',
+                      style:
+                          TextStyle(color: Color(0xFF0038FF), fontSize: 13),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.black.withOpacity(0.25),
+                        //     blurRadius: 4,
+                        //     offset: const Offset(0, 4),
+                        //   ),
+                        // ],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Form(
+                        key: _otpFormKey,
+                        child: TextFormField(
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 18),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6)
+                            ],
+                            onChanged: (value) => otp = value,
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.length < 6) {
+                                  setState(() {
+                                    validOTP = false;
+                                  });
+                                  return '';
+                                }
+                              }
+                              setState(() {
+                                validOTP = true;
+                              });
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                errorStyle: TextStyle(height: 0),
+                                contentPadding: EdgeInsets.all(26))),
+                      )),
+                  if (validOTP != null && validOTP == false)
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          'OTP không đúng',
+                          style: GoogleFonts.inter(
+                              color: const Color(0xFFFF0000), fontSize: 12),
+                        )
+                      ],
+                    ),
+                  const SizedBox(
+                    height: 53,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Checkbox(
+                            activeColor: Colors.black,
+                            value: checkBoxValue,
+                            onChanged: ((value) {
+                              setState(() {
+                                checkBoxValue = value;
+                              });
+                            })),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Expanded(
+                          flex: 15,
+                          child: RichText(
+                            text: const TextSpan(
+                              text:
+                                  'Bằng việc sử dụng Apato, bạn đồng ý rằng bạn đã đọc và chấp nhận ',
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 13),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'điều khoản',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      decoration: TextDecoration.underline,
+                                    )),
+                                TextSpan(text: ' của chúng tôi'),
+                              ],
+                            ),
+                          ))
+                    ],
+                  ),
+                  const SizedBox(height: 53),
+                  WidgetButton(
+                    labelText: 'Đăng kí',
+                    onPressed: (() {
+                      if (_otpFormKey.currentState!.validate()) {
+                        setState(() {});
+                        if (checkBoxValue == false) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Vui lòng chấp nhận điều khoản.')));
+                        } else {
+                          //Hiển thị trạng thái loading
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              });
+                          provider!.register(mdUser!, otp!, context);
+                        }
+                      }
+                    }),
+                  ),
+                ],
               ),
-            ]),
+            const SizedBox(height: 53),
+          ],
+        ),
           ),
-        ));
-  }
-
-  Container circlePattern() {
-    return Container(
-      width: 246,
-      height: 246,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(300), color: AppColors.DarkBlue),
-    );
+        ),
+      ),
+      if (isLoading)
+        Align(
+          alignment: FractionalOffset.center,
+          child: Container(
+          color: Colors.black,
+          width: 70.0,
+          height: 70.0,
+          child: const Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Center(child: CircularProgressIndicator()))),
+        )
+      else
+        const SizedBox(),
+    ]));
   }
 }
