@@ -1,5 +1,5 @@
 import 'package:untitled/repository/base/base_provider.dart';
-import 'package:untitled/repository/bill/bill_repository.dart';
+import 'package:untitled/repository/bill/billAPI_repository.dart';
 
 class BillAPIProvider extends BaseProvider<BillAPIRepository> {
   @override
