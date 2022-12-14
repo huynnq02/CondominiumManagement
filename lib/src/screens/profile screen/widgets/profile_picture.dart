@@ -41,9 +41,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
           height: width * 0.25,
           width: width * 0.25,
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(35),
-            ),
+            borderRadius: BorderRadius.circular(100),
             border: Border.all(color: AppColors.Black, width: 1),
             image: DecorationImage(
               image: _imageFile != null
@@ -57,8 +55,8 @@ class _ProfilePictureState extends State<ProfilePicture> {
           ),
         ),
         Positioned(
-          bottom: -15,
-          right: -1,
+          bottom: -13,
+          right: 3,
           child: SizedBox(
             width: width * 0.05,
             child: FloatingActionButton(
