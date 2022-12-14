@@ -34,6 +34,10 @@ class _ServiceBillState extends State<ServiceBill> {
 
   @override
   Widget build(BuildContext context) {
+    // setState(() {
+    //   Provider.of<BillProvider>(context, listen: false)
+    //       .setStateProvider("Tất cả");
+    // });
     final serviceBills = Provider.of<BillProvider>(context).serviceBills;
     final paidServiceBills =
         Provider.of<BillProvider>(context).paidServiceBills;
