@@ -12,7 +12,6 @@ class DropDownMenu extends StatefulWidget {
 }
 
 class _DropDownMenuState extends State<DropDownMenu> {
-  String _selected = "Tất cả";
   List<String> choices = <String>[
     'Tất cả',
     'Chưa thanh toán',
@@ -22,6 +21,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
 
   @override
   Widget build(BuildContext context) {
+    String _selected = Provider.of<BillProvider>(context).billState;
     // final billProvider = Provider.of<BillProvider>(context);
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
