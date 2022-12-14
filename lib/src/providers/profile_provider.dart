@@ -153,17 +153,20 @@ class ProfileProvider extends ChangeNotifier {
     setIsLoading(true);
     var success = await ProfilePro()
         .changePhoneNumberAPIProvider(mdUser, phoneNumber, otp);
+    pref = await SharedPreferences.getInstance();
+
     if (success == true) {
       mdUser!.phoneNumber = phoneNumber;
       setMdUser(mdUser);
-      showSuccessfulDialog(context);
+      // showSuccessfulDialog(context);
+      pref.setBool("isValidOTP", true);
+
       setIsLoading(false);
     } else if (success == false) {
       setChangePhoneFail(true);
       setIsLoading(false);
 
       print("3");
-      pref = await SharedPreferences.getInstance();
 
       pref.setBool("isValidOTP", false);
       print(pref.getBool("isValidOTP"));

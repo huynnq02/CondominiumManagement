@@ -33,10 +33,12 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
   bool _isExpired = true, _isOTPSent = false;
   bool? _isValidOTP, _isWaiting, _isValidPhoneNumber;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
+
   ProfileProvider? profileProvider;
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
-
+  bool _isDone = false;
   String? otp;
   int min = 0, sec = 60;
   void startTimer() {
@@ -75,6 +77,17 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.White,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.Black,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SingleChildScrollView(
@@ -98,7 +111,7 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                   child: Column(
                     children: [
                       Text(
-                        "Xác thực OTP",
+                        !_isDone ? "Xác thực OTP" : "Nhập số điện thoại mới",
                         style: AppTextStyle.lato.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 24,
@@ -127,42 +140,248 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                           //   ),
                           // ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 0),
-                          child: Form(
-                            key: _otpFormKey,
-                            child: TextFormField(
-                              controller: otpController,
-                              textAlign: TextAlign.center,
-                              readOnly: user.isSent == true ? false : true,
-                              style: const TextStyle(fontSize: 18),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(6)
-                              ],
-                              onChanged: (value) => otp = value,
-                              validator: (value) {
-                                if (value != null) {
-                                  if (value.length < 6) {
-                                    user.setChangePhoneFail(true);
-                                    return '';
-                                  }
-                                }
-                                setState(() {
-                                  _isValidOTP = true;
-                                });
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                hintText: "Nhập mã OTP",
-                                border: InputBorder.none,
-                                errorStyle: TextStyle(height: 0),
-                                contentPadding: EdgeInsets.all(0),
+                        child: !_isDone
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Form(
+                                  key: _otpFormKey,
+                                  child: TextFormField(
+                                    controller: otpController,
+                                    textAlign: TextAlign.center,
+                                    readOnly:
+                                        user.isSent == true ? false : true,
+                                    style: const TextStyle(fontSize: 18),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(6)
+                                    ],
+                                    onChanged: (value) => otp = value,
+                                    validator: (value) {
+                                      if (value != null) {
+                                        if (value.length < 6) {
+                                          user.setChangePhoneFail(true);
+                                          return '';
+                                        }
+                                      }
+                                      setState(() {
+                                        _isValidOTP = true;
+                                      });
+                                      return null;
+                                    },
+                                    decoration: const InputDecoration(
+                                      hintText: "Nhập mã OTP",
+                                      border: InputBorder.none,
+                                      errorStyle: TextStyle(height: 0),
+                                      contentPadding: EdgeInsets.all(0),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Form(
+                                  key: _phoneFormKey,
+                                  child: TextFormField(
+                                    controller: phoneNumberController,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 18),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(12)
+                                    ],
+                                    onChanged: (value) => otp = value,
+                                    validator: (value) {
+                                      if (value != null) {
+                                        if (value.length < 6) {
+                                          user.setChangePhoneFail(true);
+                                          return '';
+                                        }
+                                      }
+                                      setState(() {
+                                        _isValidOTP = true;
+                                      });
+                                      return null;
+                                    },
+                                    decoration: const InputDecoration(
+                                      hintText: "Số điện thoại",
+                                      border: InputBorder.none,
+                                      errorStyle: TextStyle(height: 0),
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: width * 0.06),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            user.isSent &&
+                                    _isWaiting == true &&
+                                    user.changePhoneFail
+                                ? "OTP không đúng"
+                                : "",
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          user.setIsSent(false);
+                          user.setChangePhoneFail(false);
+
+                          if (_isWaiting == false) {
+                            setState(() {
+                              otpController.text = "";
+                            });
+                          }
+                          if (_isOTPSent == true && _isWaiting == false) {
+                            setState(() {
+                              _isValidOTP = null;
+                            });
+                          }
+                          if ((_isWaiting == null || _isWaiting == false)) {
+                            startTimer();
+                            profileProvider!.sendOTPToChangePhoneNumber(
+                                widget.mdUser!, context);
+                            setState(() {
+                              _isOTPSent = true;
+                              _isWaiting = true;
+                            });
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            if (_isOTPSent == false)
+                              ButtonContainer(
+                                height: height,
+                                width: width,
+                                text: "Gửi mã OTP",
+                                // color: const Color(0xFF5FC5FF),
+                                color: AppColors.White,
+                              ),
+                            if (_isOTPSent == true &&
+                                _isWaiting == true &&
+                                user.isSent == true)
+                              ButtonContainer(
+                                height: height,
+                                width: width,
+                                text: sec / 10 == 0
+                                    ? "0$min:0$sec"
+                                    : "0$min:$sec",
+                                // color: const Color(0xFFCDCDCD),
+                                color: AppColors.White,
+                              ),
+                            if (_isOTPSent == true && _isWaiting == false)
+                              ButtonContainer(
+                                height: height,
+                                width: width,
+                                text: "Gửi lại OTP",
+                                // color: const Color(0xFF5FC5FF),
+                                color: AppColors.White,
+                              ),
+                          ],
+                        ),
+                      ),
+                      if (_isOTPSent)
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: height * 0.08,
+                            ),
+                            SizedBox(
+                              width: width * 0.7,
+                              child: Text(
+                                user.isSent == true && _isWaiting == true
+                                    ? "Đã gửi OTP, vui lòng check trong hộp thư Email của bạn và điền mã OTP vào ô dưới đây"
+                                    : _isWaiting == true
+                                        ? ''
+                                        : "OTP đã hết hạn, vui lòng gửi lại OTP",
+                                style: AppTextStyle.lato.copyWith(
+                                    fontSize: 13, color: AppColors.Red),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.015,
+                            ),
+                            if (user.isSent && _isWaiting == true)
+                              InkWell(
+                                onTap: () async {
+                                  user.setChangePhoneFail(false);
+                                  print("da zo");
+                                  print(_isWaiting);
+                                  if (_isWaiting == true &&
+                                      _isWaiting != null) {
+                                    print("da zo1");
+
+                                    if (min >= 0 && sec > 0) {
+                                      if (_otpFormKey.currentState!
+                                          .validate()) {
+                                        print("da zo2");
+
+                                        if (_isValidOTP == true) {
+                                          print("da zo3");
+                                          print(_isValidOTP);
+                                          print(_isOTPSent);
+                                          print("ok");
+                                          if (_isValidOTP == true &&
+                                              _isOTPSent == true) {
+                                            print("da zo4");
+
+                                            await profileProvider!
+                                                .changePhoneNumber(
+                                              context,
+                                              widget.mdUser,
+                                              phoneNumberController.text,
+                                              otp!,
+                                            );
+                                            print("da zo5");
+
+                                            getSharedPreferences();
+                                            setState(() {
+                                              _isValidOTP =
+                                                  pref!.getBool("isValidOTP");
+                                              _isDone =
+                                                  pref!.getBool("isValidOTP")!;
+                                              print("isDone");
+                                              print(_isDone);
+                                            });
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                child: user.isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.White,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: AppColors.Black,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "Xác thực",
+                                          style: AppTextStyle.lato.copyWith(
+                                              fontSize: 16,
+                                              color: AppColors.Black),
+                                        ),
+                                      ),
+                              ),
+                          ],
+                        ),
                     ],
                   ),
                 ),
