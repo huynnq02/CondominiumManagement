@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:untitled/repository/base/base_repository.dart';
 import 'package:untitled/src/models/user.dart';
@@ -34,9 +35,11 @@ class AuthAPIRepository extends BaseRepository {
           "gender": mdUser.gender,
           "idNumber": mdUser.idNumber,
           "birthDate": mdUser.birthDate,
+          "buildingId": mdUser.buildingId,
           "apartmentId": mdUser.apartmentId,
           "password": mdUser.password,
-          "otp": otp
+          "otp": otp,
+          "agreeToTermsAndConditions": true,
         },
       );
 
@@ -59,6 +62,7 @@ class AuthAPIRepository extends BaseRepository {
             "gender": mdUser.gender,
             "idNumber": mdUser.idNumber,
             "birthDate": mdUser.birthDate,
+            "buildingId": mdUser.buildingId,
             "apartmentId": mdUser.apartmentId,
             "password": mdUser.password
           },

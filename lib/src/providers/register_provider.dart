@@ -5,8 +5,20 @@ import 'package:untitled/src/screens/register%20screen/register_successful_dialo
 import '../../repository/auth/authAPI_provider.dart';
 
 class RegisterProvider extends ChangeNotifier {
-  var data;
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
+  var data;
+
+  String _otpError = '';
+  String get otpError => _otpError;
+  set otpError(String value) {
+    _otpError = value;
+    notifyListeners();
+  }
+
+  void reset() {
+    _otpError = '';
+  }
+
   Future register(MDUser mdUser, String otp, BuildContext context) async {
     data = await authAPIProvider.register(mdUser: mdUser, otp: otp);
 
@@ -23,11 +35,14 @@ class RegisterProvider extends ChangeNotifier {
             return const RegisterSuccessfulDialog();
           });
     } else {
-      // sai thông tin dăng kí thông báo cho người dùng
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Đăng kí thất bại, kiểm tra lại thông tin')));
+      String errMessage = data['error']['message'];
+      if (errMessage == 'OTP không đúng!') {
+        otpError = errMessage;
+      } else {
+        // sai thông tin dăng kí thông báo cho người dùng
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Đăng kí thất bại, kiểm tra lại thông tin')));
+      }
     }
-
-    notifyListeners();
   }
 }
