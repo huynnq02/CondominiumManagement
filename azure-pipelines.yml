@@ -12,7 +12,7 @@ trigger:
   - sprint03
   - sprint04
   - sprint05
-  - sprint05-new2
+  - sprint05.2
   - sprint06
 
 pool:
