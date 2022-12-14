@@ -14,4 +14,30 @@ class BillAPIRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future<Response> getAllAparmentBilllAPIRepository() async {
+    try {
+      var client = init();
+
+      final authRespone = await client.get(
+        '/api/services/app/Bill/GetCurrentUserApartmentBill',
+      );
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> getAllServiceBillAPIRepository() async {
+    try {
+      var client = init();
+
+      final authRespone = await client.get(
+        '/api/services/app/Bill/GetCurrentUserServiceBill',
+      );
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }

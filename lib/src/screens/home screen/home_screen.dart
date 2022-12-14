@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/repository/service/serviceAPI_provider.dart';
 import 'package:untitled/src/models/apartment_service.dart';
 import 'package:untitled/src/models/user_service.dart';
@@ -7,10 +8,8 @@ import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/user_service_provider.dart';
-import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
 
 import '../../../utils/app_constant/app_colors.dart';
-import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/screens/home screen/widgets/custom_button.dart';
 import 'package:untitled/src/screens/home%20screen/widgets/home_item.dart';
 
@@ -48,6 +47,14 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       listen: false,
     );
+    final billProvider = Provider.of<BillProvider>(
+      context,
+      listen: false,
+    );
+    profileProvider.getCurrentUserProfile();
+    profileProvider.getProfilePicture();
+    billProvider.getAllApartmentBill();
+    billProvider.getAllServiceBill();
     await profileProvider.getCurrentUserProfile();
   }
 
