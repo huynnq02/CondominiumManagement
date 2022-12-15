@@ -44,13 +44,14 @@ class FeedbackProvider extends ChangeNotifier {
 
   void getUserFeedback() async {
     var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
-
-    List<fb.Feedback> feedbacks = res['result']
-        .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
-        .toList();
-    feedbacks.sort((a, b) => b.time.compareTo(a.time));
-    // _numsOfFeedbacks = feedbacks.length;
-    setFeedbacks(feedbacks);
+    if (res['result'] != null) {
+      List<fb.Feedback> feedbacks = res['result']
+          .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
+          .toList();
+      feedbacks.sort((a, b) => b.time.compareTo(a.time));
+      // _numsOfFeedbacks = feedbacks.length;
+      setFeedbacks(feedbacks);
+    }
   }
 
   void showSuccessfulDialog(BuildContext context, String message, int count) =>

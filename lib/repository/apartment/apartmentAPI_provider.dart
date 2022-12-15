@@ -9,6 +9,7 @@ class ApartmentAPIProvider extends BaseProvider<ApartmentAPIRepository> {
 
   Future getAllApartments() async {
     final res = await repository.getAllApartments();
+    print(res);
     return res.data['result'];
   }
 }

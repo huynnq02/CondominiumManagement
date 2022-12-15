@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:untitled/src/providers/apartment_provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/providers/compare_provider.dart';
 import 'package:untitled/src/providers/data_multi_chart.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
@@ -16,6 +16,8 @@ import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
+
+import 'src/providers/apartment_provider.dart';
 
 class App extends StatefulWidget {
   App({Key? key}) : super(key: key);
@@ -107,18 +109,20 @@ class _AppState extends State<App> {
             return FeedbackProvider();
           }),
           ChangeNotifierProvider(create: (BuildContext context) {
+            return BillProvider();
+          }),
+          ChangeNotifierProvider(create: (BuildContext context) {
             return ApartmentProvider();
           })
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: 'Lato'),
-          home: Scaffold(
-              body: isLoggedIn
-                  ? MainScreen(
-                      checkScreen: true,
-                    )
-                  : const LoginScreen()),
+          home: isLoggedIn
+              ? MainScreen(
+                  checkScreen: true,
+                )
+              : const LoginScreen(),
         ));
   }
 }

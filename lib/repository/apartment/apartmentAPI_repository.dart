@@ -7,7 +7,7 @@ class ApartmentAPIRepository extends BaseRepository {
       var client = init();
 
       final apartmentsResponse = await client.get(
-        '/api/Apartments/GetAllApartments'
+        '/api/services/app/Apartment/GetAllApartments'
       );
 
       return apartmentsResponse;
