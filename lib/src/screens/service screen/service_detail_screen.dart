@@ -31,7 +31,7 @@ class ServiceDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1D6D54),
+        backgroundColor: const Color(0xFF2A3072),
         elevation: 0,
         title: Text(
           'Chi tiết dịch vụ',
@@ -48,7 +48,7 @@ class ServiceDetailScreen extends StatelessWidget {
           ),
           child: ListView(
             children: [
-              //const Spacer(),
+              SizedBox(height: size.height * 0.1),
               Image.asset(
                 'assets/service.png',
                 width: size.width * .6,
@@ -94,7 +94,7 @@ class ServiceDetailScreen extends StatelessWidget {
                       style: AppTextStyle.robotoSize14.copyWith(fontSize: 16),
                       children: <TextSpan>[
                         TextSpan(
-                          text: service.cycle,
+                          text: service.cycle + ' ngày',
                           style: AppTextStyle.lato.copyWith(
                             color: AppColors.Orange,
                             fontSize: 17,
@@ -146,7 +146,7 @@ class ServiceDetailScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: const Color(0xFF1D6D54),
+                    color: const Color(0xFF2A3072),
                   ),
                   child: Center(
                     child: Text(

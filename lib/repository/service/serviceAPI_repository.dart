@@ -45,4 +45,50 @@ class ServiceRepository extends BaseRepository {
       rethrow;
     }
   }
+
+  Future<Response> registerServiceV2(UserService service) async {
+    try {
+      var client = init();
+      final response = await client.post(
+        '/api/services/app/Bill/CreateInServiceRegister',
+        data: service.toJson(),
+      );
+
+      return response;
+    } on DioError catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+  Future<Response> cancelService(UserService service) async {
+    try {
+      var client = init();
+      final response = await client.post(
+        '/api/services/app/UserServiceRegister/UnregisterService',
+        data: {
+          "id": service.serviceID,
+        },
+      );
+
+      return response;
+    } on DioError catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+  Future<Response> getNumBill() async {
+    try {
+      var client = init();
+      final response = await client.get(
+        '/api/services/app/Bill/GetNumberOfServiceBillToday',
+      );
+      print(response);
+      return response;
+    } on DioError catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
 }

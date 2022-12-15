@@ -1,7 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/src/models/apartment_service.dart';
+
 import 'package:untitled/src/models/user_service.dart';
+import 'package:untitled/src/screens/service%20screen/service_detail_cancel_screen.dart';
 import 'package:untitled/src/screens/service%20screen/widgets/item_service_using.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
@@ -37,7 +38,9 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    for (var service in widget.services) {
+      print(service.serviceID);
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: ListView(
@@ -97,7 +100,17 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
             child: ListView.builder(
               itemBuilder: (context, index) {
                 UserService service = widget.services[index];
-                return ItemServiceUsing(service: service);
+                return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ServiceDetailCancelScreen(
+                            service: service,
+                          ),
+                        ),
+                      );
+                    },
+                    child: ItemServiceUsing(service: service));
               },
               itemCount: widget.services.length,
             ),

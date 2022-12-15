@@ -60,7 +60,7 @@ class ItemServiceUsing extends StatelessWidget {
                       style: AppTextStyle.robotoSize14,
                       children: <TextSpan>[
                         TextSpan(
-                          text: service.cycle,
+                          text: service.cycle + ' ngày',
                           style: AppTextStyle.lato.copyWith(
                             color: AppColors.Orange,
                             fontSize: 16,
@@ -115,7 +115,7 @@ class ItemServiceUsing extends StatelessWidget {
                     horizontal: 16,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.Green,
+                    color: const Color(0xFFFF8A00),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(

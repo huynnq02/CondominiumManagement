@@ -10,11 +10,12 @@ class UserService {
   final String phoneNumber;
   final String emailAddress;
   final String cycle;
-  final double price;
+  final int price;
   final String note;
   final String state;
   final String startDate;
   final String endDate;
+  final String? typeService;
 
   UserService({
     required this.billID,
@@ -30,6 +31,7 @@ class UserService {
     required this.state,
     required this.startDate,
     required this.endDate,
+    required this.typeService,
   });
 
   Map<String, dynamic> toMap() {
@@ -47,6 +49,7 @@ class UserService {
       'state': state,
       'startDate': startDate,
       'endDate': endDate,
+      'typeService': typeService,
     };
   }
 
@@ -60,11 +63,13 @@ class UserService {
       phoneNumber: map['phoneNumber'] as String,
       emailAddress: map['emailAddress'] as String,
       cycle: map['cycle'] as String,
-      price: map['price'] as double,
+      price: map['price'] as int,
       note: map['note'] as String,
       state: map['state'] as String,
       startDate: map['startDate'] as String,
       endDate: map['endDate'] as String,
+      typeService:
+          map['typeService'] != null ? map['typeService'] as String : null,
     );
   }
 

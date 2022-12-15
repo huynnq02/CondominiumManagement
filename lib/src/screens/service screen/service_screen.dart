@@ -49,11 +49,11 @@ class _ServiceScreenState extends State<ServiceScreen>
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF2A3072),
         elevation: 0,
         title: Text(
           'Dịch vụ',
-          style: AppTextStyle.lato,
+          style: AppTextStyle.lato.copyWith(color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(
@@ -62,6 +62,7 @@ class _ServiceScreenState extends State<ServiceScreen>
           width: size.width,
           child: Column(
             children: [
+              const SizedBox(height: 10),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20.0),
                 padding: const EdgeInsets.all(4),
