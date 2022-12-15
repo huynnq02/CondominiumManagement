@@ -75,7 +75,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   void handleOTPSent(ResetPasswordProvider data) {
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Đã gửi lại OTP')));
+        content: Text('Đã gửi OTP')));
     if (data.isOTPSent == true) {
       isWaiting = true;
       startTimer(data);
