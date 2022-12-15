@@ -17,6 +17,8 @@ import 'package:untitled/src/screens/login%20screen/login_screen.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
 
+import 'src/providers/apartment_provider.dart';
+
 class App extends StatefulWidget {
   App({Key? key}) : super(key: key);
 
@@ -109,6 +111,9 @@ class _AppState extends State<App> {
           ChangeNotifierProvider(create: (BuildContext context) {
             return BillProvider();
           }),
+          ChangeNotifierProvider(create: (BuildContext context) {
+            return ApartmentProvider();
+          })
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

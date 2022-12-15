@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import '../../utils/app_constant/app_colors.dart';
 
-enum TextFieldType { email, password, number, date, name }
+enum TextFieldType { email, password, number, date, name, autocomplete }
 
 class RegisterTextField extends StatefulWidget {
   final String labelText;
@@ -20,6 +21,8 @@ class RegisterTextField extends StatefulWidget {
   final bool? pwRule;
   final bool? showPw;
   final String? error;
+  final List<String>? items;
+  final dynamic Function(String)? onSuggestionSelected;
 
   const RegisterTextField(
       {Key? key,
@@ -35,7 +38,9 @@ class RegisterTextField extends StatefulWidget {
       this.onTap,
       this.pwRule,
       this.showPw,
-      this.error})
+      this.error,
+      this.items,
+      this.onSuggestionSelected})
       : super(key: key);
 
   @override
@@ -95,7 +100,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             errorText = 'Vui lòng nhập mật khẩu';
             return '';
           }
-          if (widget.pwRule!=null && widget.pwRule==false) {
+          if (widget.pwRule != null && widget.pwRule == false) {
             break;
           }
           if (value.length < 6) {
@@ -151,7 +156,8 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           decoration: BoxDecoration(
-              border: (errorText != '' || (widget.error!=null && widget.error != ''))
+              border: (errorText != '' ||
+                      (widget.error != null && widget.error != ''))
                   ? Border.all(color: const Color(0xFFFF0000))
                   : null,
               color: Colors.white.withOpacity(0.8),
@@ -162,73 +168,111 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
               children: [
                 Text(
                   widget.labelText,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w300),
                 ),
                 const SizedBox(
                   height: 4,
                 ),
-                TextFormField(
-                  key: _textformfieldkey,
-                  validator: ((value) => getValidator(value, widget.type)),
-                  controller: widget.controller,
-                  focusNode: unitCodeCtrlFocusNode,
-                  enabled: (widget.type == TextFieldType.date)
-                      ? false
-                      : !widget.isDisabled,
-                  textAlign:
-                      (widget.isCenter != null && widget.isCenter == true)
-                          ? TextAlign.center
-                          : TextAlign.start,
-                  textCapitalization: widget.type == TextFieldType.name
-                      ? TextCapitalization.words
-                      : TextCapitalization.none,
-                  keyboardType: widget.type == TextFieldType.email
-                      ? TextInputType.emailAddress
-                      : widget.type == TextFieldType.number
-                          ? TextInputType.number
-                          : TextInputType.text,
-                  obscureText: widget.type == TextFieldType.password
-                      ? _obscureText
-                      : false,
-                  obscuringCharacter: '*',
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(widget.maxLength),
-                    if (widget.type == TextFieldType.number)
-                      FilteringTextInputFormatter.digitsOnly
-                  ],
-                  onChanged: (value) {
-                    if (widget.type != TextFieldType.name) return;
-                    final controller = widget.controller;
-                    if (controller != null) {
-                      controller.value = TextEditingValue(
-                          text: formatedName(value),
-                          selection: controller.selection);
-                    }
-                  },
-                  style: const TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    border: InputBorder.none,
-                    errorStyle: const TextStyle(height: 0),
-                    floatingLabelAlignment:
-                        (widget.isCenter != null && widget.isCenter == true)
-                            ? FloatingLabelAlignment.center
-                            : FloatingLabelAlignment.start,
-                    contentPadding: widget.type != TextFieldType.date
-                        ? const EdgeInsets.symmetric(horizontal: 10)
-                        : EdgeInsets.zero,
-                  ),
-                ),
+                widget.type == TextFieldType.autocomplete
+                    ? TypeAheadField(
+                        suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        textFieldConfiguration: TextFieldConfiguration(
+                            controller: widget.controller,
+                            style: const TextStyle(fontSize: 18),
+                            focusNode: unitCodeCtrlFocusNode,
+                            decoration: const InputDecoration(
+                                isDense: true,
+                                border: InputBorder.none,
+                                errorStyle: TextStyle(height: 0),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10))),
+                        itemBuilder: (BuildContext context, String itemData) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            child: Text(
+                              itemData,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        },
+                        onSuggestionSelected: (String suggestion) =>
+                            widget.onSuggestionSelected?.call(suggestion),
+                        suggestionsCallback: (pattern) async {
+                          return widget.items!.where(
+                              (element) => element.toLowerCase().contains(
+                                    pattern.toLowerCase(),
+                                  ));
+                        },
+                      )
+                    : TextFormField(
+                        key: _textformfieldkey,
+                        validator: ((value) =>
+                            getValidator(value, widget.type)),
+                        controller: widget.controller,
+                        focusNode: unitCodeCtrlFocusNode,
+                        enabled: (widget.type == TextFieldType.date)
+                            ? false
+                            : !widget.isDisabled,
+                        textAlign:
+                            (widget.isCenter != null && widget.isCenter == true)
+                                ? TextAlign.center
+                                : TextAlign.start,
+                        textCapitalization: widget.type == TextFieldType.name
+                            ? TextCapitalization.words
+                            : TextCapitalization.none,
+                        keyboardType: widget.type == TextFieldType.email
+                            ? TextInputType.emailAddress
+                            : widget.type == TextFieldType.number
+                                ? TextInputType.number
+                                : TextInputType.text,
+                        obscureText: widget.type == TextFieldType.password
+                            ? _obscureText
+                            : false,
+                        obscuringCharacter: '*',
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(widget.maxLength),
+                          if (widget.type == TextFieldType.number)
+                            FilteringTextInputFormatter.digitsOnly
+                        ],
+                        onChanged: (value) {
+                          if (widget.type != TextFieldType.name) return;
+                          final controller = widget.controller;
+                          if (controller != null) {
+                            controller.value = TextEditingValue(
+                                text: formatedName(value),
+                                selection: controller.selection);
+                          }
+                        },
+                        style: const TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                          errorStyle: const TextStyle(height: 0),
+                          floatingLabelAlignment: (widget.isCenter != null &&
+                                  widget.isCenter == true)
+                              ? FloatingLabelAlignment.center
+                              : FloatingLabelAlignment.start,
+                          contentPadding: widget.type != TextFieldType.date
+                              ? const EdgeInsets.symmetric(horizontal: 10)
+                              : EdgeInsets.zero,
+                        ),
+                      ),
               ],
             ),
-            if (widget.type == TextFieldType.date)
+            if (widget.type == TextFieldType.date ||
+                widget.type == TextFieldType.autocomplete)
               Positioned(
                   right: 0,
                   child: Image.asset(
                     'assets/dropdown.png',
                     width: 7.18,
                   ))
-            else if (widget.type == TextFieldType.password && !(widget.showPw!=null && !widget.showPw!))
+            else if (widget.type == TextFieldType.password &&
+                !(widget.showPw != null && !widget.showPw!))
               Positioned(
                 right: 0,
                 bottom: 0,
@@ -260,9 +304,12 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
         ),
         Positioned(
             top: 0,
-            child: Text((widget.error!=null && widget.error!.isNotEmpty) ? widget.error! : errorText,
-                style:
-                    GoogleFonts.inter(color: const Color(0xFFFF0000), fontSize: 8))),
+            child: Text(
+                (widget.error != null && widget.error!.isNotEmpty)
+                    ? widget.error!
+                    : errorText,
+                style: GoogleFonts.inter(
+                    color: const Color(0xFFFF0000), fontSize: 8))),
       ]),
     );
   }
