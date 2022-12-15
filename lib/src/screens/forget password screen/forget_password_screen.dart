@@ -74,6 +74,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   void handleOTPSent(ResetPasswordProvider data) {
     Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Đã gửi lại OTP')));
     if (data.isOTPSent == true) {
       isWaiting = true;
       startTimer(data);
@@ -198,8 +200,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               backgroundColor: isWaiting
                                   ? const Color(0xFFCDCDCD)
                                   : const Color(0xFF5FC5FF),
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 14),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -313,9 +314,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                           color: Color(0xFFFF0000)),
                                     ),
                                     errorStyle: const TextStyle(height: 0),
-                                    contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 26)),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 26)),
                               ),
                             ),
                           ),
