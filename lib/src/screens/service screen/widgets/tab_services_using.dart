@@ -41,12 +41,12 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
 
     List<UserService> servicesTmp = [];
     if (selectedValue!.compareTo('Tất cả') == 0) {
-      services = services;
+      servicesTmp = services;
     } else {
       for (var service in services) {
         print(service.typeService);
         if (service.typeService == selectedValue) {
-          services.add(service);
+          servicesTmp.add(service);
         }
       }
     }
@@ -58,7 +58,7 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
           Row(
             children: [
               Text(
-                'Có ${services.length} dịch vụ đang dùng',
+                'Có ${servicesTmp.length} dịch vụ đang dùng',
                 style: AppTextStyle.lato.copyWith(fontSize: 16),
               ),
               const Spacer(),
@@ -109,10 +109,10 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
             width: size.width,
             child: ListView.builder(
               itemBuilder: (context, index) {
-                if (index == services.length) {
+                if (index == servicesTmp.length) {
                   return const SizedBox(height: 350);
                 }
-                UserService service = services[index];
+                UserService service = servicesTmp[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(
@@ -130,7 +130,7 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
                   ),
                 );
               },
-              itemCount: services.length + 1,
+              itemCount: servicesTmp.length + 1,
             ),
           ),
         ],

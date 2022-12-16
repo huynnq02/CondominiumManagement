@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/src/models/apartment_service.dart';
+import 'package:untitled/src/models/user_service.dart';
+import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
+import 'package:untitled/src/providers/user_service_provider.dart';
+import '../../../repository/service/serviceAPI_provider.dart';
 import '../../../utils/app_constant/app_colors.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/screens/home screen/widgets/custom_button.dart';
@@ -31,6 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
     feedbackProvider.getUserFeedback();
     profileProvider.getCurrentUserProfile();
     profileProvider.getProfilePicture();
+    getServices();
+    getUsingServices();
+  }
+
+  void getServices() async {
+    final ServicePro servicePro = ServicePro();
+    List<ApartmentService> services = await servicePro.getApartmentServices();
+    context.read<ApartmentServiceProvider>().setListServices(services);
+    print('services : $services');
+  }
+
+  void getUsingServices() async {
+    final ServicePro servicePro = ServicePro();
+    List<UserService> services = await servicePro.getUserServices();
+    context.read<UserServiceProvider>().setListServices(services);
+    print('services : $services');
   }
 
   @override
