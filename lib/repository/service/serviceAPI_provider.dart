@@ -31,11 +31,11 @@ class ServicePro extends BaseProvider<ServiceRepository> {
         .toList();
   }
 
-  Future<bool> registerService(UserService service) async {
+  Future<int> registerService(UserService service) async {
     final res = await repository.registerService(service);
     String resBody = res.toString();
     var jsonData = jsonDecode(resBody);
-    return jsonData['success'];
+    return jsonData['result'];
   }
 
   Future<bool> registerServiceV2(UserService service) async {
@@ -46,6 +46,7 @@ class ServicePro extends BaseProvider<ServiceRepository> {
   }
 
   Future<bool> cancelService(UserService service) async {
+    print('idProvider: ${service.id}');
     final res = await repository.cancelService(service);
     String resBody = res.toString();
     var jsonData = jsonDecode(resBody);

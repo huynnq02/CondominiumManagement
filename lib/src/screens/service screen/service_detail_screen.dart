@@ -133,7 +133,7 @@ class ServiceDetailScreen extends StatelessWidget {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
-                  await showDialog(
+                  final bool? result = await showDialog(
                     context: context,
                     builder: (context) {
                       return RegisterDialog(
@@ -141,6 +141,9 @@ class ServiceDetailScreen extends StatelessWidget {
                       );
                     },
                   );
+                  if (result == true) {
+                    Navigator.pop(context, true);
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),

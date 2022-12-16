@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserService {
+  final int? id;
   final String billID;
   final String billName;
   final String serviceID;
@@ -18,6 +21,7 @@ class UserService {
   final String? typeService;
 
   UserService({
+    this.id,
     required this.billID,
     required this.billName,
     required this.serviceID,
@@ -34,8 +38,29 @@ class UserService {
     required this.typeService,
   });
 
+  UserService setId(int idService) {
+    return UserService(
+      id: idService,
+      billID: billID,
+      billName: billName,
+      serviceID: serviceID,
+      serviceName: serviceName,
+      ownerName: ownerName,
+      phoneNumber: phoneNumber,
+      emailAddress: emailAddress,
+      cycle: cycle,
+      price: price,
+      note: note,
+      state: state,
+      startDate: startDate,
+      endDate: endDate,
+      typeService: typeService,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'billID': billID,
       'billName': billName,
       'serviceID': serviceID,
@@ -55,6 +80,7 @@ class UserService {
 
   factory UserService.fromMap(Map<String, dynamic> map) {
     return UserService(
+      id: map['id'] != null ? map['id'] as int : null,
       billID: map['billID'] as String,
       billName: map['billName'] as String,
       serviceID: map['serviceID'] as String,

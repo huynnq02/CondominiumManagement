@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/apartment_service.dart';
+import 'package:untitled/src/screens/service%20screen/category_detail_service_screen.dart';
 import 'package:untitled/src/screens/service%20screen/service_detail_screen.dart';
 import 'package:untitled/src/screens/service%20screen/widgets/item_service.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
@@ -28,7 +29,18 @@ class ItemServiceGroup extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return CategoryDetailServiceScreen(
+                          services: services,
+                          category: name,
+                        );
+                      },
+                    ),
+                  );
+                },
                 child: const Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 20,

@@ -19,8 +19,9 @@ class UserServiceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void cancelService(UserService service) {
-    _services.remove(service);
+  void cancelService(int index) {
+    _services.removeAt(index);
+
     notifyListeners();
   }
 }

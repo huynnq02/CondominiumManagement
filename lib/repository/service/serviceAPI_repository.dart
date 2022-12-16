@@ -38,6 +38,7 @@ class ServiceRepository extends BaseRepository {
         '/api/services/app/UserServiceRegister/RegisterService',
         data: service.toJson(),
       );
+      print('RegisterService: $response');
 
       return response;
     } on DioError catch (error) {
@@ -50,10 +51,10 @@ class ServiceRepository extends BaseRepository {
     try {
       var client = init();
       final response = await client.post(
-        '/api/services/app/Bill/CreateInServiceRegister',
+        '/api/services/app/Bill/CreateServiceBill',
         data: service.toJson(),
       );
-
+      print('create in service register: $response');
       return response;
     } on DioError catch (error) {
       print(error);
@@ -62,14 +63,18 @@ class ServiceRepository extends BaseRepository {
   }
 
   Future<Response> cancelService(UserService service) async {
+    print('id: ${service.id}');
     try {
       var client = init();
       final response = await client.post(
         '/api/services/app/UserServiceRegister/UnregisterService',
-        data: {
-          "id": service.serviceID,
+        queryParameters: {
+          "id": service.id,
         },
       );
+      print('url: ${response.realUri.path}');
+      print('url: ${response.realUri.data}');
+      print('url: ${response.requestOptions.data}');
 
       return response;
     } on DioError catch (error) {

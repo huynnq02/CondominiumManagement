@@ -1,18 +1,17 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:untitled/src/models/user_service.dart';
+import 'package:untitled/src/providers/user_service_provider.dart';
 import 'package:untitled/src/screens/service%20screen/service_detail_cancel_screen.dart';
 import 'package:untitled/src/screens/service%20screen/widgets/item_service_using.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class TabServicesUsing extends StatefulWidget {
-  final List<UserService> services;
-
   const TabServicesUsing({
     Key? key,
-    required this.services,
   }) : super(key: key);
 
   @override
@@ -38,9 +37,20 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    for (var service in widget.services) {
-      print(service.serviceID);
+    List<UserService> services = context.watch<UserServiceProvider>().services;
+
+    List<UserService> servicesTmp = [];
+    if (selectedValue!.compareTo('Tất cả') == 0) {
+      services = services;
+    } else {
+      for (var service in services) {
+        print(service.typeService);
+        if (service.typeService == selectedValue) {
+          services.add(service);
+        }
+      }
     }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: ListView(
@@ -48,7 +58,7 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
           Row(
             children: [
               Text(
-                'Có ${widget.services.length} dịch vụ đang dùng',
+                'Có ${services.length} dịch vụ đang dùng',
                 style: AppTextStyle.lato.copyWith(fontSize: 16),
               ),
               const Spacer(),
@@ -99,20 +109,28 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
             width: size.width,
             child: ListView.builder(
               itemBuilder: (context, index) {
-                UserService service = widget.services[index];
+                if (index == services.length) {
+                  return const SizedBox(height: 350);
+                }
+                UserService service = services[index];
                 return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ServiceDetailCancelScreen(
-                            service: service,
-                          ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ServiceDetailCancelScreen(
+                          service: service,
+                          index: index,
                         ),
-                      );
-                    },
-                    child: ItemServiceUsing(service: service));
+                      ),
+                    );
+                  },
+                  child: ItemServiceUsing(
+                    service: service,
+                    index: index,
+                  ),
+                );
               },
-              itemCount: widget.services.length,
+              itemCount: services.length + 1,
             ),
           ),
         ],

@@ -2,26 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:untitled/src/models/apartment_service.dart';
 import 'package:untitled/src/models/user_service.dart';
-import 'package:untitled/src/screens/service%20screen/service_detail_cancel_screen.dart';
 import 'package:untitled/src/screens/service%20screen/service_detail_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
-class ItemServiceUsing extends StatelessWidget {
-  final UserService service;
-  final int index;
+class ItemServiceDetail extends StatelessWidget {
+  final ApartmentService service;
 
-  const ItemServiceUsing({
+  const ItemServiceDetail({
     Key? key,
     required this.service,
-    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
@@ -93,7 +90,7 @@ class ItemServiceUsing extends StatelessWidget {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: service.price.round().toVND(),
+                      text: service.serviceCharge.round().toVND(),
                       style: AppTextStyle.lato.copyWith(
                         fontSize: 16,
                       ),
@@ -103,16 +100,17 @@ class ItemServiceUsing extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          ServiceDetailCancelScreen(
+                onTap: () async {
+                  final bool? result = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ServiceDetailScreen(
                         service: service,
-                        index: index,
                       ),
                     ),
                   );
+                  if (result == true) {
+                    Navigator.of(context).pop();
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

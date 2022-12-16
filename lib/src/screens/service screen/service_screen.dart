@@ -55,6 +55,8 @@ class _ServiceScreenState extends State<ServiceScreen>
           'Dịch vụ',
           style: AppTextStyle.lato.copyWith(color: Colors.white),
         ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -102,9 +104,7 @@ class _ServiceScreenState extends State<ServiceScreen>
                     TabServicesAll(
                       services: apartmentServices,
                     ),
-                    TabServicesUsing(
-                      services: userServices,
-                    ),
+                    const TabServicesUsing(),
                   ],
                 ),
               ),

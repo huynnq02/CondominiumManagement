@@ -67,11 +67,14 @@ class _RegisterDialogState extends State<RegisterDialog> {
       startDate: createdAt.toIso8601String(),
       endDate: createdAt.add(Duration(days: cycle)).toIso8601String(),
       typeService: widget.apartmentService.typeService,
+      id: 0,
     );
     await ServicePro().registerServiceV2(userService);
-    await ServicePro().registerService(userService);
+    int id = await ServicePro().registerService(userService);
+    userService = userService.setId(id);
+    print('user service: ${userService}');
     context.read<UserServiceProvider>().addService(userService);
-    Navigator.pop(context);
+    Navigator.pop(context, true);
     setState(() {
       isRegister = false;
     });
@@ -114,9 +117,12 @@ class _RegisterDialogState extends State<RegisterDialog> {
               ),
             )
           : Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
               width: size.width * .9,
               padding: const EdgeInsets.all(10),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: 10),
                   Row(

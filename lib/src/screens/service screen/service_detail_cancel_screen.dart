@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/repository/service/serviceAPI_provider.dart';
@@ -10,17 +11,13 @@ import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 
 class ServiceDetailCancelScreen extends StatelessWidget {
   final UserService service;
+  final int index;
 
   const ServiceDetailCancelScreen({
     Key? key,
     required this.service,
+    required this.index,
   }) : super(key: key);
-
-  // void registerService(BuildContext context) async {
-  //   final ServicePro servicePro = ServicePro();
-  //   Service service =
-  //   String status = await servicePro.registerService();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +103,7 @@ class ServiceDetailCancelScreen extends StatelessWidget {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
-                  await showDialog(
+                  final bool? result = await showDialog(
                     context: context,
                     builder: (context) {
                       return Dialog(
@@ -155,8 +152,8 @@ class ServiceDetailCancelScreen extends StatelessWidget {
                                                   .cancelService(service);
                                               context
                                                   .read<UserServiceProvider>()
-                                                  .cancelService(service);
-                                              Navigator.pop(context);
+                                                  .cancelService(index);
+                                              Navigator.pop(context, true);
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: Colors.white,
@@ -220,6 +217,9 @@ class ServiceDetailCancelScreen extends StatelessWidget {
                       );
                     },
                   );
+                  if (result == true) {
+                    Navigator.pop(context);
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
