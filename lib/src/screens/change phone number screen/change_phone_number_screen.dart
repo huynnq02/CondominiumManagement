@@ -65,9 +65,7 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
     });
   }
 
-  getSharedPreferences() async {
-    pref = await SharedPreferences.getInstance();
-  }
+  getSharedPreferences() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +231,8 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                       ),
                       InkWell(
                         onTap: () {
+                          print("zo ne b oi");
+
                           user.setIsSent(false);
                           user.setChangePhoneFail(false);
 
@@ -255,6 +255,16 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                               _isWaiting = true;
                             });
                           }
+                          if (_isDone == true) {
+                            if (_phoneFormKey.currentState!.validate()) {
+                              profileProvider!.changePhoneNumber(
+                                  context,
+                                  widget.mdUser!,
+                                  phoneNumberController.text,
+                                  otpController.text);
+                              _isDone = false;
+                            }
+                          }
                         },
                         child: Column(
                           children: [
@@ -268,7 +278,8 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                               ),
                             if (_isOTPSent == true &&
                                 _isWaiting == true &&
-                                user.isSent == true)
+                                user.isSent == true &&
+                                _isDone == false)
                               ButtonContainer(
                                 height: height,
                                 width: width,
@@ -278,11 +289,21 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                 // color: const Color(0xFFCDCDCD),
                                 color: AppColors.White,
                               ),
-                            if (_isOTPSent == true && _isWaiting == false)
+                            if (_isOTPSent == true &&
+                                _isWaiting == false &&
+                                _isDone == false)
                               ButtonContainer(
                                 height: height,
                                 width: width,
                                 text: "Gửi lại OTP",
+                                // color: const Color(0xFF5FC5FF),
+                                color: AppColors.White,
+                              ),
+                            if (_isDone == true)
+                              ButtonContainer(
+                                height: height,
+                                width: width,
+                                text: "Hoàn thành",
                                 // color: const Color(0xFF5FC5FF),
                                 color: AppColors.White,
                               ),
@@ -335,21 +356,21 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                               _isOTPSent == true) {
                                             print("da zo4");
 
-                                            await profileProvider!
-                                                .changePhoneNumber(
+                                            await profileProvider!.checkOTP(
                                               context,
-                                              widget.mdUser,
-                                              phoneNumberController.text,
                                               otp!,
+                                              widget.mdUser!,
                                             );
                                             print("da zo5");
-
-                                            getSharedPreferences();
+                                            pref = await SharedPreferences
+                                                .getInstance();
+                                            bool tempData =
+                                                pref!.getBool("isValidOTP")!;
                                             setState(() {
-                                              _isValidOTP =
-                                                  pref!.getBool("isValidOTP");
-                                              _isDone =
-                                                  pref!.getBool("isValidOTP")!;
+                                              print("is valid k");
+                                              _isValidOTP = tempData;
+                                              print(_isValidOTP);
+                                              _isDone = tempData;
                                               print("isDone");
                                               print(_isDone);
                                             });

@@ -54,4 +54,12 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     print(res.data['success']);
     return res.data['success'];
   }
+
+  Future checkOTPAPIProvider(String otp, MDUser? mdUser) async {
+    final res = await repository.checkOTPAPIRepository(otp, mdUser);
+    print("kq neee:");
+    print("check otp co thanh cong:");
+    print(res.data);
+    return res.data['result'];
+  }
 }

@@ -151,6 +151,7 @@ class ProfileProvider extends ChangeNotifier {
       String phoneNumber, String otp) async {
     SharedPreferences pref;
     setIsLoading(true);
+    print("vao 2");
     var success = await ProfilePro()
         .changePhoneNumberAPIProvider(mdUser, phoneNumber, otp);
     pref = await SharedPreferences.getInstance();
@@ -158,21 +159,38 @@ class ProfileProvider extends ChangeNotifier {
     if (success == true) {
       mdUser!.phoneNumber = phoneNumber;
       setMdUser(mdUser);
-      // showSuccessfulDialog(context);
-      pref.setBool("isValidOTP", true);
 
       setIsLoading(false);
+      // pop context
+      Navigator.of(context).pop();
     } else if (success == false) {
       setChangePhoneFail(true);
       setIsLoading(false);
 
       print("3");
 
-      pref.setBool("isValidOTP", false);
       print(pref.getBool("isValidOTP"));
       print('change failed');
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text('Cập nhật thất bại, kiểm tra lại thông tin')));
+    }
+  }
+
+  Future checkOTP(BuildContext context, String otp, MDUser mdUser) async {
+    var result = await ProfilePro().checkOTPAPIProvider(otp, mdUser);
+    SharedPreferences pref;
+    pref = await SharedPreferences.getInstance();
+
+    if (result == true) {
+      print("dung r nha");
+      // showSuccessfulDialog(context);
+      await pref.setBool("isValidOTP", true);
+      print('success');
+    } else {
+      print("sai me r");
+      await pref.setBool("isValidOTP", false);
+      print(pref.getBool("isValidOTP"));
+      print('failed');
     }
   }
 }
