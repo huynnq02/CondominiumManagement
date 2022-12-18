@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -23,8 +24,9 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
 
   Future getProfilePictureAPIProvider() async {
     final res = await repository.getProfilePictureAPIRepository();
-    print(res.data['result']);
-    return res.data['result'];
+    String resBody = res.toString();
+    var jsonData = jsonDecode(resBody);
+    return jsonData['result'];
   }
 
   Future getCurrentUserProfileAPIProvider() async {
@@ -33,8 +35,8 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     return res.data;
   }
 
-  Future updateProfilePictureAPIProvider(File image) async {
-    final res = await repository.updateProfilePictureAPIRepository(image);
+  Future updateProfilePictureAPIProvider(String imageUrl) async {
+    final res = await repository.updateProfilePictureAPIRepository(imageUrl);
     return res.data;
   }
 
