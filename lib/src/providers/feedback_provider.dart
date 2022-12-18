@@ -42,7 +42,7 @@ class FeedbackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getUserFeedback() async {
+  Future<void> getUserFeedback() async {
     var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
     if (res['result'] != null) {
       List<fb.Feedback> feedbacks = res['result']

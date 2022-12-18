@@ -28,7 +28,7 @@ class ProfileRepository extends BaseRepository {
     try {
       var client = init();
       final profileResponse = await client.get(
-        '/api/services/app/Profile/GetProfilePicture',
+        '/api/services/app/Profile/GetAvatarProfile',
       );
 
       return profileResponse;
@@ -51,35 +51,22 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future<Response> updateProfilePictureAPIRepository(File _image) async {
+  Future<Response> updateProfilePictureAPIRepository(String imageUrl) async {
     try {
       var client = init();
       // upload image to asp.net core server
-      final _imageBytes = _image.readAsBytesSync();
-      final _imageBase64 = base64UrlEncode(_imageBytes);
-      print("sai ho bo: " + _imageBase64);
-      var formData = FormData.fromMap({
-        "fileToken": _imageBase64,
-        "fileName": "ProfilePicture",
-        "fileType": "image/png",
-      });
-      print("fom data");
+
       final profileResponse = await client.put(
-          '/api/services/app/Profile/UpdateProfilePicture',
-          data: formData);
-      // final _imageBytes = _image.readAsBytesSync();
-      // final _imageBase64 = base64UrlEncode(_imageBytes);
-      // print("sai ho bo: " + _imageBase64);
-      // final profileResponse = await client.put(
-      //   '/api/services/app/Profile/UpdateProfilePicture',
-      //   data: {"fileToken": _imageBase64},
-      // );
+        '/api/services/app/Profile/UpdateAvatarProfile',
+        queryParameters: {
+          'url': imageUrl,
+        },
+      );
 
-      print("duoc k z");
-      print(profileResponse.data['result']);
-
+      print("respone update image: $profileResponse");
       return profileResponse;
     } on DioError catch (error) {
+      print('error update image: ${error.toString()}');
       return error.response as Response;
     }
   }

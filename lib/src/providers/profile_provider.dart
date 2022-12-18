@@ -34,10 +34,10 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Uint8List? _profilePicture;
-  Uint8List? get profilePicture => _profilePicture;
-  void setProfilePicture(Uint8List profilePicture) {
-    _profilePicture = profilePicture;
+  String? _profilePicture;
+  String? get profilePicture => _profilePicture;
+  void setProfilePicture(String urlImage) {
+    _profilePicture = urlImage;
     notifyListeners();
   }
 
@@ -102,24 +102,17 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  void getCurrentUserProfile() async {
+  Future<void> getCurrentUserProfile() async {
     var response = await ProfilePro().getCurrentUserProfileAPIProvider();
     print(response['result']);
     MDUser user = MDUser.fromMap(response['result']);
     setMdUser(user); // notifyListeners();
   }
 
-  void getProfilePicture() async {
-    var response = await ProfilePro().getProfilePictureAPIProvider();
-    var bytesString = response['profilePicture'] as String;
-    setProfilePicture(
-      base64Decode(bytesString),
-    );
-  }
-
-  Future updateProfilePicture(File image) async {
-    var response = await ProfilePro().updateProfilePictureAPIProvider(image);
-    return response;
+  Future<void> getProfilePicture() async {
+    var urlImage = await ProfilePro().getProfilePictureAPIProvider();
+    print('url image: $urlImage');
+    setProfilePicture(urlImage);
   }
 
   Future sendOTPToChangePhoneNumber(
