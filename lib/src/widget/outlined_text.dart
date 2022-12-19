@@ -4,6 +4,7 @@ import 'package:untitled/utils/app_constant/app_shadows.dart';
 class OutlinedText extends StatelessWidget {
   final String text;
   final double? fontSize;
+  final FontWeight? fontWeight;
   final Color? color;
   final Color? strokeColor;
   final TextAlign? textAlign;
@@ -13,6 +14,7 @@ class OutlinedText extends StatelessWidget {
       {Key? key,
       required this.text,
       this.fontSize,
+      this.fontWeight,
       this.color,
       this.strokeColor,
       this.textAlign,
@@ -28,19 +30,18 @@ class OutlinedText extends StatelessWidget {
             textAlign: textAlign,
             style: style!.copyWith(
                 fontSize: fontSize,
+                fontWeight: fontWeight,
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 1
                   ..color = strokeColor ?? Colors.black.withOpacity(0.2),
-                shadows: isShadowed
-                    ? AppShadows.defaultShadows
-                    : null)),
+                shadows: isShadowed ? AppShadows.defaultShadows : null)),
         Text(text,
             textAlign: textAlign,
             style: style!.copyWith(
-              fontSize: fontSize,
-              color: color ?? Colors.white,
-            )),
+                fontSize: fontSize,
+                color: color ?? Colors.white,
+                fontWeight: fontWeight)),
       ],
     );
   }
