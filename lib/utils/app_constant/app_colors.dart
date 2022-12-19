@@ -19,4 +19,5 @@ class AppColors {
   static const Black = Color(0xff000000);
   static const ButtonLoginColor = Color(0xFF5DFEFE);
   static const LogoutButtonColor = Color(0xFF21A1E9);
+  static const Purple = Color(0xFF6167A6);
 }
