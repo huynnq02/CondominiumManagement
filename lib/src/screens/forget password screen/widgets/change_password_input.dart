@@ -60,19 +60,7 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               decoration: BoxDecoration(
-                  border: (errorText != '' ||
-                          (widget.error != null && widget.error != ''))
-                      ? Border.all(color: const Color(0xFFFF0000))
-                      : Border.all(
-                          color: Color.fromARGB(
-                              Color.getAlphaFromOpacity(0.2), 42, 48, 114)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      offset: const Offset(0, 4),
-                      blurRadius: 4
-                    )
-                  ],
+                  border: Border.all(color: Colors.black.withOpacity(0.2)),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12)),
               child: Stack(alignment: Alignment.center, children: [
@@ -81,13 +69,10 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                   children: [
                     Text(
                       widget.labelText,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w300,
-                          color: (errorText != '' ||
-                                  (widget.error != null && widget.error != ''))
-                              ? AppColors.Red
-                              : Colors.black),
+                          color: Colors.black),
                     ),
                     const SizedBox(
                       height: 4,
@@ -121,32 +106,25 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        isDense: true,
-                        errorStyle: TextStyle(height: 0),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                        counterText: ''
-                      ),
+                          isDense: true,
+                          errorStyle: TextStyle(height: 0),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                          counterText: ''),
                     ),
                   ],
                 ),
                 Positioned(
                   right: 0,
-                  bottom: 0,
                   child: GestureDetector(
-                    onTap: _toggle,
-                    child: _obscureText == true
-                        ? SvgPicture.asset(
-                            'assets/eye.svg',
-                            width: 17,
-                            height: 17,
-                          )
-                        : const Icon(
-                            Icons.visibility_off,
-                            size: 17,
-                            color: AppColors.Black,
-                          ),
-                  ),
+                      onTap: _toggle,
+                      child: _obscureText == true
+                          ? SvgPicture.asset(
+                              'assets/visibility.svg',
+                            )
+                          : SvgPicture.asset(
+                              'assets/visibility-off.svg',
+                            )),
                 )
               ]),
             ),
@@ -157,11 +135,15 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
         ),
         if ((widget.error != null && widget.error!.isNotEmpty) ||
             errorText.isNotEmpty)
-          Text(
-            (widget.error != null && widget.error!.isNotEmpty)
-                ? widget.error!
-                : errorText,
-            style: GoogleFonts.inter(color: AppColors.Red, fontSize: 12),
+          SizedBox(
+            width: double.infinity,
+            child: Text(
+              (widget.error != null && widget.error!.isNotEmpty)
+                  ? widget.error!
+                  : errorText,
+              style: GoogleFonts.inter(color: AppColors.Red, fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
           )
       ],
     );
