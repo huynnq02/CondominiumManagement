@@ -5,32 +5,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/repository/profile/profileAPI_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/storage_methods.dart';
 
 class ProfilePicture extends StatefulWidget {
-  Uint8List? image;
-  ProfilePicture({Key? key, this.image}) : super(key: key);
+  ProfilePicture({Key? key}) : super(key: key);
 
   @override
   State<ProfilePicture> createState() => _ProfilePictureState();
 }
 
 class _ProfilePictureState extends State<ProfilePicture> {
-  ProfileProvider? profileProvider;
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
 
   @override
   void initState() {
     super.initState();
-    profileProvider = Provider.of<ProfileProvider>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
+    var user = context.watch<ProfileProvider>();
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Stack(
@@ -44,13 +45,10 @@ class _ProfilePictureState extends State<ProfilePicture> {
             borderRadius: BorderRadius.circular(100),
             border: Border.all(color: AppColors.Black, width: 1),
             image: DecorationImage(
-              image: _imageFile != null
-                  ? FileImage(
-                      File(_imageFile!.path),
-                    )
-                  : widget.image!.isEmpty == true
-                      ? const AssetImage("assets/default-profile-picture.png")
-                      : MemoryImage(widget.image!) as ImageProvider,
+              image: user.profilePicture != null
+                  ? NetworkImage(user.profilePicture!) as ImageProvider
+                  : const AssetImage("assets/default-profile-picture.png"),
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -203,19 +201,24 @@ class _ProfilePictureState extends State<ProfilePicture> {
 
   void takePhoto(ImageSource source) async {
     final _pickedFile = await _picker.getImage(source: source);
-    setState(() {
-      _imageFile = _pickedFile;
-      uploadImage(_imageFile!);
-    });
+    if (_pickedFile != null) {
+      setState(() {
+        _imageFile = _pickedFile;
+        uploadImage(_imageFile!);
+      });
+    }
   }
 
   // upload _imageFile to api
   void uploadImage(PickedFile _imageFile) async {
+    final user = context.read<ProfileProvider>().mdUser;
     final _image = File(_imageFile.path);
+    Uint8List avatar = await _image.readAsBytes();
+    String imageUrl = await StorageMethods()
+        .uploadImageToStorage('profilePics', avatar, false, user.idNumber);
+    print('url anh: $imageUrl');
 
-    final _response = await profileProvider?.updateProfilePicture(_image);
-    if (_response != null) {
-      Navigator.pop(context);
-    }
+    await ProfilePro().updateProfilePictureAPIProvider(imageUrl);
+    context.read<ProfileProvider>().setProfilePicture(imageUrl);
   }
 }

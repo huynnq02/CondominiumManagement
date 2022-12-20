@@ -25,19 +25,38 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    getCurrentUserProfile();
+    getProfilePicture();
+
+    getUserFeedback();
+
+    getServices();
+    getUsingServices();
+  }
+
+  void getUserFeedback() async {
     final feedbackProvider = Provider.of<FeedbackProvider>(
       context,
       listen: false,
     );
+    await feedbackProvider.getUserFeedback();
+  }
+
+  void getCurrentUserProfile() async {
     final profileProvider = Provider.of<ProfileProvider>(
       context,
       listen: false,
     );
-    feedbackProvider.getUserFeedback();
-    profileProvider.getCurrentUserProfile();
-    profileProvider.getProfilePicture();
-    getServices();
-    getUsingServices();
+    await profileProvider.getCurrentUserProfile();
+  }
+
+  void getProfilePicture() async {
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
+    await profileProvider.getProfilePicture();
   }
 
   void getServices() async {
