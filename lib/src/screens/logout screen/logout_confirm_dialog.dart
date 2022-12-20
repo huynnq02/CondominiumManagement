@@ -48,7 +48,7 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.Purple),
+                    color: AppColors.Pink),
               ),
               const SizedBox(
                 height: 51,
@@ -66,7 +66,7 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
                       side:
                           const BorderSide(color: Color(0xFF625E5E), width: 1),
                       shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(14)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                     ),
                     child: const Text(
@@ -87,14 +87,15 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
                           builder: (context) => LoginScreen()));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.Purple,
+                      backgroundColor: AppColors.Pink,
                       fixedSize: Size(
                         width * 0.28,
                         29,
                       ),
                       shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(14)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
+                      shadowColor: Colors.transparent
                     ),
                     child: const Text(
                       "Có",
