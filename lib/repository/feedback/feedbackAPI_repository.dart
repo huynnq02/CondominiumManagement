@@ -7,7 +7,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.post(
-        '/api/UserFeedback/AddFeedBack',
+        '/api/services/app/UserFeedback/AddFeedback',
         data: {
           "email": feedback.email,
           "type": feedback.type,
@@ -29,7 +29,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.get(
-        '/api/UserFeedback/GetCurrentUserFeedback',
+        '/api/services/app/UserFeedback/GetCurrentUserFeedback',
       );
       return feedbackResponse;
     } on DioError catch (error) {
@@ -41,7 +41,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.put(
-        '/api/UserFeedback/UpdateFeedback',
+        '​/api​/services​/app​/UserFeedback​/UpdateFeedback',
         data: {
           "id": feedback.id,
           "email": feedback.email,
@@ -64,7 +64,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.delete(
-        '/api/UserFeedback/DeleteFeedback',
+        '/api/services/app/UserFeedback/DeleteFeedback',
         queryParameters: {
           "id": id,
         },
