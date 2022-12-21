@@ -131,8 +131,8 @@ class _RegisterDialogState extends State<RegisterDialog> {
                   BoxDecoration(borderRadius: BorderRadius.circular(10)),
               width: size.width * .9,
               padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+              child: ListView(
+                shrinkWrap: true,
                 children: [
                   const SizedBox(height: 10),
                   Row(
