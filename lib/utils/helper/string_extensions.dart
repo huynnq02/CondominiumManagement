@@ -3,8 +3,9 @@ extension StringExtensions on String {
           r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
       .hasMatch(this);
 
-  bool isValidPhoneNumber() =>
-      RegExp(r"^(?:[+84][0])?[0-9]{10,12}$").hasMatch(this);
+  bool isValidPhoneNumber() {
+    return RegExp(r"^(\+84|0)\d{9,13}$").hasMatch(this);
+  }
 
   String formatDateTime() {
     final result = DateTime.parse(this);

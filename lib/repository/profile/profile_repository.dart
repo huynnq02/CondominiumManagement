@@ -125,4 +125,30 @@ class ProfileRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future checkOTPAPIRepository(String otp, MDUser? mdUser) async {
+    try {
+      var client = init();
+
+      final profileResponse = await client.post(
+        '/api/services/app/Profile/CheckOTP',
+        data: {
+          "emailAddress": mdUser!.email,
+          "gender": mdUser.gender,
+          "idNumber": mdUser.idNumber,
+          "birthDate": mdUser.birthDate,
+          "userName": mdUser.userName,
+          "name": mdUser.name,
+          "surname": mdUser.surname,
+          "phoneNumber": mdUser.phoneNumber,
+          "otp": otp,
+          "apartmentId": mdUser.apartmentId,
+        },
+      );
+      print(profileResponse.data['success']);
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }
