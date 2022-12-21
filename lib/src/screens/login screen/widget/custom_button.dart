@@ -4,7 +4,12 @@ import 'package:untitled/utils/app_constant/app_colors.dart';
 class CustomButton extends StatefulWidget {
   final String label;
   final void Function()? onPressed;
-  const CustomButton({Key? key, required this.onPressed, required this.label})
+  final bool disabled;
+  const CustomButton(
+      {Key? key,
+      required this.onPressed,
+      required this.label,
+      this.disabled = false})
       : super(key: key);
 
   @override
@@ -24,7 +29,8 @@ class _CustomButtonState extends State<CustomButton> {
                 Radius.circular(12),
               ),
             ),
-            backgroundColor: AppColors.Pink,
+            backgroundColor:
+                widget.disabled ? AppColors.DarkPink : AppColors.Pink,
             shadowColor: Colors.transparent),
         onPressed: widget.onPressed,
         child: Text(
