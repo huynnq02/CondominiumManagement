@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/src/screens/bill%20detail%20screen/apartment_bill_detail.dart';
+import 'package:untitled/src/screens/payment%20screen/apartment_bill_office_payment_screen.dart';
+import 'package:untitled/src/screens/payment%20screen/payment_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
@@ -39,7 +41,8 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
           border: Border.all(
             color: widget.apartmentBill.state == "Đã thanh toán"
                 ? const Color(0xFF2AC956)
-                : widget.apartmentBill.state == "Chưa thanh toán"
+                : widget.apartmentBill.state == "Chưa thanh toán" ||
+                        widget.apartmentBill.state == "Từ chối thanh toán"
                     ? const Color(0xFFFFC000)
                     : const Color(0xFF5C92FE),
             width: 2,
@@ -89,7 +92,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  widget.apartmentBill.price.toString() + "đ",
+                  widget.apartmentBill.price.toString().formatMoney(),
                   style: AppTextStyle.lato.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -103,7 +106,9 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                         ? Image.asset("assets/done-icon.png")
                         : widget.apartmentBill.state == "Chưa thanh toán"
                             ? Image.asset("assets/warning-icon.png")
-                            : Image.asset("assets/waiting-icon.png"),
+                            : widget.apartmentBill.state == "Từ chối thanh toán"
+                                ? Image.asset("assets/refuse-icon.png")
+                                : Image.asset("assets/waiting-icon.png"),
                     const SizedBox(
                       width: 10,
                     ),
@@ -115,17 +120,19 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                             ),
                           )
                         : widget.apartmentBill.state == "Chưa thanh toán"
-                            ? Container(
-                                height: height * 0.03,
-                                width: width * 0.20,
-                                child: Center(
-                                  child: Text(
-                                    "Thanh toán",
-                                    style: AppTextStyle.lato
-                                        .copyWith(color: AppColors.White),
+                            ? InkWell(
+                                onTap: _showModalBottomSheet,
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.20,
+                                  child: Center(
+                                    child: Text(
+                                      "Thanh toán",
+                                      style: AppTextStyle.lato
+                                          .copyWith(color: AppColors.White),
+                                    ),
                                   ),
-                                ),
-                                decoration: BoxDecoration(
+                                  decoration: BoxDecoration(
                                     color: const Color(0xFFFFC000),
                                     borderRadius: BorderRadius.circular(5),
                                     boxShadow: const [
@@ -134,14 +141,23 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                                         offset: Offset(0, 3),
                                         blurRadius: 6,
                                       ),
-                                    ]),
-                              )
-                            : Text(
-                                "Chờ tiếp nhận",
-                                style: AppTextStyle.lato.copyWith(
-                                  color: const Color(0xFF5C92FE),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              )
+                            : widget.apartmentBill.state == "Từ chối thanh toán"
+                                ? Text(
+                                    "Từ chối thanh toán",
+                                    style: AppTextStyle.lato.copyWith(
+                                      color: const Color(0xFFFFC000),
+                                    ),
+                                  )
+                                : Text(
+                                    "Chờ tiếp nhận",
+                                    style: AppTextStyle.lato.copyWith(
+                                      color: const Color(0xFF5C92FE),
+                                    ),
+                                  ),
                   ],
                 ),
               ],
@@ -149,6 +165,151 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showModalBottomSheet() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      context: context,
+      builder: (builder) {
+        final width = MediaQuery.of(context).size.width;
+        final height = MediaQuery.of(context).size.height;
+        return Container(
+          height: height * 0.197,
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(18),
+              topRight: Radius.circular(18),
+            ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                height: height * 0.065,
+                width: width,
+                decoration: const BoxDecoration(
+                  color: AppColors.White,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18),
+                    topRight: Radius.circular(18),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Chọn phương thức thanh toán",
+                    style: AppTextStyle.lato
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.001,
+              ),
+              Container(
+                height: height * 0.065,
+                width: width,
+                decoration: const BoxDecoration(
+                  color: AppColors.White,
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    child: Stack(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 35),
+                            child: Image(
+                              image: AssetImage(
+                                  'assets/internet-banking-icon.png'),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "Chuyển khoản ngân hàng",
+                            style: AppTextStyle.lato.copyWith(
+                              fontSize: 16,
+                              color: const Color(0xFF12C82F),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentScreen(
+                            apartmentBill: widget.apartmentBill,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.001,
+              ),
+              Container(
+                height: height * 0.065,
+                width: width,
+                decoration: const BoxDecoration(
+                  color: AppColors.White,
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    child: Stack(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 35),
+                            child: Image(
+                              image: AssetImage('assets/direct-debit-icon.png'),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "Thanh toán tại văn phòng",
+                            style: AppTextStyle.lato.copyWith(
+                              fontSize: 16,
+                              color: const Color(0xFF12C82F),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ApartmentBillOfficePaymentScreen(
+                            apartmentBill: widget.apartmentBill,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

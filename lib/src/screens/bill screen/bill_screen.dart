@@ -44,6 +44,11 @@ class _BillScreenState extends State<BillScreen>
         return Provider.of<BillProvider>(context, listen: false)
             .paidApartmentBills
             .length;
+      } else if (Provider.of<BillProvider>(context).billState ==
+          "Từ chối thanh toán") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .refuseApartmentBills
+            .length;
       } else {
         return Provider.of<BillProvider>(context, listen: false)
             .waitingApartmentBills
@@ -63,6 +68,11 @@ class _BillScreenState extends State<BillScreen>
           "Đã thanh toán") {
         return Provider.of<BillProvider>(context, listen: false)
             .paidServiceBills
+            .length;
+      } else if (Provider.of<BillProvider>(context).billState ==
+          "Từ chối thanh toán") {
+        return Provider.of<BillProvider>(context, listen: false)
+            .refuseServiceBills
             .length;
       } else {
         return Provider.of<BillProvider>(context, listen: false)

@@ -29,10 +29,17 @@ extension StringExtensions on String {
   }
 
   String formatMoney() {
+    // format money from xxxxxx to xxx.xxx
     var result = this;
-    result = result.replaceAllMapped(
-        RegExp(r"(\d)(?=(\d{3})+(?!\d))"), (match) => "${match[1]}.");
-    result += "đ";
-    return result;
+    var length = result.length;
+    var count = 0;
+    for (var i = length - 1; i >= 0; i--) {
+      count++;
+      if (count == 3 && i != 0) {
+        result = result.substring(0, i) + "." + result.substring(i);
+        count = 0;
+      }
+    }
+    return result + "đ";
   }
 }

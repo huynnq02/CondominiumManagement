@@ -7,9 +7,10 @@ import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 import 'package:untitled/src/screens/bill detail screen/widgets/custom_rich_text.dart';
 
-class ApartmentBillDetailScreen extends StatelessWidget {
+class ApartmentBillOfficePaymentScreen extends StatelessWidget {
   final ApartmentBill apartmentBill;
-  const ApartmentBillDetailScreen({Key? key, required this.apartmentBill})
+  const ApartmentBillOfficePaymentScreen(
+      {Key? key, required this.apartmentBill})
       : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class ApartmentBillDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Chi tiết hóa đơn",
+          "Thanh toán hóa đơn",
           style: TextStyle(
             color: AppColors.White,
           ),
@@ -27,7 +28,9 @@ class ApartmentBillDetailScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF1D6D54),
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.of(context)
+              ..pop()
+              ..pop();
           },
           child: const Icon(
             Icons.arrow_back_ios,
@@ -43,9 +46,19 @@ class ApartmentBillDetailScreen extends StatelessWidget {
             bottom: height * 0.02),
         child: Column(
           children: [
-            SizedBox(
-              height: height * 0.03,
-            ),
+            if (apartmentBill.state == "Chưa thanh toán")
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: height * 0.02,
+                ),
+                child: Text(
+                  "Quý khách đến văn phòng ban quản lý vui lòng xuất trình chi tiết hóa đơn trước khi thanh toán",
+                  style: AppTextStyle.lato.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
