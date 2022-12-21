@@ -62,12 +62,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       body: Column(
         children: [
-          const Spacer(
-            flex: 1,
+          SizedBox(
+            height: height * 0.08,
           ),
           ProfilePicture(),
           SizedBox(
-            height: height * 0.02,
+            height: height * 0.01,
           ),
           Text(
             user.mdUser.surname + ' ' + user.mdUser.name,
@@ -78,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textAlign: TextAlign.center,
           ),
           SizedBox(
-            height: height * 0.05,
+            height: height * 0.02,
           ),
           Flexible(
             flex: 6,
@@ -171,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: AppColors.White,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(8),
                     child: Row(
                       children: [
                         const Image(
@@ -268,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: AppColors.White,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(8),
                     child: Row(
                       children: [
                         const Image(
@@ -313,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: AppColors.White,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

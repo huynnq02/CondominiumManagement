@@ -42,7 +42,7 @@ class UserInfo extends StatelessWidget {
         // ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             Image(
