@@ -206,9 +206,6 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                             value.isValidPhoneNumber();
                                       })
                                     },
-                                    validator: (value) {
-                                      return null;
-                                    },
                                     decoration: const InputDecoration(
                                       hintText: "Số điện thoại",
                                       border: InputBorder.none,
@@ -288,16 +285,13 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                             user.setIsSent(true);
                           }
                           if (_isDone == true) {
-                            user.setIsLoading(true);
-                            print("loading: " + user.isLoading.toString());
-                            if (_phoneFormKey.currentState!.validate()) {
-                              profileProvider!.changePhoneNumber(
-                                  context,
-                                  widget.mdUser!,
-                                  phoneNumberController.text,
-                                  otpController.text);
-                              user.setIsLoading(false);
-                            }
+                            print(" loading ne: " + user.isLoading.toString());
+                            profileProvider!.changePhoneNumber(
+                                context,
+                                widget.mdUser!,
+                                phoneNumberController.text,
+                                otpController.text);
+                            print(" loading ne: " + user.isLoading.toString());
                           }
                           print("isSent: " + user.isSent.toString());
                           print("changePhoneFail: " +
@@ -340,15 +334,17 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                 color: AppColors.White,
                               ),
                             if (_isDone == true)
-                              user.isLoading
-                                  ? const CircularProgressIndicator()
-                                  : ButtonContainer(
-                                      height: height,
-                                      width: width,
-                                      text: "Hoàn thành",
-                                      // color: const Color(0xFF5FC5FF),
-                                      color: AppColors.White,
-                                    ),
+                              if (_isValidPhoneNumber != null &&
+                                  _isValidPhoneNumber! == true)
+                                user.isLoading
+                                    ? const CircularProgressIndicator()
+                                    : ButtonContainer(
+                                        height: height,
+                                        width: width,
+                                        text: "Hoàn thành",
+                                        // color: const Color(0xFF5FC5FF),
+                                        color: AppColors.White,
+                                      ),
                           ],
                         ),
                       ),
