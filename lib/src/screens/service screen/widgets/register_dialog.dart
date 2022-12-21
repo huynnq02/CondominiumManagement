@@ -45,6 +45,16 @@ class _RegisterDialogState extends State<RegisterDialog> {
   }
 
   registerService() async {
+    List<UserService> userServices =
+        context.read<UserServiceProvider>().services;
+
+    for (var service in userServices) {
+      if (service.serviceID == widget.apartmentService.id.toString()) {
+        Navigator.pop(context, true);
+        return;
+      }
+    }
+
     print('Ma hoa don: $maHD');
     final userProvider = context.read<ProfileProvider>();
     setState(() {
