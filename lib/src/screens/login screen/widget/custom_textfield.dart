@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
@@ -12,6 +13,9 @@ class CustomTextField extends StatefulWidget {
   final bool? pwRule;
   final int? maxLength;
   final TextFieldType? type;
+  final List<String>? items;
+  final dynamic Function(String)? onSuggestionSelected;
+  final void Function(BuildContext context)? onTap;
 
   const CustomTextField({
     Key? key,
@@ -21,6 +25,9 @@ class CustomTextField extends StatefulWidget {
     this.error,
     this.pwRule,
     this.maxLength,
+    this.items,
+    this.onSuggestionSelected,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -82,7 +89,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           break;
         case TextFieldType.name:
           if (value.isEmpty) {
-            errorText = 'Vui lòng nhập hờ tên';
+            errorText = 'Vui lòng nhập họ tên';
             return '';
           }
           RegExp exp = RegExp(r"[^a-z ]", caseSensitive: false);
@@ -114,14 +121,29 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return null;
   }
 
+  String formatedName(String value) {
+    var splitStr = value.split(' ');
+    for (var i = 0; i < splitStr.length; i++) {
+      if (splitStr[i].isNotEmpty) {
+        splitStr[i] =
+            '${splitStr[i][0].toUpperCase()}${splitStr[i].substring(1).toLowerCase()}';
+      }
+    }
+    String result = splitStr.join(' ');
+    return result;
+  }
+
+  void handleOnTap() {
+    if (widget.onTap != null) widget.onTap!(context);
+    unitCodeCtrlFocusNode.requestFocus();
+  }
+
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onTap: () {
-            unitCodeCtrlFocusNode.requestFocus();
-          },
+          onTap: handleOnTap,
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -149,23 +171,76 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   const SizedBox(
                     height: 4,
                   ),
-                  TextFormField(
-                    controller: widget.controller,
-                    focusNode: unitCodeCtrlFocusNode,
-                    obscureText: widget.type == TextFieldType.password
-                        ? _obscureText
-                        : false,
-                    obscuringCharacter: '*',
-                    style: const TextStyle(fontSize: 18),
-                    maxLength: widget.maxLength,
-                    validator: ((value) => getValidator(value, widget.type)),
-                    decoration: const InputDecoration(
-                        isDense: true,
-                        errorStyle: TextStyle(height: 0),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                        counterText: ''),
-                  ),
+                  widget.type == TextFieldType.autocomplete
+                      ? TypeAheadFormField(
+                          validator: (value) {
+                            if (value != null && value.isEmpty) {
+                              errorText = 'Vui lòng chọn thông tin thích hợp';
+                              return '';
+                            }
+                            errorText = '';
+                            return null;
+                          },
+                          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          textFieldConfiguration: TextFieldConfiguration(
+                              controller: widget.controller,
+                              style: const TextStyle(fontSize: 18),
+                              focusNode: unitCodeCtrlFocusNode,
+                              decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  errorStyle: TextStyle(height: 0),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 0))),
+                          itemBuilder: (BuildContext context, String itemData) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Text(
+                                itemData,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            );
+                          },
+                          onSuggestionSelected: (String suggestion) =>
+                              widget.onSuggestionSelected?.call(suggestion),
+                          suggestionsCallback: (pattern) async {
+                            return widget.items!.where(
+                                (element) => element.toLowerCase().contains(
+                                      pattern.toLowerCase(),
+                                    ));
+                          },
+                        )
+                      : TextFormField(
+                          controller: widget.controller,
+                          focusNode: unitCodeCtrlFocusNode,
+                          obscureText: widget.type == TextFieldType.password
+                              ? _obscureText
+                              : false,
+                          obscuringCharacter: '*',
+                          onChanged: (value) {
+                            if (widget.type != TextFieldType.name) return;
+                            final controller = widget.controller;
+                            if (controller != null) {
+                              controller.value = TextEditingValue(
+                                  text: formatedName(value),
+                                  selection: controller.selection);
+                            }
+                          },
+                          enabled: (widget.type != TextFieldType.date),
+                          style: const TextStyle(fontSize: 18),
+                          maxLength: widget.maxLength,
+                          validator: ((value) =>
+                              getValidator(value, widget.type)),
+                          decoration: const InputDecoration(
+                              isDense: true,
+                              errorStyle: TextStyle(height: 0),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                              counterText: ''),
+                        ),
                 ],
               ),
               if (widget.type == TextFieldType.password)
@@ -181,6 +256,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                               'assets/visibility-off.svg',
                             )),
                 )
+              else if (widget.type == TextFieldType.date ||
+                  widget.type == TextFieldType.autocomplete)
+                Positioned(
+                    right: 0,
+                    child: Image.asset(
+                      'assets/dropdown.png',
+                      width: 7.18,
+                    ))
             ]),
           ),
         ),

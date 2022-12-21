@@ -22,4 +22,5 @@ class AppColors {
   static const Purple = Color(0xFF6167A6);
   static const LightPurple = Color(0xFFB0C4FC);
   static const Pink = Color(0xFFFE2C6B);
+  static const DarkPink = Color(0xFFDB2F68);
 }
