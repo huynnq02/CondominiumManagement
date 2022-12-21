@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,8 +15,16 @@ class RegisterOTPScreen extends StatefulWidget {
   final MDUser? mdUser;
   final String? type;
   final String? email;
-  const RegisterOTPScreen({Key? key, this.mdUser, this.type, this.email})
-      : super(key: key);
+  final String? phoneNumber;
+  final String? verificationId;
+  const RegisterOTPScreen({
+    Key? key,
+    this.mdUser,
+    this.type,
+    this.email,
+    this.phoneNumber,
+    this.verificationId,
+  }) : super(key: key);
 
   @override
   State<RegisterOTPScreen> createState() => _RegisterOTPScreenState();
@@ -30,9 +39,13 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
   Timer? timer;
   int min = 1, sec = 59;
   bool isWaiting = true;
+  String? verificationId;
   @override
   void initState() {
     super.initState();
+    if (widget.verificationId != null) {
+      verificationId = widget.verificationId;
+    }
     otpProvider = Provider.of<OTPProvider>(context, listen: false);
     provider = Provider.of<RegisterProvider>(context, listen: false);
     forgetPwOtpProvider =
@@ -90,7 +103,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
     }
   }
 
-  void handleResent() {
+  void handleResent() async {
     switch (widget.type) {
       case 'forget':
         if (!isWaiting) {
@@ -103,14 +116,20 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
       default:
         if (!isWaiting) {
           showLoading();
-          otpProvider!
-              .sendOTP(widget.mdUser!, context)
-              .then((value) => handleOTPSent());
+          if (verificationId != null) {
+            await otpProvider!.retrySendSMSOTP(
+                context, widget.mdUser!, (value) => verificationId = value);
+            handleOTPSent();
+          } else {
+            otpProvider!
+                .sendOTP(widget.mdUser!, context)
+                .then((value) => handleOTPSent());
+          }
         }
     }
   }
 
-  void handleValidate() {
+  void handleValidate() async {
     switch (widget.type) {
       case 'forget':
         if (_otpFormKey.currentState!.validate()) {
@@ -124,7 +143,23 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
         if (_otpFormKey.currentState!.validate()) {
           setState(() {});
           showLoading();
-          provider!.register(widget.mdUser!, otpController.text, context);
+          if (verificationId != null) {
+            PhoneAuthCredential credential = PhoneAuthProvider.credential(
+              verificationId: verificationId!,
+              smsCode: otpController.text,
+            );
+            await FirebaseAuth.instance
+                .signInWithCredential(credential)
+                .then((value) {
+              provider!.registerWithPhone(widget.mdUser!, context);
+            }).onError((error, stackTrace) {
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('OTP không đúng.')));
+            });
+          } else {
+            provider!.register(widget.mdUser!, otpController.text, context);
+          }
         }
     }
   }
