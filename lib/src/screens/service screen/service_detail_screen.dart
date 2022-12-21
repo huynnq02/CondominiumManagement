@@ -44,11 +44,11 @@ class ServiceDetailScreen extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.2,
+            horizontal: size.width * 0.1,
           ),
           child: ListView(
             children: [
-              SizedBox(height: size.height * 0.1),
+              const SizedBox(height: 10),
               Image.asset(
                 'assets/service.png',
                 width: size.width * .6,
