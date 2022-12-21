@@ -25,6 +25,10 @@ class _ServiceBillState extends State<ServiceBill> {
       return Provider.of<BillProvider>(context, listen: false)
           .paidServiceBills
           .length;
+    } else if (state == 'Từ chối thanh toán') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .refuseServiceBills
+          .length;
     } else {
       return Provider.of<BillProvider>(context, listen: false)
           .waitingServiceBills
@@ -45,6 +49,8 @@ class _ServiceBillState extends State<ServiceBill> {
         Provider.of<BillProvider>(context).unpaidServiceBills;
     final waitingServiceBills =
         Provider.of<BillProvider>(context).waitingServiceBills;
+    final refuseServiceBills =
+        Provider.of<BillProvider>(context).refuseServiceBills;
 
     return Container(
       child: ListView.builder(
@@ -61,7 +67,10 @@ class _ServiceBillState extends State<ServiceBill> {
                         : Provider.of<BillProvider>(context).billState ==
                                 'Đã thanh toán'
                             ? paidServiceBills[index]
-                            : waitingServiceBills[index],
+                            : Provider.of<BillProvider>(context).billState ==
+                                    'Từ chối thanh toán'
+                                ? refuseServiceBills[index]
+                                : waitingServiceBills[index],
           ),
         ),
       ),

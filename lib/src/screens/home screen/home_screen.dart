@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/models/apartment_service.dart';
 import 'package:untitled/src/models/user_service.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/user_service_provider.dart';
@@ -48,6 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       listen: false,
     );
+    final billProvider = Provider.of<BillProvider>(
+      context,
+      listen: false,
+    );
+    profileProvider.getCurrentUserProfile();
+    profileProvider.getProfilePicture();
+    billProvider.getAllApartmentBill();
+    billProvider.getAllServiceBill();
     await profileProvider.getCurrentUserProfile();
   }
 
