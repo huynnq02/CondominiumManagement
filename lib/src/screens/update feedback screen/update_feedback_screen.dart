@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,7 @@ import 'package:untitled/src/screens/create%20feedback/widgets/feedback_type_wid
 import 'package:untitled/src/screens/update%20feedback%20screen/widgets/update_feedback_confirm_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/storage_methods.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 
 class UpdateFeedbackScreen extends StatefulWidget {
@@ -30,6 +32,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   final TextEditingController _contentController = TextEditingController();
   bool? isEmptyTitle, isEmptyContent;
   PickedFile? _imageFile;
+  String? _imageUrl;
+
   @override
   void initState() {
     super.initState();
@@ -134,7 +138,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                     id: widget.feedback.id,
                     email: widget.feedback.email,
                     time: DateTime.now().toIso8601String(),
-                    image: widget.feedback.image,
+                    image: _imageUrl,
                     type: _selectedIndex == 1
                         ? "Lỗi/sự cố"
                         : _selectedIndex == 2
@@ -146,7 +150,10 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                     respond: "",
                   );
                   showUpdateConfirmPopupDialog(
-                      context, feedbackProvider, feedback);
+                    context,
+                    feedbackProvider,
+                    feedback,
+                  );
                 }
               },
               child: Text(
@@ -376,8 +383,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                           child: InkWell(
                             onTap: _showModalBottomSheet,
                             child: _imageFile != null
-                                ? Image.file(
-                                    File(_imageFile!.path),
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      File(_imageFile!.path),
+                                      fit: BoxFit.cover,
+                                    ),
                                   )
                                 : widget.feedback.image == ""
                                     ? Icon(
@@ -425,30 +436,6 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                             fit: BoxFit.fill,
                           ),
                         ),
-                        // Stack(
-                        //   clipBehavior: Clip.none,
-                        //   children: [
-                        //     Positioned(
-                        //       // right: width * 0.3,
-                        //       child: Image.asset(
-                        //         "assets/icon-message-left.png",
-                        //       ),
-                        //     ),
-                        //     Positioned(
-                        //       // right: width * 0.3,
-                        //       child: Image.asset(
-                        //         "assets/icon-message-right.png",
-                        //       ),
-                        //     ),
-                        //     Positioned(
-                        //       // left: width * 0.01,
-                        //       child: Image.asset(
-                        //         "assets/apato-logo.png",
-                        //         height: height * 0.2,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   ),
@@ -592,10 +579,20 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
   }
 
   void takePhoto(ImageSource source) async {
+    final user = context.read<ProfileProvider>().mdUser;
     final _pickedFile = await _picker.getImage(source: source);
-    setState(() {
-      _imageFile = _pickedFile;
-    });
+    if (_pickedFile != null) {
+      final _image = File(_pickedFile!.path);
+      Uint8List feedbackImg = await _image.readAsBytes();
+      String imageUrl = await StorageMethods()
+          .uploadImageToStorage('feedbacks', feedbackImg, true, user.idNumber);
+
+      setState(() {
+        _imageFile = _pickedFile;
+        _imageUrl = imageUrl;
+      });
+    }
+
     Navigator.pop(context);
   }
 

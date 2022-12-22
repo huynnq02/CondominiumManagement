@@ -43,15 +43,9 @@ class FeedbackProvider extends ChangeNotifier {
   }
 
   Future<void> getUserFeedback() async {
-    var res = await FeedbackAPIProvider().getUserFeedbackAPIProvider();
-    if (res['result'] != null) {
-      List<fb.Feedback> feedbacks = res['result']
-          .map<fb.Feedback>((json) => fb.Feedback.fromMap(json))
-          .toList();
-      feedbacks.sort((a, b) => b.time.compareTo(a.time));
-      // _numsOfFeedbacks = feedbacks.length;
-      setFeedbacks(feedbacks);
-    }
+    List<fb.Feedback> feedbacks =
+        await FeedbackAPIProvider().getUserFeedbackAPIProvider();
+    setFeedbacks(feedbacks);
   }
 
   void showSuccessfulDialog(BuildContext context, String message, int count) =>

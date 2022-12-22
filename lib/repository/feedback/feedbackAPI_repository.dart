@@ -40,8 +40,9 @@ class FeedbackAPIRepository extends BaseRepository {
   Future<Response> updateFeedbackAPIRepository(Feedback feedback) async {
     try {
       var client = init();
+      print('feedback id: ${feedback.id}');
       final feedbackResponse = await client.put(
-        '​/api​/services​/app​/UserFeedback​/UpdateFeedback',
+        '/api/services/app/UserFeedback/UpdateFeedback',
         data: {
           "id": feedback.id,
           "email": feedback.email,
@@ -56,6 +57,7 @@ class FeedbackAPIRepository extends BaseRepository {
       );
       return feedbackResponse;
     } on DioError catch (error) {
+      print(error.toString());
       return error.response as Response;
     }
   }

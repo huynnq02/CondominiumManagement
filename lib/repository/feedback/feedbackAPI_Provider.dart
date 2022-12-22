@@ -16,9 +16,14 @@ class FeedbackAPIProvider extends BaseProvider<FeedbackAPIRepository> {
     return res.data['success'];
   }
 
-  Future getUserFeedbackAPIProvider() async {
+  Future<List<Feedback>> getUserFeedbackAPIProvider() async {
     var res = await repository.getUserFeedbackAPIRepository();
-    return res.data;
+    String resBody = res.toString();
+    var jsonData = jsonDecode(resBody);
+    print(Map<String, dynamic>.from(jsonData['result'])['items']);
+    return (Map<String, dynamic>.from(jsonData['result'])['items'] as List)
+        .map((e) => Feedback.fromMap(e))
+        .toList();
   }
 
   Future updateFeedbackAPIProvider(Feedback feedback) async {

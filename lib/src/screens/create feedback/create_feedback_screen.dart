@@ -388,8 +388,14 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                           child: InkWell(
                             onTap: _showModalBottomSheet,
                             child: _imageFile != null
-                                ? Image.file(
-                                    File(_imageFile!.path),
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      File(
+                                        _imageFile!.path,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
                                   )
                                 : Icon(
                                     Icons.image,
