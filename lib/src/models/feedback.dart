@@ -49,6 +49,10 @@ class Feedback {
     );
   }
 
+  void setId(int id) {
+    this.id = id;
+  }
+
   String toJson() => json.encode(toMap());
 
   factory Feedback.fromJson(String source) =>

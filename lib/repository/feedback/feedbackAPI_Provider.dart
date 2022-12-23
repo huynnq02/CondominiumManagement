@@ -10,10 +10,11 @@ class FeedbackAPIProvider extends BaseProvider<FeedbackAPIRepository> {
     return FeedbackAPIRepository();
   }
 
-  Future createFeedbackAPIProvider(Feedback feedback) async {
+  Future<int> createFeedbackAPIProvider(Feedback feedback) async {
     var res = await repository.createFeedbackAPIRepository(feedback);
-
-    return res.data['success'];
+    String resBody = res.toString();
+    var jsonData = jsonDecode(resBody);
+    return jsonData['result'];
   }
 
   Future<List<Feedback>> getUserFeedbackAPIProvider() async {

@@ -24,19 +24,7 @@ class FeedBackType extends StatelessWidget {
       width: width * 0.25,
       decoration: BoxDecoration(
         color: selectedIndex == index ? colorOntap : const Color(0xFFD9D9D9),
-        borderRadius: BorderRadius.circular(20),
-        // set border for container
-        border: Border.all(
-          color: AppColors.Black.withOpacity(0.5),
-          width: 1,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.25),
-            offset: Offset(0, 2),
-            blurRadius: 5,
-          ),
-        ],
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
         child: Text(
