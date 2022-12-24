@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 extension StringExtensions on String {
   bool isValidEmail() => RegExp(
           r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
@@ -9,14 +12,9 @@ extension StringExtensions on String {
 
   String formatDateTime() {
     final result = DateTime.parse(this);
-    String day = result.day / 10 < 1
-        ? "0" + result.day.toString()
-        : result.day.toString();
-    String month = result.month / 10 < 1
-        ? "0" + result.month.toString()
-        : result.month.toString();
 
-    final formattedDate = "$day/$month/${result.year}";
+    final formattedDate = DateFormat('HH:mm dd-MM-yyyy').format(result);
+
     return formattedDate;
   }
 

@@ -30,16 +30,9 @@ class FeedbackInput extends StatelessWidget {
           Radius.circular(10),
         ),
         border: Border.all(
-          color: isError == true ? AppColors.Red : AppColors.Black,
+          color: isError == true ? AppColors.Red : const Color(0xFFD9D9D9),
           width: 1,
         ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.25),
-            offset: Offset(0, 2),
-            blurRadius: 5,
-          ),
-        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

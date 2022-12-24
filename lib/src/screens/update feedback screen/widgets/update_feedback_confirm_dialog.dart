@@ -47,73 +47,71 @@ class _UpdateFeedbackConfirmDialogState
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
-                child: feedbackProvider.isLoading == true
-                    ? const Center(child: CircularProgressIndicator())
-                    : Column(
-                        children: [
-                          const Text(
-                            "Bạn có muốn sửa ý kiến",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Bạn có muốn sửa ý kiến",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.023,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // feedbackProvider.updateFeedback(
+                            //   context,
+                            //   widget.feedback,
+                            // );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.LogoutButtonColor,
+                            fixedSize: Size(
+                              width * 0.28,
+                              height * 0.035,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
                             ),
                           ),
-                          SizedBox(
-                            height: height * 0.023,
+                          child: const Text(
+                            "Đồng ý",
+                            style:
+                                TextStyle(color: AppColors.White, fontSize: 14),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  feedbackProvider.updateFeedback(
-                                    context,
-                                    widget.feedback,
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.LogoutButtonColor,
-                                  fixedSize: Size(
-                                    width * 0.28,
-                                    height * 0.035,
-                                  ),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(14)),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Đồng ý",
-                                  style: TextStyle(
-                                      color: AppColors.White, fontSize: 14),
-                                ),
-                              ),
-                              SizedBox(
-                                width: width * 0.08,
-                              ),
-                              ElevatedButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.Black,
-                                  fixedSize: Size(
-                                    width * 0.28,
-                                    height * 0.035,
-                                  ),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(14)),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Hủy",
-                                  style: TextStyle(
-                                      color: AppColors.White, fontSize: 14),
-                                ),
-                              )
-                            ],
+                        ),
+                        SizedBox(
+                          width: width * 0.08,
+                        ),
+                        ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.Black,
+                            fixedSize: Size(
+                              width * 0.28,
+                              height * 0.035,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
+                            ),
                           ),
-                        ],
-                      ),
+                          child: const Text(
+                            "Hủy",
+                            style:
+                                TextStyle(color: AppColors.White, fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

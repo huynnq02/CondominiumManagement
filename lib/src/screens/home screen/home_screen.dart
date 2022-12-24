@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/repository/feedback/feedbackAPI_Provider.dart';
 import 'package:untitled/src/models/apartment_service.dart';
 import 'package:untitled/src/models/user_service.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
@@ -12,6 +13,7 @@ import '../../../utils/app_constant/app_colors.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/screens/home screen/widgets/custom_button.dart';
 import 'package:untitled/src/screens/home%20screen/widgets/home_item.dart';
+import 'package:untitled/src/models/feedback.dart' as f;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       listen: false,
     );
-    await feedbackProvider.getUserFeedback();
+    List<f.Feedback> feedbacks =
+        await FeedbackAPIProvider().getUserFeedbackAPIProvider();
+    feedbackProvider.setFeedbacks(feedbacks);
   }
 
   void getCurrentUserProfile() async {
