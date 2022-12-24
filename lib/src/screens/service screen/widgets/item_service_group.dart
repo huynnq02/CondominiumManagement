@@ -24,12 +24,16 @@ class ItemServiceGroup extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                name,
-                style: AppTextStyle.lato.copyWith(fontSize: 16),
+                '$name (${services.length})',
+                style: AppTextStyle.lato.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF979A9C),
+                ),
               ),
               const Spacer(),
-              GestureDetector(
-                onTap: () {
+              TextButton(
+                onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
@@ -41,38 +45,45 @@ class ItemServiceGroup extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 20,
+                child: Text(
+                  'Xem tất cả',
+                  style: AppTextStyle.lato.copyWith(
+                    fontSize: 16,
+                    color: const Color(0xFFDB2F68),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 10),
-        SizedBox(
-          height: 180,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              ApartmentService service = services[index];
-              return Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => ServiceDetailScreen(service: service),
-                      ),
-                    );
-                  },
-                  child: ItemService(service: service),
+        services.isEmpty
+            ? Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Không tìm thấy được dịch vụ nào',
+                  style: AppTextStyle.lato.copyWith(
+                    color: const Color(0xFF979A9C),
+                  ),
                 ),
-              );
-            },
-            itemCount: services.length,
-          ),
-        ),
+              )
+            : Wrap(
+                children: services
+                    .map(
+                      (e) => GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ServiceDetailScreen(service: e),
+                            ),
+                          );
+                        },
+                        child: ItemService(service: e),
+                      ),
+                    )
+                    .toList(),
+              ),
       ],
     );
   }
