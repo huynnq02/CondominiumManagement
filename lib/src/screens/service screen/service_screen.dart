@@ -4,10 +4,8 @@ import 'package:untitled/src/models/apartment_service.dart';
 import 'package:untitled/src/models/user_service.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/user_service_provider.dart';
-import 'package:untitled/src/screens/service%20screen/widgets/item_service.dart';
 import 'package:untitled/src/screens/service%20screen/widgets/tab_services_all.dart';
 import 'package:untitled/src/screens/service%20screen/widgets/tab_services_using.dart';
-import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -49,15 +47,19 @@ class _ServiceScreenState extends State<ServiceScreen>
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2A3072),
+        backgroundColor: const Color(0xFFDB2F68),
         elevation: 0,
         title: Text(
           'Dịch vụ',
-          style: AppTextStyle.lato.copyWith(color: Colors.white),
+          style: AppTextStyle.lato.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
+      backgroundColor: const Color(0xFFFCF6F6),
       body: SingleChildScrollView(
         child: SizedBox(
           height: size.height,
@@ -79,21 +81,15 @@ class _ServiceScreenState extends State<ServiceScreen>
                   ),
                   indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    color: Colors.white,
+                    color: const Color(0xFFDB2F68),
                   ),
                   indicatorColor: Colors.transparent,
-                  labelColor: const Color(0xFF1D6D54),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: const Color(0xFF909090),
                   tabs: const [
                     Tab(text: 'Tất cả'),
                     Tab(text: 'Đang dùng'),
                   ],
-                  onTap: (value) {
-                    setState(
-                      () {
-                        tabIndex = value;
-                      },
-                    );
-                  },
                 ),
               ),
               const SizedBox(height: 10),

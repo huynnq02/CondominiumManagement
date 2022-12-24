@@ -21,18 +21,22 @@ class CategoryDetailServiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFCF6F6),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2A3072),
+        backgroundColor: const Color(0xFFDB2F68),
         elevation: 0,
         title: Text(
           category,
-          style: AppTextStyle.lato.copyWith(color: Colors.white),
+          style: AppTextStyle.lato.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.only(top: 10.0),
         child: ListView.builder(
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -48,7 +52,7 @@ class CategoryDetailServiceScreen extends StatelessWidget {
                   Navigator.of(context).pop();
                 }
               },
-              child: ItemServiceDetail(
+              child: ItemService(
                 service: services[index],
               ),
             );

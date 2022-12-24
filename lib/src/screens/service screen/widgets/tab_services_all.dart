@@ -34,17 +34,14 @@ class TabServicesAll extends StatelessWidget {
           name: 'Dịch vụ an ninh',
           services: anNinhServices,
         ),
-        const SizedBox(height: 15),
         ItemServiceGroup(
           name: 'Dịch vụ ăn uống',
           services: anUongServices,
         ),
-        const SizedBox(height: 15),
         ItemServiceGroup(
           name: 'Dịch vụ giải trí',
           services: giaiTriServices,
         ),
-        const SizedBox(height: 15),
         ItemServiceGroup(
           name: 'Dịch vụ khác',
           services: khacServices,

@@ -29,7 +29,7 @@ class _RegisterDialogState extends State<RegisterDialog> {
   late String maHD;
   bool isLoading = false;
   bool isRegister = false;
-
+  int? cycle;
   @override
   void dispose() {
     super.dispose();
@@ -60,7 +60,6 @@ class _RegisterDialogState extends State<RegisterDialog> {
     setState(() {
       isRegister = true;
     });
-    int cycle = int.parse(widget.apartmentService.cycle);
     print(cycle);
     UserService userService = UserService(
       billID: maHD,
@@ -75,7 +74,7 @@ class _RegisterDialogState extends State<RegisterDialog> {
       note: noteController.text,
       state: '',
       startDate: createdAt.toIso8601String(),
-      endDate: createdAt.add(Duration(days: cycle)).toIso8601String(),
+      endDate: createdAt.add(Duration(days: cycle!)).toIso8601String(),
       typeService: widget.apartmentService.typeService,
       id: 0,
     );
@@ -102,6 +101,7 @@ class _RegisterDialogState extends State<RegisterDialog> {
     }
 
     DateTime createdAt = DateTime.now();
+    cycle = int.parse(widget.apartmentService.cycle);
 
     maHD = 'HD${DateFormat('ddMM').format(createdAt)}$tmp';
     print('Ma hoa don: $maHD');
@@ -341,7 +341,7 @@ class _RegisterDialogState extends State<RegisterDialog> {
                       const Spacer(),
                       Text(
                         DateFormat("dd/MM/yyyy")
-                            .format(createdAt.add(const Duration(days: 30))),
+                            .format(createdAt.add(Duration(days: cycle!))),
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 13,
                           color: Colors.red,
