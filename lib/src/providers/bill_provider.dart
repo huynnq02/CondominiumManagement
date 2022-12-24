@@ -8,11 +8,13 @@ class BillProvider extends ChangeNotifier {
   final List<bill.ApartmentBill> _paidApartmentBills = [];
   final List<bill.ApartmentBill> _unpaidApartmentBills = [];
   final List<bill.ApartmentBill> _waitingApartmentBills = [];
+  final List<bill.ApartmentBill> _refuseApartmentBills = [];
 
   final List<bill.ServiceBill> _serviceBills = [];
   final List<bill.ServiceBill> _paidServiceBills = [];
   final List<bill.ServiceBill> _unpaidServiceBills = [];
   final List<bill.ServiceBill> _waitingServiceBills = [];
+  final List<bill.ServiceBill> _refuseServiceBills = [];
   int _currentTab = 0;
   String _billState = "Tất cả";
   int get currentTab => _currentTab;
@@ -20,11 +22,13 @@ class BillProvider extends ChangeNotifier {
   List<bill.ApartmentBill> get paidApartmentBills => _paidApartmentBills;
   List<bill.ApartmentBill> get unpaidApartmentBills => _unpaidApartmentBills;
   List<bill.ApartmentBill> get waitingApartmentBills => _waitingApartmentBills;
+  List<bill.ApartmentBill> get refuseApartmentBills => _refuseApartmentBills;
 
   List<bill.ServiceBill> get serviceBills => _serviceBills;
   List<bill.ServiceBill> get paidServiceBills => _paidServiceBills;
   List<bill.ServiceBill> get unpaidServiceBills => _unpaidServiceBills;
   List<bill.ServiceBill> get waitingServiceBills => _waitingServiceBills;
+  List<bill.ServiceBill> get refuseServiceBills => _refuseServiceBills;
 
   String get billState => _billState;
   void setApartmentBill(List<bill.ApartmentBill> apartmentBills) {
@@ -54,6 +58,8 @@ class BillProvider extends ChangeNotifier {
         _paidServiceBills.add(item);
       } else if (item.state == "Chưa thanh toán") {
         _unpaidServiceBills.add(item);
+      } else if (item.state == "Từ chối thanh toán") {
+        _refuseServiceBills.add(item);
       } else {
         _waitingServiceBills.add(item);
       }
@@ -65,11 +71,14 @@ class BillProvider extends ChangeNotifier {
     _paidApartmentBills.clear();
     _unpaidApartmentBills.clear();
     _waitingApartmentBills.clear();
+    _refuseApartmentBills.clear(); //
     for (var item in _apartmentBills) {
       if (item.state == "Đã thanh toán") {
         _paidApartmentBills.add(item);
       } else if (item.state == "Chưa thanh toán") {
         _unpaidApartmentBills.add(item);
+      } else if (item.state == "Từ chối thanh toán") {
+        _refuseApartmentBills.add(item);
       } else {
         _waitingApartmentBills.add(item);
       }

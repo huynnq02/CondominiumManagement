@@ -25,6 +25,10 @@ class _AparmentBilllState extends State<AparmentBilll> {
       return Provider.of<BillProvider>(context, listen: false)
           .paidApartmentBills
           .length;
+    } else if (state == 'Từ chối thanh toán') {
+      return Provider.of<BillProvider>(context, listen: false)
+          .refuseApartmentBills
+          .length;
     } else {
       return Provider.of<BillProvider>(context, listen: false)
           .waitingApartmentBills
@@ -54,8 +58,12 @@ class _AparmentBilllState extends State<AparmentBilll> {
                                   'Đã thanh toán'
                               ? Provider.of<BillProvider>(context)
                                   .paidApartmentBills[index]
-                              : Provider.of<BillProvider>(context)
-                                  .waitingApartmentBills[index]),
+                              : Provider.of<BillProvider>(context).billState ==
+                                      'Từ chối thanh toán'
+                                  ? Provider.of<BillProvider>(context)
+                                      .refuseApartmentBills[index]
+                                  : Provider.of<BillProvider>(context)
+                                      .waitingApartmentBills[index]),
         ),
       ),
     );

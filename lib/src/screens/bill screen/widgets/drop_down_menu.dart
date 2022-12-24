@@ -14,9 +14,10 @@ class DropDownMenu extends StatefulWidget {
 class _DropDownMenuState extends State<DropDownMenu> {
   List<String> choices = <String>[
     'Tất cả',
-    'Chưa thanh toán',
-    'Chờ tiếp nhận',
     'Đã thanh toán',
+    'Chưa thanh toán',
+    'Từ chối thanh toán',
+    'Chờ tiếp nhận',
   ];
 
   @override

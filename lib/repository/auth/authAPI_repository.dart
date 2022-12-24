@@ -138,4 +138,46 @@ class AuthAPIRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future<Response> checkEmailExistence({String? email}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/EmailAddressIsExist',
+        data: {"emailAddress": email},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> registerWithPhone({MDUser? mdUser}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/RegisterByPhoneNumber',
+        data: {
+          "clientType": 1,
+          "fullName": mdUser!.fullName,
+          "emailAddress": mdUser.email,
+          "phoneNumber": mdUser.phoneNumber,
+          "gender": mdUser.gender,
+          "idNumber": mdUser.idNumber,
+          "birthDate": mdUser.birthDate,
+          "buildingId": mdUser.buildingId,
+          "apartmentId": mdUser.apartmentId,
+          "password": mdUser.password,
+          "agreeToTermsAndConditions": true,
+        },
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }

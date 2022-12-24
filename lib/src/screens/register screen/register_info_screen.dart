@@ -13,8 +13,12 @@ const List<String> genderList = <String>['Nam', 'Nữ'];
 class RegisterInfoScreen extends StatefulWidget {
   final String email;
   final String password;
+  final bool isEmail;
   const RegisterInfoScreen(
-      {Key? key, required this.email, required this.password})
+      {Key? key,
+      required this.email,
+      required this.password,
+      required this.isEmail})
       : super(key: key);
 
   @override
@@ -80,27 +84,43 @@ class _RegisterInfoScreenState extends State<RegisterInfoScreen> {
       setState(() {
         data.emailError = '';
       });
-      mdUser = MDUser(
-          name: nameController.text,
-          surname: nameController.text,
-          email: widget.email,
-          gender: dropdownValue,
-          idNumber: idController.text,
-          password: widget.password,
-          birthDate: selectedDate.toIso8601String(),
-          fullName: nameController.text,
-          buildingId: buildingIdController.text,
-          apartmentId: apartmentIdController.text);
+      if (widget.isEmail) {
+        mdUser = MDUser(
+            name: nameController.text,
+            surname: nameController.text,
+            email: widget.email,
+            gender: dropdownValue,
+            idNumber: idController.text,
+            password: widget.password,
+            birthDate: selectedDate.toIso8601String(),
+            fullName: nameController.text,
+            buildingId: buildingIdController.text,
+            apartmentId: apartmentIdController.text);
 
-      //Hiển thị trạng thái loading
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-      await otpProvider!.sendOTP(mdUser!, context);
+        //Hiển thị trạng thái loading
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            });
+        await otpProvider!.sendOTP(mdUser!, context);
+      } else {
+        mdUser = MDUser(
+            name: nameController.text,
+            surname: nameController.text,
+            email: '',
+            phoneNumber: widget.email,
+            gender: dropdownValue,
+            idNumber: idController.text,
+            password: widget.password,
+            birthDate: selectedDate.toIso8601String(),
+            fullName: nameController.text,
+            buildingId: buildingIdController.text,
+            apartmentId: apartmentIdController.text);
+        otpProvider!.sendSMSOTP(context,mdUser!);
+      }
     }
   }
 
@@ -192,7 +212,7 @@ class _RegisterInfoScreenState extends State<RegisterInfoScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: width*0.044,
+                        width: width * 0.044,
                       ),
                       Expanded(
                         flex: 5,

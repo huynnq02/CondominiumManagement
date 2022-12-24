@@ -51,90 +51,46 @@ class _TabServicesUsingState extends State<TabServicesUsing> {
       }
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: ListView(
-        children: [
-          Row(
-            children: [
-              Text(
-                'Có ${servicesTmp.length} dịch vụ đang dùng',
-                style: AppTextStyle.lato.copyWith(fontSize: 16),
-              ),
-              const Spacer(),
-              // box filter
-              Container(
-                padding: const EdgeInsets.only(left: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.Black),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    hint: Text(
-                      selectedValue!,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text(
+            'Đang sử dụng ${servicesTmp.length} dịch vụ',
+            style: AppTextStyle.lato.copyWith(fontSize: 16),
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: size.height,
+          width: size.width,
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              if (index == servicesTmp.length) {
+                return const SizedBox(height: 350);
+              }
+              UserService service = servicesTmp[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ServiceDetailCancelScreen(
+                        service: service,
+                        index: index,
                       ),
                     ),
-                    items: items
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value as String;
-                      });
-                    },
-                    buttonHeight: 35,
-                    buttonWidth: 120,
-                    itemHeight: 35,
-                  ),
+                  );
+                },
+                child: ItemServiceUsing(
+                  service: service,
+                  index: index,
                 ),
-              ),
-            ],
+              );
+            },
+            itemCount: servicesTmp.length + 1,
           ),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: size.height,
-            width: size.width,
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                if (index == servicesTmp.length) {
-                  return const SizedBox(height: 350);
-                }
-                UserService service = servicesTmp[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ServiceDetailCancelScreen(
-                          service: service,
-                          index: index,
-                        ),
-                      ),
-                    );
-                  },
-                  child: ItemServiceUsing(
-                    service: service,
-                    index: index,
-                  ),
-                );
-              },
-              itemCount: servicesTmp.length + 1,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

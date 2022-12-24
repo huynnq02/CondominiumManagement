@@ -24,6 +24,12 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     return res.data;
   }
 
+  Future registerWithPhone({MDUser? mdUser}) async {
+    final res = await repository.registerWithPhone(mdUser: mdUser);
+    print(res);
+    return res.data;
+  }
+
   Future sendOTP({MDUser? mdUser}) async {
     final res = await repository.sendOTP(mdUser: mdUser);
     return res?.data;
@@ -49,5 +55,10 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     final res =
         await repository.changePassword(currentPw: currentPw, newPw: newPw);
     return res.data;
+  }
+
+  Future checkEmailExistence({String? email}) async {
+    final res = await repository.checkEmailExistence(email: email);
+    return res.data['result'];
   }
 }
