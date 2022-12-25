@@ -66,7 +66,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.apartmentBill.billName,
+                  widget.apartmentBill.billName ?? "Không có tên",
                   style: AppTextStyle.lato.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -74,7 +74,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                   ),
                 ),
                 SizedBox(
-                  height: height * 0.01,
+                  height: height * 0.013,
                 ),
                 RichText(
                   text: TextSpan(
@@ -113,8 +113,8 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                     color: const Color(0xFF756969),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: height * 0.01,
                 ),
                 widget.apartmentBill.state == "Đã thanh toán"
                     ? Text(

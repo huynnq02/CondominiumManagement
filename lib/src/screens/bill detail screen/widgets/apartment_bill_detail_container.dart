@@ -59,7 +59,7 @@ class _ApartmentBillDetailContainerState
               ),
               BillRowInfo(
                 name: "Tên hóa đơn:",
-                value: widget.apartmentBill.billName,
+                value: widget.apartmentBill.billName ?? "Không có tên",
                 topBorder: 1,
                 bottomBorder: 1,
               ),

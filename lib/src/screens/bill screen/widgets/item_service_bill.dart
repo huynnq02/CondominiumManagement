@@ -69,7 +69,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.serviceBill.billName,
+                  widget.serviceBill.billName ?? "Không có tên",
                   style: AppTextStyle.lato.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -77,7 +77,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   ),
                 ),
                 SizedBox(
-                  height: height * 0.01,
+                  height: height * 0.013,
                 ),
                 RichText(
                   text: TextSpan(
@@ -115,6 +115,9 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF756969),
                   ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
                 ),
                 widget.serviceBill.state == "Đã thanh toán"
                     ? Text(
