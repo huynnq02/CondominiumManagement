@@ -34,96 +34,71 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: const Color(0xFFFFFDFD),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: widget.serviceBill.state == "Đã thanh toán"
-                ? const Color(0xFF2AC956)
-                : widget.serviceBill.state == "Chưa thanh toán" ||
-                        widget.serviceBill.state == "Từ chối thanh toán"
-                    ? const Color(0xFFFFC000)
-                    : const Color(0xFF5C92FE),
-            width: 2,
-          ),
+          // border: Border.all(
+          //   color: widget.serviceBill.state == "Đã thanh toán"
+          //       ? const Color(0xFF2AC956)
+          //       : widget.serviceBill.state == "Chưa thanh toán" ||
+          //               widget.serviceBill.state == "Từ chối thanh toán"
+          //           ? const Color(0xFFFFC000)
+          //           : const Color(0xFF5C92FE),
+          //   width: 2,
+          // ),
         ),
         child: Padding(
           padding: EdgeInsets.fromLTRB(
               width * 0.018, height * 0.01, width * 0.03, height * 0.01),
           child: Row(
             children: [
+              CircleAvatar(
+                radius: 25,
+                backgroundImage: widget.serviceBill.serviceName == "Ăn uống"
+                    ? const AssetImage("assets/bbq.png")
+                    : widget.serviceBill.serviceName == "An ninh"
+                        ? const AssetImage("assets/parking.png")
+                        : widget.serviceBill.serviceName == "Giải trí"
+                            ? const AssetImage("assets/game.png")
+                            : const AssetImage("assets/gym.png"),
+              ),
+              SizedBox(
+                width: width * 0.03,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.serviceBill.billName,
                     style: AppTextStyle.lato.copyWith(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF756969),
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.02,
+                    height: height * 0.01,
                   ),
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Loại dịch vụ:",
-                            style: AppTextStyle.lato.copyWith(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w100,
-                            ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Hạn: ",
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xFF756969),
                           ),
-                          SizedBox(
-                            height: height * 0.01,
+                        ),
+                        TextSpan(
+                          text: widget.serviceBill.paymentTerm.formatDateTime(),
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF756969),
                           ),
-                          Text(
-                            "Hạn đóng:",
-                            style: AppTextStyle.lato.copyWith(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w100,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: width * 0.02,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.serviceBill.serviceName,
-                            style: AppTextStyle.lato.copyWith(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          Text(
-                            widget.serviceBill.paymentTerm.formatDateTime(),
-                            style: AppTextStyle.lato.copyWith(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xFFFF8A00),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Text(
-                    widget.serviceBill.price.toString().formatMoney(),
-                    style: AppTextStyle.lato.copyWith(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.Black),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -131,85 +106,75 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  widget.serviceBill.serviceName == "Ăn uống"
-                      ? const Image(
-                          image: AssetImage("assets/bbq.png"),
-                        )
-                      : widget.serviceBill.serviceName == "An ninh"
-                          ? const Image(
-                              image: AssetImage("assets/parking.png"),
-                            )
-                          : widget.serviceBill.serviceName == "Giải trí"
-                              ? const Image(
-                                  image: AssetImage("assets/game.png"),
-                                )
-                              : const Image(
-                                  image: AssetImage("assets/gym.png"),
-                                ),
-                  SizedBox(
-                    height: height * 0.023,
+                  Text(
+                    widget.serviceBill.price.toString().formatMoney(),
+                    style: AppTextStyle.lato.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: const Color(0xFF756969),
+                    ),
                   ),
-                  Row(
-                    children: [
-                      widget.serviceBill.state == "Đã thanh toán"
-                          ? Image.asset("assets/done-icon.png")
-                          : widget.serviceBill.state == "Chưa thanh toán"
-                              ? Image.asset("assets/warning-icon.png")
-                              : widget.serviceBill.state == "Từ chối thanh toán"
-                                  ? Image.asset("assets/refuse-icon.png")
-                                  : Image.asset("assets/waiting-icon.png"),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      widget.serviceBill.state == "Đã thanh toán"
+                  widget.serviceBill.state == "Đã thanh toán"
+                      ? Text(
+                          "Đã thanh toán",
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF4AC53F),
+                          ),
+                        )
+                      : widget.serviceBill.state == "Từ chối thanh toán"
                           ? Text(
-                              "Đã thanh toán",
+                              "Từ chối thanh toán",
                               style: AppTextStyle.lato.copyWith(
-                                color: const Color(0xFF2AC956),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFFDD3C63),
                               ),
                             )
-                          : widget.serviceBill.state == "Từ chối thanh toán"
-                              ? Text(
-                                  "Từ chối thanh toán",
-                                  style: AppTextStyle.lato.copyWith(
-                                    color: const Color(0xFFFFC000),
+                          : widget.serviceBill.state == "Chưa thanh toán"
+                              ? InkWell(
+                                  onTap: _showModalBottomSheet,
+                                  child: Text(
+                                    "Chưa thanh toán",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xFFF47D00),
+                                    ),
                                   ),
                                 )
-                              : widget.serviceBill.state == "Chưa thanh toán"
-                                  ? InkWell(
-                                      onTap: _showModalBottomSheet,
-                                      child: Container(
-                                        height: height * 0.03,
-                                        width: width * 0.20,
-                                        child: Center(
-                                          child: Text(
-                                            "Thanh toán",
-                                            style: AppTextStyle.lato.copyWith(
-                                                color: AppColors.White),
-                                          ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                            color: const Color(0xFFFFC000),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.25),
-                                                offset: Offset(0, 3),
-                                                blurRadius: 6,
-                                              ),
-                                            ]),
-                                      ),
-                                    )
-                                  : Text(
-                                      "Chờ tiếp nhận",
-                                      style: AppTextStyle.lato.copyWith(
-                                        color: const Color(0xFF5C92FE),
-                                      ),
-                                    ),
-                    ],
-                  ),
+                              // ? InkWell(
+                              //     onTap: _showModalBottomSheet,
+                              //     child: Container(
+                              //       height: height * 0.03,
+                              //       width: width * 0.20,
+                              //       child: Center(
+                              //         child: Text(
+                              //           "Thanh toán",
+                              //           style: AppTextStyle.lato
+                              //               .copyWith(color: AppColors.White),
+                              //         ),
+                              //       ),
+                              //       decoration: BoxDecoration(
+                              //           color: const Color(0xFFFFC000),
+                              //           borderRadius: BorderRadius.circular(5),
+                              //           boxShadow: const [
+                              //             BoxShadow(
+                              //               color:
+                              //                   Color.fromRGBO(0, 0, 0, 0.25),
+                              //               offset: Offset(0, 3),
+                              //               blurRadius: 6,
+                              //             ),
+                              //           ]),
+                              //     ),
+                              //   )
+                              : Text(
+                                  "Chờ tiếp nhận",
+                                  style: AppTextStyle.lato.copyWith(
+                                    color: const Color(0xFF578DCB),
+                                  ),
+                                ),
                 ],
               )
             ],
@@ -257,7 +222,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   child: Text(
                     "Chọn phương thức thanh toán",
                     style: AppTextStyle.lato
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -290,7 +255,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                             "Chuyển khoản ngân hàng",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
@@ -337,7 +302,7 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                             "Thanh toán tại văn phòng",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),

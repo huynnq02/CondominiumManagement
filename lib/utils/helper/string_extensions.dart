@@ -12,10 +12,10 @@ extension StringExtensions on String {
 
   String formatDateTime() {
     final result = DateTime.parse(this);
-
-    final formattedDate = DateFormat('HH:mm dd-MM-yyyy').format(result);
-
-    return formattedDate;
+    final formattedDate = DateFormat('dd-MM-yyyy').format(result);
+    // replace - to /
+    return formattedDate.replaceAll("-", "/");
+    // return formattedDate;
   }
 
   String standardlizeString() {
@@ -27,7 +27,7 @@ extension StringExtensions on String {
   }
 
   String formatMoney() {
-    // format money from xxxxxx to xxx.xxx
+    // format money from xxxxxx to xxx.xxxđ
     var result = this;
     var length = result.length;
     var count = 0;
