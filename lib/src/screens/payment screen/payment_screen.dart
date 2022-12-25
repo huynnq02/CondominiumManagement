@@ -23,14 +23,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: const Color(0xFFFCF6F6),
       appBar: AppBar(
+        backgroundColor: const Color(0xFFDB2F68),
+        centerTitle: true,
         title: const Text(
           "Thanh toán hóa đơn",
           style: TextStyle(
             color: AppColors.White,
           ),
         ),
-        backgroundColor: const Color(0xFF1D6D54),
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context)
@@ -44,42 +46,54 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            width * 0.05,
-            height * 0.03,
-            width * 0.05,
-            width * 0.08,
-          ),
-          child: Column(
-            children: [
-              if (widget.apartmentBill != null)
-                Column(
-                  children: [
-                    ApartmentBillDetailContainer(
-                        apartmentBill: widget.apartmentBill!),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: width * 0.05),
-                        child: Text(
-                          "Hướng dẫn thanh toán",
-                          style: AppTextStyle.lato.copyWith(
-                              fontWeight: FontWeight.w700, fontSize: 18),
+        child: Column(
+          children: [
+            if (widget.apartmentBill != null)
+              Column(
+                children: [
+                  ApartmentBillDetailContainer(
+                      apartmentBill: widget.apartmentBill!),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFDB2F68),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(45),
+                          bottomRight: Radius.circular(45),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(
+                          left: width * 0.07,
+                          right: width * 0.06,
+                          top: height * 0.012,
+                          bottom: height * 0.012),
+                      child: Text(
+                        "Hướng dẫn thanh toán",
+                        style: AppTextStyle.lato.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: const Color(0xFFFFFFFF),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.01,
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: height * 0.01,
+                      left: width * 0.04,
+                      right: width * 0.04,
+                      bottom: height * 0.03,
                     ),
-                    Container(
+                    child: Container(
                       decoration: BoxDecoration(
+                        color: const Color(0xFFFFFFFF),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.grey,
+                          color: const Color.fromRGBO(0, 0, 0, 0.2),
                           width: 1,
                         ),
                       ),
@@ -129,9 +143,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -161,9 +175,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -193,9 +207,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -225,9 +239,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -257,9 +271,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -280,93 +294,110 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.015,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: width * 0.07,
+                      right: width * 0.07,
+                      bottom: height * 0.03,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF117B08).withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(10),
+                    child: Text(
+                      "Lưu ý: Quý khách vui lòng chuyển đúng số tiền và ghi đúng nội dung chuyển khoản",
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.robotoSize14.copyWith(
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.w500,
                       ),
-                      padding: const EdgeInsets.all(8),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PaymentConfirmScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDB2F68),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 5,
+                              offset: const Offset(0, 3))
+                        ],
+                      ),
+                      padding: EdgeInsets.only(
+                          left: width * 0.35,
+                          right: width * 0.35,
+                          top: height * 0.015,
+                          bottom: height * 0.015),
                       child: Text(
-                        "Lưu ý: Quý khách vui lòng chuyển đúng số tiền và ghi đúng nội dung chuyển khoản",
+                        "Tiếp tục",
                         textAlign: TextAlign.center,
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 15,
-                          color: Colors.white,
+                          color: const Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.1,
+                  ),
+                ],
+              ),
+            if (widget.serviceBill != null)
+              Column(
+                children: [
+                  ServiceBillDetailContainer(serviceBill: widget.serviceBill!),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFDB2F68),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(45),
+                          bottomRight: Radius.circular(45),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(
+                          left: width * 0.07,
+                          right: width * 0.06,
+                          top: height * 0.012,
+                          bottom: height * 0.012),
+                      child: Text(
+                        "Hướng dẫn thanh toán",
+                        style: AppTextStyle.lato.copyWith(
                           fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: const Color(0xFFFFFFFF),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.018,
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: height * 0.01,
+                      left: width * 0.04,
+                      right: width * 0.04,
+                      bottom: height * 0.03,
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PaymentConfirmScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1D6D54),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 5,
-                                offset: const Offset(0, 3))
-                          ],
-                        ),
-                        padding: EdgeInsets.only(
-                            left: width * 0.35,
-                            right: width * 0.35,
-                            top: height * 0.012,
-                            bottom: height * 0.012),
-                        child: Text(
-                          "Tiếp tục",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.lato.copyWith(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              if (widget.serviceBill != null)
-                Column(
-                  children: [
-                    ServiceBillDetailContainer(
-                        serviceBill: widget.serviceBill!),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: width * 0.05),
-                        child: Text(
-                          "Hướng dẫn thanh toán",
-                          style: AppTextStyle.lato.copyWith(
-                              fontWeight: FontWeight.w700, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    Container(
+                    child: Container(
                       decoration: BoxDecoration(
+                        color: const Color(0xFFFFFFFF),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.grey,
+                          color: const Color.fromRGBO(0, 0, 0, 0.2),
                           width: 1,
                         ),
                       ),
@@ -416,9 +447,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -448,9 +479,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -480,9 +511,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -512,9 +543,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -544,9 +575,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   TextSpan(
                                     text: "· ",
                                     style: AppTextStyle.lato.copyWith(
-                                      fontSize: 15,
+                                      fontSize: 23,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   const TextSpan(
@@ -567,67 +598,112 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.015,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: width * 0.07,
+                      right: width * 0.07,
+                      bottom: height * 0.03,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF117B08).withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(10),
+                    child: Text(
+                      "Lưu ý: Quý khách vui lòng chuyển đúng số tiền và ghi đúng nội dung chuyển khoản",
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.robotoSize14.copyWith(
+                        fontSize: 15,
+                        fontStyle: FontStyle.italic,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.w500,
                       ),
-                      padding: const EdgeInsets.all(8),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PaymentConfirmScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDB2F68),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 5,
+                              offset: const Offset(0, 3))
+                        ],
+                      ),
+                      padding: EdgeInsets.only(
+                          left: width * 0.35,
+                          right: width * 0.35,
+                          top: height * 0.015,
+                          bottom: height * 0.015),
                       child: Text(
-                        "Lưu ý: Quý khách vui lòng chuyển đúng số tiền và ghi đúng nội dung chuyển khoản",
+                        "Tiếp tục",
                         textAlign: TextAlign.center,
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 15,
-                          color: Colors.white,
+                          color: const Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.1,
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Color(
+              0xFFDB2F68,
+            ),
+          ),
+          padding: EdgeInsets.only(
+              top: height * 0.02,
+              left: width * 0.05,
+              right: width * 0.05,
+              bottom: height * 0.02),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Số tiền thanh toán",
+                  style: AppTextStyle.lato.copyWith(
+                    color: const Color(0xFFFFFFFF),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17,
+                  ),
+                ),
+                widget.serviceBill != null
+                    ? Text(
+                        widget.serviceBill!.price.toString().formatMoney(),
+                        style: AppTextStyle.lato.copyWith(
+                          color: const Color(0xFFFFFFFF),
+                          fontSize: 22,
                           fontWeight: FontWeight.w700,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.018,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PaymentConfirmScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1D6D54),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 5,
-                                offset: const Offset(0, 3))
-                          ],
+                      )
+                    : Text(
+                        widget.apartmentBill!.price.toString().formatMoney(),
+                        style: AppTextStyle.lato.copyWith(
+                          color: const Color(0xFFFFFFFF),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
                         ),
-                        padding: EdgeInsets.only(
-                            left: width * 0.35,
-                            right: width * 0.35,
-                            top: height * 0.012,
-                            bottom: height * 0.012),
-                        child: Text(
-                          "Tiếp tục",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.lato.copyWith(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-            ],
+                      )
+              ],
+            ),
           ),
         ),
       ),
