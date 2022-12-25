@@ -7,12 +7,14 @@ showSnackBar(BuildContext context, String content) {
   Flushbar(
     maxWidth: size.width * .8,
     borderRadius: BorderRadius.circular(10),
-    backgroundColor: const Color(0xFFDB2F68),
+    backgroundColor: const Color.fromARGB(225, 59, 56, 56),
     flushbarPosition: FlushbarPosition.BOTTOM,
     messageColor: Colors.white,
     messageSize: 16,
     message: content,
-    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-    duration: const Duration(seconds: 3),
+    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+    duration: const Duration(seconds: 5),
+    margin: const EdgeInsets.only(bottom: 72),
+    animationDuration: const Duration(milliseconds: 800),
   ).show(context);
 }
