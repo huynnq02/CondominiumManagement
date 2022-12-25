@@ -25,9 +25,13 @@ class _DeleteFeedbackConfirmDialogState
     return AlertDialog(
       backgroundColor: const Color(0xFFFCF6F6),
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+      ),
+      titlePadding: EdgeInsets.zero,
       title: Padding(
-        padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             const Text(
@@ -43,33 +47,30 @@ class _DeleteFeedbackConfirmDialogState
               height: height * 0.023,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    fixedSize: Size(
-                      width * 0.28,
-                      height * 0.035,
-                    ),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
                     ),
+                    fixedSize: const Size(120, 30),
                   ),
-                  child: const Text(
-                    "HUỶ",
-                    style: TextStyle(
-                      color: AppColors.Black,
-                      fontSize: 14,
+                  child: const Center(
+                    child: Text(
+                      "HUỶ",
+                      style: TextStyle(
+                        color: AppColors.Black,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: width * 0.08,
-                ),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     print("id feedback: ${widget.feedback.id}");
@@ -91,10 +92,13 @@ class _DeleteFeedbackConfirmDialogState
                         Radius.circular(10),
                       ),
                     ),
+                    fixedSize: const Size(120, 30),
                   ),
-                  child: const Text(
-                    "CHẮC CHẮN",
-                    style: TextStyle(color: AppColors.White, fontSize: 14),
+                  child: const Center(
+                    child: Text(
+                      "CHẮC CHẮN",
+                      style: TextStyle(color: AppColors.White, fontSize: 14),
+                    ),
                   ),
                 ),
               ],
