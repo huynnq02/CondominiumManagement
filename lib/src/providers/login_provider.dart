@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/auth_provider.dart';
-import 'package:untitled/src/screens/login%20screen/widget/login_error_dialog.dart';
 import 'package:untitled/src/screens/main%20screen/main_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 
 class LoginProvider extends ChangeNotifier {
   AuthenticationProvider? authAPIProvider;
@@ -47,13 +47,9 @@ class LoginProvider extends ChangeNotifier {
 
     //Dừng trạng thái loading
     Navigator.of(context).pop();
-    
+
     if (valueEmail.isEmpty || valuePassword.isEmpty) {
-      showDialog(
-        context: context,
-        builder: ((context) =>
-            const LoginErrorDialog(content: "Vui lòng nhập đầy đủ thông tin!")),
-      );
+      showSnackBar(context, 'Vui lòng nhập đầy đủ thông tin!');
     } else {
       check == true
           ? Navigator.push(
@@ -64,11 +60,7 @@ class LoginProvider extends ChangeNotifier {
                 ),
               ),
             )
-          : showDialog(
-              context: context,
-              builder: ((context) => LoginErrorDialog(
-                  content: authAPIProvider?.data['error']['message'])),
-            );
+          : showSnackBar(context, authAPIProvider?.data['error']['message']);
     }
     // ScaffoldMessenger.of(context).showSnackBar(
     //   SnackBar(content: Text(message == null ? '' : message)));
