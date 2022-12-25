@@ -110,7 +110,6 @@ class _ApartmentBillDetailContainerState
                           .formatDateTimeMonthYear(),
                       topBorder: 1,
                       bottomBorder: 1,
-                      bottomRadius: 20,
                     ),
                     BillRowInfo(
                       name: "Diện tích:",
@@ -118,7 +117,6 @@ class _ApartmentBillDetailContainerState
                           " m²",
                       topBorder: 1,
                       bottomBorder: 1,
-                      bottomRadius: 20,
                     ),
                     BillRowInfo(
                       name: "Đơn giá:",
@@ -127,7 +125,6 @@ class _ApartmentBillDetailContainerState
                               " / m²",
                       topBorder: 1,
                       bottomBorder: 1,
-                      bottomRadius: 20,
                     ),
                   ],
                 ),
