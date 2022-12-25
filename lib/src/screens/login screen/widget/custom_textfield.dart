@@ -161,7 +161,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   Text(
                     widget.labelText,
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w300,
                         color: (errorText != '' ||
                                 (widget.error != null && widget.error != ''))

@@ -29,8 +29,7 @@ class _CustomButtonState extends State<CustomButton> {
                 Radius.circular(12),
               ),
             ),
-            backgroundColor:
-                widget.disabled ? AppColors.DarkPink : AppColors.Pink,
+            backgroundColor: AppColors.DarkPink,
             shadowColor: Colors.transparent),
         onPressed: widget.onPressed,
         child: Text(
