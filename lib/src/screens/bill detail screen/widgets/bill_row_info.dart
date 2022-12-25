@@ -8,6 +8,7 @@ class BillRowInfo extends StatelessWidget {
   final String value;
   final double? topRadius, bottomRadius;
   final double bottomBorder, topBorder;
+  final Color? color;
   const BillRowInfo({
     Key? key,
     required this.name,
@@ -16,6 +17,7 @@ class BillRowInfo extends StatelessWidget {
     this.bottomRadius,
     required this.bottomBorder,
     required this.topBorder,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -62,8 +64,11 @@ class BillRowInfo extends StatelessWidget {
             const Spacer(),
             Text(
               value,
-              style: AppTextStyle.lato
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.w700),
+              style: AppTextStyle.lato.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: color ?? AppColors.Black,
+              ),
             ),
           ],
         ),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/bill.dart';
 import 'package:untitled/src/screens/bill%20detail%20screen/widgets/bill_row_info.dart';
-import 'package:untitled/src/screens/bill%20detail%20screen/widgets/custom_rich_text.dart';
-import 'package:untitled/src/screens/bill%20detail%20screen/widgets/divider.dart';
-import 'package:untitled/src/screens/bill%20detail%20screen/widgets/row_data.dart';
-import 'package:untitled/utils/app_constant/app_colors.dart';
+
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 
@@ -36,9 +33,6 @@ class _ServiceBillDetailContainerState
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: height * 0.02,
-          ),
           Column(
             children: [
               BillRowInfo(
@@ -111,6 +105,7 @@ class _ServiceBillDetailContainerState
                 topBorder: 1,
                 bottomBorder: 1,
                 bottomRadius: 20,
+                color: const Color(0xFFFF0000),
               ),
               SizedBox(
                 height: height * 0.01,
@@ -163,7 +158,7 @@ class _ServiceBillDetailContainerState
                   children: [
                     Center(
                       child: Text(
-                        "Hóa đơn đã được thanh toán vào ngày ${widget.serviceBill.paymentTerm.formatDateTime()}",
+                        "Hóa đơn đã được thanh toán vào ngày ${widget.serviceBill.datePayment!.formatDateTime()}",
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 14,
                           color: const Color(0xFF2AC956),

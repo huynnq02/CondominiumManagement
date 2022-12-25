@@ -25,13 +25,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFCF6F6),
       appBar: AppBar(
+        backgroundColor: const Color(0xFFDB2F68),
+        centerTitle: true,
         title: const Text(
           "Thanh toán hóa đơn",
           style: TextStyle(
             color: AppColors.White,
           ),
         ),
-        backgroundColor: const Color(0xFF1D6D54),
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context)
@@ -52,249 +53,264 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 children: [
                   ApartmentBillDetailContainer(
                       apartmentBill: widget.apartmentBill!),
-                  SizedBox(
-                    height: height * 0.05,
-                  ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: width * 0.05),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFDB2F68),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(45),
+                          bottomRight: Radius.circular(45),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(
+                          left: width * 0.07,
+                          right: width * 0.06,
+                          top: height * 0.012,
+                          bottom: height * 0.012),
                       child: Text(
                         "Hướng dẫn thanh toán",
                         style: AppTextStyle.lato.copyWith(
-                            fontWeight: FontWeight.w700, fontSize: 18),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: const Color(0xFFFFFFFF),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: height * 0.01,
+                      left: width * 0.04,
+                      right: width * 0.04,
+                      bottom: height * 0.03,
                     ),
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFFFFF),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color.fromRGBO(0, 0, 0, 0.2),
+                          width: 1,
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  const TextSpan(
+                                      text:
+                                          "Quý khách vui lòng chuyển khoản số tiền "),
+                                  TextSpan(
+                                    text: widget.apartmentBill!.price
+                                        .toString()
+                                        .formatMoney(),
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const TextSpan(text: " vào tài khoản sau:"),
+                                ],
                               ),
-                              children: [
-                                const TextSpan(
-                                    text:
-                                        "Quý khách vui lòng chuyển khoản số tiền "),
-                                TextSpan(
-                                  text: widget.apartmentBill!.price
-                                      .toString()
-                                      .formatMoney(),
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const TextSpan(text: " vào tài khoản sau:"),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "· ",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 23,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: "Số tài khoản: ",
+                                  ),
+                                  TextSpan(
+                                    text: "0123456789",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "· ",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: "Số tài khoản: ",
-                                ),
-                                TextSpan(
-                                  text: "0123456789",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "· ",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 23,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: "Chủ tài khoản: ",
+                                  ),
+                                  TextSpan(
+                                    text: "Ban quản lý chung cư...",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "· ",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: "Chủ tài khoản: ",
-                                ),
-                                TextSpan(
-                                  text: "Ban quản lý chung cư...",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "· ",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 23,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: "Ngân hàng: ",
+                                  ),
+                                  TextSpan(
+                                    text: "Ngân hàng Vietcombank",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "· ",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: "Ngân hàng: ",
-                                ),
-                                TextSpan(
-                                  text: "Ngân hàng Vietcombank",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "· ",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 23,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: "Chi nhánh ngân hàng: ",
+                                  ),
+                                  TextSpan(
+                                    text: "PGD Bến thành - Chi nhánh Sài Gòn",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "· ",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: "Chi nhánh ngân hàng: ",
-                                ),
-                                TextSpan(
-                                  text: "PGD Bến thành - Chi nhánh Sài Gòn",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "· ",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 23,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: "Nội dung chuyển khoản: ",
+                                  ),
+                                  TextSpan(
+                                    text: "DV210822-0123456789",
+                                    style: AppTextStyle.lato.copyWith(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  text: "· ",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: "Nội dung chuyển khoản: ",
-                                ),
-                                TextSpan(
-                                  text: "DV210822-0123456789",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: height * 0.015,
-                  ),
                   Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF117B08).withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(10),
+                    padding: EdgeInsets.only(
+                      left: width * 0.07,
+                      right: width * 0.07,
+                      bottom: height * 0.03,
                     ),
-                    padding: const EdgeInsets.all(8),
                     child: Text(
                       "Lưu ý: Quý khách vui lòng chuyển đúng số tiền và ghi đúng nội dung chuyển khoản",
                       textAlign: TextAlign.center,
-                      style: AppTextStyle.lato.copyWith(
+                      style: AppTextStyle.robotoSize14.copyWith(
                         fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.italic,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: height * 0.018,
                   ),
                   InkWell(
                     onTap: () {
@@ -307,8 +323,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1D6D54),
-                        borderRadius: BorderRadius.circular(10),
+                        color: const Color(0xFFDB2F68),
+                        borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withOpacity(0.5),
@@ -319,18 +335,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       padding: EdgeInsets.only(
                           left: width * 0.35,
                           right: width * 0.35,
-                          top: height * 0.012,
-                          bottom: height * 0.012),
+                          top: height * 0.015,
+                          bottom: height * 0.015),
                       child: Text(
                         "Tiếp tục",
                         textAlign: TextAlign.center,
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 15,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: height * 0.1,
                   ),
                 ],
               ),

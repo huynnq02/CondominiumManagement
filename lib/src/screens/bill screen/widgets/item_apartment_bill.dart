@@ -37,56 +37,62 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
         padding: EdgeInsets.fromLTRB(width * 0.02, 0, width * 0.02, 0),
         height: height * 0.11,
         decoration: BoxDecoration(
+          color: const Color(0xFFFFFDFD),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: widget.apartmentBill.state == "Đã thanh toán"
-                ? const Color(0xFF2AC956)
-                : widget.apartmentBill.state == "Chưa thanh toán" ||
-                        widget.apartmentBill.state == "Từ chối thanh toán"
-                    ? const Color(0xFFFFC000)
-                    : const Color(0xFF5C92FE),
-            width: 2,
-          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Expanded(
-              child: widget.apartmentBill.billType == "Điện"
-                  ? Image.asset("assets/electricity-icon.png")
-                  : widget.apartmentBill.billType == "Nước"
-                      ? Image.asset("assets/water-icon.png")
-                      : widget.apartmentBill.billType == "Rác"
-                          ? Image.asset("assets/garbage-icon.png")
-                          : Image.asset("assets/management-icon.png"),
-              flex: 1,
+            widget.apartmentBill.billType == "Điện"
+                ? Image.asset("assets/electricity-icon.png")
+                : widget.apartmentBill.billType == "Nước"
+                    ? Image.asset("assets/water-icon.png")
+                    : widget.apartmentBill.billType == "Rác"
+                        ? Image.asset("assets/garbage-icon.png")
+                        : Image.asset("assets/management-icon.png"),
+            SizedBox(
+              width: width * 0.02,
             ),
-            Expanded(
-              flex: 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.apartmentBill.billName,
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.apartmentBill.billName,
+                  style: AppTextStyle.lato.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF756969),
                   ),
-                  const SizedBox(
-                    height: 10,
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Hạn: ",
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300,
+                          color: const Color(0xFF756969),
+                        ),
+                      ),
+                      TextSpan(
+                        text: widget.apartmentBill.paymentTerm.formatDateTime(),
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF756969),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Hạn: " + widget.apartmentBill.paymentTerm.formatDateTime(),
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 11,
-                      color: const Color(0xFFFF8A00),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+            const Spacer(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -94,72 +100,50 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                 Text(
                   widget.apartmentBill.price.toString().formatMoney(),
                   style: AppTextStyle.lato.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF756969),
                   ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: [
-                    widget.apartmentBill.state == "Đã thanh toán"
-                        ? Image.asset("assets/done-icon.png")
-                        : widget.apartmentBill.state == "Chưa thanh toán"
-                            ? Image.asset("assets/warning-icon.png")
-                            : widget.apartmentBill.state == "Từ chối thanh toán"
-                                ? Image.asset("assets/refuse-icon.png")
-                                : Image.asset("assets/waiting-icon.png"),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    widget.apartmentBill.state == "Đã thanh toán"
+                widget.apartmentBill.state == "Đã thanh toán"
+                    ? Text(
+                        "Đã thanh toán",
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF4AC53F),
+                        ),
+                      )
+                    : widget.apartmentBill.state == "Từ chối thanh toán"
                         ? Text(
-                            "Đã thanh toán",
+                            "Từ chối thanh toán",
                             style: AppTextStyle.lato.copyWith(
-                              color: const Color(0xFF2AC956),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFFDD3C63),
                             ),
                           )
                         : widget.apartmentBill.state == "Chưa thanh toán"
                             ? InkWell(
                                 onTap: _showModalBottomSheet,
-                                child: Container(
-                                  height: height * 0.03,
-                                  width: width * 0.20,
-                                  child: Center(
-                                    child: Text(
-                                      "Thanh toán",
-                                      style: AppTextStyle.lato
-                                          .copyWith(color: AppColors.White),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFFC000),
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color.fromRGBO(0, 0, 0, 0.25),
-                                        offset: Offset(0, 3),
-                                        blurRadius: 6,
-                                      ),
-                                    ],
+                                child: Text(
+                                  "Chưa thanh toán",
+                                  style: AppTextStyle.lato.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFFF47D00),
                                   ),
                                 ),
                               )
-                            : widget.apartmentBill.state == "Từ chối thanh toán"
-                                ? Text(
-                                    "Từ chối thanh toán",
-                                    style: AppTextStyle.lato.copyWith(
-                                      color: const Color(0xFFFFC000),
-                                    ),
-                                  )
-                                : Text(
-                                    "Chờ tiếp nhận",
-                                    style: AppTextStyle.lato.copyWith(
-                                      color: const Color(0xFF5C92FE),
-                                    ),
-                                  ),
-                  ],
-                ),
+                            : Text(
+                                "Chờ tiếp nhận",
+                                style: AppTextStyle.lato.copyWith(
+                                  color: const Color(0xFF578DCB),
+                                ),
+                              ),
               ],
             )
           ],
@@ -206,7 +190,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                   child: Text(
                     "Chọn phương thức thanh toán",
                     style: AppTextStyle.lato
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -239,7 +223,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                             "Chuyển khoản ngân hàng",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
@@ -286,7 +270,7 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                             "Thanh toán tại văn phòng",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
