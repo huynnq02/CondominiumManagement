@@ -66,7 +66,7 @@ class ApartmentBillDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  apartmentBill.priceOfApartment.toString().formatMoney(),
+                  apartmentBill.price.toString().formatMoney(),
                   style: AppTextStyle.lato.copyWith(
                     color: const Color(0xFFFFFFFF),
                     fontSize: 22,

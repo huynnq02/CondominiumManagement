@@ -43,6 +43,10 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            if (widget.apartmentBill.billType != "Nước")
+              SizedBox(
+                width: width * 0.018,
+              ),
             widget.apartmentBill.billType == "Điện"
                 ? Image.asset("assets/electricity-icon.png")
                 : widget.apartmentBill.billType == "Nước"
@@ -53,6 +57,10 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
             SizedBox(
               width: width * 0.02,
             ),
+            if (widget.apartmentBill.billType != "Điện")
+              SizedBox(
+                width: width * 0.018,
+              ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,6 +150,8 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                                 "Chờ tiếp nhận",
                                 style: AppTextStyle.lato.copyWith(
                                   color: const Color(0xFF578DCB),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
               ],

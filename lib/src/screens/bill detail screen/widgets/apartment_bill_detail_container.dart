@@ -99,6 +99,20 @@ class _ApartmentBillDetailContainerState
                       topBorder: 1,
                       bottomBorder: 1,
                     ),
+                    BillRowInfo(
+                      name: "Đơn giá:",
+                      value: widget.apartmentBill.billType == "Nước"
+                          ? widget.apartmentBill.priceOfApartment
+                                  .toString()
+                                  .formatMoney() +
+                              "   / m³"
+                          : widget.apartmentBill.priceOfApartment
+                                  .toString()
+                                  .formatMoney() +
+                              "   / kWh",
+                      topBorder: 1,
+                      bottomBorder: 1,
+                    ),
                   ],
                 ),
               if (widget.apartmentBill.billType == "Quản lí")
@@ -120,9 +134,10 @@ class _ApartmentBillDetailContainerState
                     ),
                     BillRowInfo(
                       name: "Đơn giá:",
-                      value:
-                          widget.apartmentBill.price.toString().formatMoney() +
-                              " / m²",
+                      value: widget.apartmentBill.priceOfApartment
+                              .toString()
+                              .formatMoney() +
+                          " / m²",
                       topBorder: 1,
                       bottomBorder: 1,
                     ),

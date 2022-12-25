@@ -48,6 +48,7 @@ extension StringExtensions on String {
     // return result + "đ";
     // format money from xxxxxx.abc to xxx.xxx.abc
     final formatter = NumberFormat("#,###");
+
     return formatter.format(double.parse(this)) + "đ";
   }
 }
