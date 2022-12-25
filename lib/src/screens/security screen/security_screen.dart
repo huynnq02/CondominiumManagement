@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/user.dart';
+import 'package:untitled/src/screens/change%20email%20screen/change_email_screen.dart';
 import 'package:untitled/src/screens/change%20phone%20number%20screen/change_phone_number_screen.dart';
 import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
 import 'package:untitled/src/screens/security%20screen/widgets/security_option.dart';
@@ -40,12 +41,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
             ),
             InkWell(
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                        'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
-                  ),
-                );
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: ((context) => ChangeEmailScreen(
+                          mdUser: widget.mdUser,
+                        ))));
               },
               child: const SecurityOption(
                 title: "Cập nhật địa chỉ email",

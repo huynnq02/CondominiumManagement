@@ -1,7 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:untitled/src/providers/profile_provider.dart';
-import 'package:untitled/src/screens/change%20phone%20number%20screen/change_phone_number_screen.dart';
-import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
 import 'package:untitled/src/screens/logout%20screen/logout_confirm_dialog.dart';
 import 'package:untitled/src/screens/profile%20screen/widgets/profile_picture.dart';
 import 'package:provider/provider.dart';
@@ -226,62 +224,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: AppTextStyle.lato
                                           .copyWith(fontSize: 16),
                                     ),
-                                    user.mdUser.phoneNumber != null
-                                        ? Row(
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.02,
-                                              ),
-                                              InkWell(
-                                                child: ImageIcon(
-                                                  _isObsecurePhoneNumber
-                                                      ? const AssetImage(
-                                                          'assets/visible-icon.png')
-                                                      : const AssetImage(
-                                                          'assets/invisible-icon.png'),
-                                                ),
-                                                onTap: _handleWatchPhoneNumber,
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.02,
-                                              ),
-                                              // InkWell(
-                                              //   onTap: () {
-                                              //     Navigator.push(
-                                              //       context,
-                                              //       MaterialPageRoute(
-                                              //         builder: (context) =>
-                                              //             ChangePhoneNumberScreen(
-                                              //           mdUser: user.mdUser,
-                                              //         ),
-                                              //       ),
-                                              //     );
-                                              //   },
-                                              //   child: const Icon(Icons.edit),
-                                              // )
-                                            ],
-                                          )
-                                        : Row(
-                                            children: [
-                                              SizedBox(
-                                                width: width * 0.02,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChangePhoneNumberScreen(
-                                                        mdUser: user.mdUser,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: const Icon(Icons.edit),
-                                              ),
-                                            ],
-                                          )
+                                    if (user.mdUser.phoneNumber != null)
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.02,
+                                          ),
+                                          InkWell(
+                                            child: ImageIcon(
+                                              _isObsecurePhoneNumber
+                                                  ? const AssetImage(
+                                                      'assets/visible-icon.png')
+                                                  : const AssetImage(
+                                                      'assets/invisible-icon.png'),
+                                            ),
+                                            onTap: _handleWatchPhoneNumber,
+                                          ),
+                                          SizedBox(
+                                            width: width * 0.02,
+                                          ),
+                                          // InkWell(
+                                          //   onTap: () {
+                                          //     Navigator.push(
+                                          //       context,
+                                          //       MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             ChangePhoneNumberScreen(
+                                          //           mdUser: user.mdUser,
+                                          //         ),
+                                          //       ),
+                                          //     );
+                                          //   },
+                                          //   child: const Icon(Icons.edit),
+                                          // )
+                                        ],
+                                      )
                                   ],
                                 )
                               ],
