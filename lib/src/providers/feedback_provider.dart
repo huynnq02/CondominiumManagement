@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/repository/feedback/feedbackAPI_Provider.dart';
 import 'package:untitled/src/models/feedback.dart' as fb;
-import 'package:untitled/src/screens/create%20feedback/widgets/feedback_create_successful_dialog.dart';
-import 'package:untitled/utils/helper/show_snack_bar.dart';
 
 class FeedbackProvider extends ChangeNotifier {
   List<fb.Feedback> _feedbacks = [];
