@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
+import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
-import 'package:untitled/src/screens/register%20screen/register_successful_dialog.dart';
+import 'package:untitled/src/screens/register%20screen/widget/register_successful_dialog.dart';
 
 import '../../repository/auth/authAPI_provider.dart';
+import '../../utils/app_constant/app_colors.dart';
 
 class RegisterProvider extends ChangeNotifier {
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
@@ -72,8 +75,8 @@ class RegisterProvider extends ChangeNotifier {
           });
     } else {
       if (data['error']['message'] != null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(data['error']['message'])));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(data['error']['message'])));
       } else {
         // sai thông tin dăng kí thông báo cho người dùng
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -88,20 +91,41 @@ class RegisterProvider extends ChangeNotifier {
         context: context,
         builder: (context) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: AppColors.DarkPink,
+            ),
           );
         });
     data = await authAPIProvider.checkEmailExistence(email: email);
     Navigator.of(context).pop();
     if (data == false) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: ((context) => RegisterInfoScreen(
-                email: email,
-                password: password,
-                isEmail: true,
-              ))));
+      OTPProvider otpProvider =
+          Provider.of<OTPProvider>(context, listen: false);
+      // otpProvider.sendOTP(mdUser, context);
     } else {
       emailError = 'Email đã được người khác đăng ký!';
+    }
+  }
+
+  Future checkPhoneExistence(
+      BuildContext context, String phoneNumber, String password) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.DarkPink,
+            ),
+          );
+        });
+    data = await authAPIProvider.checkPhoneExistence(phoneNumber: phoneNumber);
+    if (data == false) {
+      OTPProvider otpProvider =
+          Provider.of<OTPProvider>(context, listen: false);
+      otpProvider.sendSMSOTP(context, phoneNumber, password);
+    } else {
+      Navigator.of(context).pop();
+      emailError = 'Số điện thoại đã được người khác đăng ký!';
     }
   }
 }

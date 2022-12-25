@@ -270,12 +270,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         const SizedBox(
           height: 3,
         ),
-        if ((widget.error != null && widget.error!.isNotEmpty) ||
+        if ((widget.error != null && widget.error! != '') ||
             errorText.isNotEmpty)
           SizedBox(
             width: double.infinity,
             child: Text(
-              (widget.error != null && widget.error!.isNotEmpty)
+              (widget.error != null && widget.error! != '')
                   ? widget.error!
                   : errorText,
               style: GoogleFonts.inter(color: AppColors.Red, fontSize: 12),

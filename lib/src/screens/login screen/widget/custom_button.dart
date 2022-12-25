@@ -30,8 +30,9 @@ class _CustomButtonState extends State<CustomButton> {
               ),
             ),
             backgroundColor: AppColors.DarkPink,
+            disabledBackgroundColor: Color(0xFF979A9C),
             shadowColor: Colors.transparent),
-        onPressed: widget.onPressed,
+        onPressed: widget.disabled ? null : widget.onPressed,
         child: Text(
           widget.label,
           style: const TextStyle(

@@ -61,4 +61,9 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     final res = await repository.checkEmailExistence(email: email);
     return res.data['result'];
   }
+
+  Future checkPhoneExistence({String? phoneNumber}) async {
+    final res = await repository.checkPhoneExistence(phoneNumber: phoneNumber);
+    return res.data['result'];
+  }
 }

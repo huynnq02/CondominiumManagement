@@ -154,6 +154,21 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
+  Future<Response> checkPhoneExistence({String? phoneNumber}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/PhoneNumberIsExist',
+        data: {"phoneNumber": phoneNumber},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
   Future<Response> registerWithPhone({MDUser? mdUser}) async {
     try {
       var client = init();

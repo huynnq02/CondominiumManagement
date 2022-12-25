@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/register_provider.dart';
-import 'package:untitled/src/screens/login%20screen/login_screen.dart';
+import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
 import 'package:untitled/src/screens/register%20screen/register_otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../repository/auth/authAPI_provider.dart';
@@ -43,7 +43,10 @@ class OTPProvider extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.')));
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => RegisterOTPScreen(mdUser: mdUser),
+        builder: (context) => RegisterOTPScreen(
+          mdUser: mdUser,
+          password: '123456',
+        ),
       ));
     } else {
       String errMessage = data['error']['message'];
@@ -60,31 +63,39 @@ class OTPProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future sendSMSOTP(BuildContext context, MDUser mdUser) async {
+  Future sendSMSOTP(
+      BuildContext context, String phoneNumber, String password) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+84 ${mdUser.phoneNumber!.substring(1)}',
+      phoneNumber: '+84 ${phoneNumber.substring(1)}',
       timeout: const Duration(seconds: 120),
       verificationCompleted: (phoneAuthCredential) async {
         await FirebaseAuth.instance
             .signInWithCredential(phoneAuthCredential)
             .then((value) {
-          RegisterProvider provider =
-              Provider.of<RegisterProvider>(context, listen: false);
-          provider.registerWithPhone(mdUser, context);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => RegisterInfoScreen(
+              email: phoneNumber,
+              password: password,
+              isEmail: false,
+            ),
+          ));
         }).onError((error, stackTrace) {
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('OTP không đúng.')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('OTP không đúng.')));
         });
       },
-      verificationFailed: (error) {},
+      verificationFailed: (error) {
+        Navigator.of(context).pop();
+      },
       codeSent: (verificationId, _) {
+        Navigator.of(context).pop();
         //Gửi OTP thành công
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => RegisterOTPScreen(
             verificationId: verificationId,
-            phoneNumber: mdUser.phoneNumber,
-            mdUser: mdUser,
+            phoneNumber: phoneNumber,
+            password: password,
           ),
         ));
       },
@@ -93,30 +104,36 @@ class OTPProvider extends ChangeNotifier {
   }
 
   Future retrySendSMSOTP(
-    BuildContext context,
-    MDUser mdUser,
-    Function(String) onCodeSent,
-  ) async {
+      BuildContext context,
+      String phoneNumber,
+      String password,
+      Function(String) onCodeSent,
+      Function handleOTPSent) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+84 ${mdUser.phoneNumber!.substring(1)}',
+      phoneNumber: '+84 ${phoneNumber.substring(1)}',
       timeout: const Duration(seconds: 120),
       verificationCompleted: (phoneAuthCredential) async {
         await FirebaseAuth.instance
             .signInWithCredential(phoneAuthCredential)
             .then((value) {
-          RegisterProvider provider =
-              Provider.of<RegisterProvider>(context, listen: false);
-          provider.registerWithPhone(mdUser, context);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => RegisterInfoScreen(
+              email: phoneNumber,
+              password: password,
+              isEmail: false,
+            ),
+          ));
         }).onError((error, stackTrace) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('OTP không đúng.')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('OTP không đúng.')));
         });
       },
-      verificationFailed: (error) {},
+      verificationFailed: (error) {print(error);},
       codeSent: (verificationId, forceResendingToken) {
         //Gửi OTP thành công
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.')));
+        handleOTPSent();
         onCodeSent(verificationId);
       },
       codeAutoRetrievalTimeout: (verificationId) {},

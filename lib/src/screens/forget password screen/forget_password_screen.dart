@@ -75,7 +75,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Đã gửi OTP')));
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => RegisterOTPScreen(type: 'forget',email: email,)));
+        .push(MaterialPageRoute(builder: (context) => RegisterOTPScreen(type: 'forget',email: email,password: 'null',)));
   }
 
   bool isEmail(String input) => RegExp(
