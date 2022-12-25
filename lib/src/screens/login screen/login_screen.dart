@@ -30,6 +30,21 @@ class _LoginScreenState extends State<LoginScreen> {
     loginProvider!.checkSave();
   }
 
+  void showSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Color(0xFF323232),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        padding: EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        content: Text(
+          'Chức năng đang được phát triển, vui lòng truy cập lại sau!',
+          style: TextStyle(fontSize: 13, color: Colors.white),
+          textAlign: TextAlign.center,
+        )));
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -89,7 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context: context,
                                     builder: (context) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.DarkPink,
+                                        ),
                                       );
                                     });
 
@@ -148,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         SizedBox(
-                          height: height*0.03,
+                          height: height * 0.03,
                         ),
                         const Text(
                           'Hoặc tiếp tục với',
@@ -158,26 +175,26 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Color(0xFF7D8387)),
                         ),
                         SizedBox(
-                          height: height*0.02,
+                          height: height * 0.02,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                                onTap: () {},
+                                onTap: () => showSnackBar(),
                                 child: SvgPicture.asset(
                                     'assets/facebook-btn.svg')),
                             SizedBox(
-                              width: width*0.07,
+                              width: width * 0.07,
                             ),
                             InkWell(
-                                onTap: () {},
+                                onTap: () => showSnackBar(),
                                 child: SvgPicture.asset('assets/google.svg')),
                             SizedBox(
-                              width: width*0.07,
+                              width: width * 0.07,
                             ),
                             InkWell(
-                                onTap: () {},
+                                onTap: () => showSnackBar(),
                                 child: SvgPicture.asset(
                                     'assets/apple.svg')), /*  */
                           ],
