@@ -3,15 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/models/feedback.dart' as f;
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/screens/create%20feedback/create_feedback_screen.dart';
-import 'package:untitled/src/screens/feedback%20screen/widgets/custom_button.dart';
-import 'package:untitled/src/screens/feedback%20screen/widgets/item_feedback.dart';
 import 'package:untitled/src/screens/feedback%20screen/widgets/tab_not_response.dart';
 import 'package:untitled/src/screens/feedback%20screen/widgets/tab_response.dart';
-import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class FeedbackScreen extends StatefulWidget {
-  FeedbackScreen({Key? key}) : super(key: key);
+  const FeedbackScreen({Key? key}) : super(key: key);
 
   @override
   State<FeedbackScreen> createState() => _FeedbackScreenState();
@@ -122,10 +119,7 @@ class _FeedbackScreenState extends State<FeedbackScreen>
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFDB2F68),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 10,
-          ),
+          padding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
