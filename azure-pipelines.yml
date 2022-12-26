@@ -33,8 +33,7 @@ stages:
       inputs:
         mode: 'auto'
         channel: 'stable'
-        version: 'custom'
-        customVersion: '3.3.8'
+        version: 'latest'
 
     - task: FlutterBuild@0
       displayName: "Build application"

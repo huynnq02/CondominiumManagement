@@ -8,7 +8,9 @@ import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_textfield.dart';
 import 'package:untitled/src/screens/register%20screen/register_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
+
 import '../../../utils/app_constant/app_colors.dart';
+import '../../../utils/helper/show_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -89,7 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context: context,
                                     builder: (context) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.DarkPink,
+                                        ),
                                       );
                                     });
 
@@ -148,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         SizedBox(
-                          height: height*0.03,
+                          height: height * 0.03,
                         ),
                         const Text(
                           'Hoặc tiếp tục với',
@@ -158,26 +162,29 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Color(0xFF7D8387)),
                         ),
                         SizedBox(
-                          height: height*0.02,
+                          height: height * 0.02,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                                onTap: () {},
+                                onTap: () => showSnackBar(context,
+                                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
                                 child: SvgPicture.asset(
                                     'assets/facebook-btn.svg')),
                             SizedBox(
-                              width: width*0.07,
+                              width: width * 0.07,
                             ),
                             InkWell(
-                                onTap: () {},
+                                onTap: () => showSnackBar(context,
+                                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
                                 child: SvgPicture.asset('assets/google.svg')),
                             SizedBox(
-                              width: width*0.07,
+                              width: width * 0.07,
                             ),
                             InkWell(
-                                onTap: () {},
+                                onTap: () => showSnackBar(context,
+                                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
                                 child: SvgPicture.asset(
                                     'assets/apple.svg')), /*  */
                           ],

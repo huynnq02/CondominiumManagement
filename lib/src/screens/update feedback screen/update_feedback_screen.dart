@@ -43,6 +43,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
             : 3;
     _titleController.text = widget.feedback.title;
     _contentController.text = widget.feedback.content;
+    _imageUrl = widget.feedback.image;
+
     print(widget.feedback.image);
   }
 
@@ -89,7 +91,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
           ),
         ),
         title: const Text(
-          'Tạo ý kiến',
+          'Chỉnh sửa ý kiến',
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 24,

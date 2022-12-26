@@ -29,7 +29,6 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
   Widget build(BuildContext context) {
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -38,44 +37,52 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 30),
+          padding:
+              const EdgeInsets.only(top: 22, bottom: 17, left: 15, right: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                "Bạn có muốn đăng xuất?",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.Pink),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  "Bạn có chắc chắn muốn đăng xuất không?",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.Pink),
+                  textAlign: TextAlign.center,
+                ),
               ),
               const SizedBox(
-                height: 51,
+                height: 27,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: OutlinedButton.styleFrom(
                       fixedSize: Size(
-                        width * 0.28,
-                        29,
+                        width * 0.324,
+                        35,
                       ),
                       side:
-                          const BorderSide(color: Color(0xFF625E5E), width: 1),
+                          const BorderSide(color: Color(0xFFD9D9D9), width: 1),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                     ),
                     child: const Text(
-                      "Không",
+                      "KHÔNG",
                       style: TextStyle(
                           color: Color(0xFF625E5E),
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 10,
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -87,21 +94,20 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
                           builder: (context) => LoginScreen()));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.Pink,
-                      fixedSize: Size(
-                        width * 0.28,
-                        29,
-                      ),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                      shadowColor: Colors.transparent
-                    ),
+                        backgroundColor: AppColors.DarkPink,
+                        fixedSize: Size(
+                          width * 0.324,
+                          35,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        shadowColor: Colors.transparent),
                     child: const Text(
-                      "Có",
+                      "CHẮC CHẮN",
                       style: TextStyle(
                           color: AppColors.White,
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold),
                     ),
                   ),

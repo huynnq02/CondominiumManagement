@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/apartment.dart';
+
 import '../../repository/apartment/apartmentAPI_provider.dart';
 
 class ApartmentProvider extends ChangeNotifier {
