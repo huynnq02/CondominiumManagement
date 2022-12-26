@@ -15,6 +15,7 @@ class ApartmentProvider extends ChangeNotifier {
   ApartmentAPIProvider apartmentAPIProvider = ApartmentAPIProvider();
   Future getAllApartments() async {
     var data = await apartmentAPIProvider.getAllApartments();
+    print(data);
     List<Apartment> apartments =
         data.map<Apartment>((json) => Apartment.fromMap(json)).toList();
     apartmentList = apartments;
