@@ -3,20 +3,21 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/repository/feedback/feedbackAPI_Provider.dart';
 import 'package:untitled/src/models/apartment_service.dart';
+import 'package:untitled/src/models/feedback.dart' as f;
 import 'package:untitled/src/models/user_service.dart';
 import 'package:untitled/src/providers/apartment_service_provider.dart';
 import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/providers/feedback_provider.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/user_service_provider.dart';
+import 'package:untitled/src/screens/home%20screen/widgets/home_item.dart';
+
 import '../../../repository/service/serviceAPI_provider.dart';
 import '../../../utils/app_constant/app_colors.dart';
-import 'package:untitled/src/screens/home%20screen/widgets/home_item.dart';
-import 'package:untitled/src/models/feedback.dart' as f;
 
 class HomeScreen extends StatefulWidget {
   final void Function(int)? onTapTapped;
-  const HomeScreen({Key? key,this.onTapTapped}) : super(key: key);
+  const HomeScreen({Key? key, this.onTapTapped}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -127,7 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 3,
                   ),
-                  ((user.mdUser.apartmentId == null)||(user.mdUser.apartmentId!.split('.')[1].length <= 2))
+                  ((user.mdUser.apartmentId == null) ||
+                          (user.mdUser.apartmentId!.split('.')[1].length <= 2))
                       ? const Text(
                           'Acc sai mã căn hộ',
                           style: TextStyle(color: Colors.white),
@@ -190,7 +192,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: TextSpan(
                             children: <TextSpan>[
                               TextSpan(
-                                  text: formatter.format(bill.totalUnpaid).replaceAll(',', '.'),
+                                  text: formatter
+                                      .format(bill.totalUnpaid)
+                                      .replaceAll(',', '.'),
                                   style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
@@ -254,14 +258,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 13,
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Image.asset('assets/banner.png'),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset('assets/banner.png')),
                   ),
                   const SizedBox(
-                    height: 11,
+                    height: 15,
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
