@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/models/bill.dart';
+import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 import 'package:image_picker/image_picker.dart';
 
 class PaymentConfirmScreen extends StatefulWidget {
-  const PaymentConfirmScreen({Key? key}) : super(key: key);
+  final ServiceBill? serviceBill;
+  final ApartmentBill? apartmentBill;
+  const PaymentConfirmScreen({Key? key, this.apartmentBill, this.serviceBill})
+      : super(key: key);
 
   @override
   State<PaymentConfirmScreen> createState() => _PaymentConfirmScreenState();
@@ -19,14 +27,15 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
   final TextEditingController accountNumberController = TextEditingController();
   final TextEditingController bankNameController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-  bool isEmptyName = false,
-      isEmptyAccountNumber = false,
-      isEmptyBankName = false,
-      isEmptyContent = false;
   @override
   Widget build(BuildContext context) {
+    BillProvider billProvider = Provider.of<BillProvider>(context);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    print("id ne");
+    widget.apartmentBill != null
+        ? print(widget.apartmentBill!.id)
+        : print(widget.serviceBill);
     return Scaffold(
       backgroundColor: const Color(0xFFFCF6F6),
       appBar: AppBar(
@@ -48,86 +57,101 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.only(
-            top: height * 0.04,
-            left: width * 0.055,
-            right: width * 0.055,
-            bottom: height * 0.01),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: height * 0.02,
-              ),
-              child: Text(
-                "Cung cấp ảnh chụp màn hình minh chứng sau khi đã chuyển khoản",
-                style: AppTextStyle.lato.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+              top: height * 0.04,
+              left: width * 0.055,
+              right: width * 0.055,
+              bottom: height * 0.01),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: height * 0.02,
                 ),
-              ),
-            ),
-            InkWell(
-              onTap: _showModalBottomSheet,
-              child: Container(
-                height: height * 0.6,
-                width: width * 0.9,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFFFFF),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: const Color(0xFF806D6D),
-                    width: 1,
+                child: Text(
+                  "Cung cấp ảnh chụp màn hình minh chứng sau khi đã chuyển khoản",
+                  style: AppTextStyle.lato.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                child: _imageFile == null
-                    ? Image.asset(
-                        "assets/image-picker.png",
-                      )
-                    : Image.asset(
-                        _imageFile!.path,
+              ),
+              InkWell(
+                onTap: _showModalBottomSheet,
+                child: Container(
+                  height: height * 0.6,
+                  width: width * 0.9,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: const Color(0xFF806D6D),
+                      width: 1,
+                    ),
+                  ),
+                  child: _imageFile != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.file(
+                            File(
+                              _imageFile!.path,
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Image.asset(
+                          "assets/image-picker.png",
+                        ),
+                ),
+              ),
+              SizedBox(height: height * 0.05),
+              billProvider.isLoading
+                  ? const CircularProgressIndicator()
+                  : InkWell(
+                      onTap: () {
+                        if (widget.apartmentBill != null &&
+                            _imageFile != null) {
+                          Provider.of<BillProvider>(context, listen: false)
+                              .editApartmentBill(
+                            context,
+                            _imageFile!,
+                            widget.apartmentBill!,
+                          );
+                        } else if (widget.serviceBill != null &&
+                            _imageFile != null) {
+                          Provider.of<BillProvider>(context, listen: false)
+                              .editServiceBill(
+                            context,
+                            _imageFile!,
+                            widget.serviceBill!,
+                          );
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFDB2F68),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: EdgeInsets.only(
+                            left: width * 0.35,
+                            right: width * 0.35,
+                            top: height * 0.015,
+                            bottom: height * 0.015),
+                        child: Text(
+                          "Xác nhận",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 15,
+                            color: const Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-              ),
-            ),
-            SizedBox(height: height * 0.01),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  isEmptyName = nameController.text.isEmpty;
-                  isEmptyAccountNumber = accountNumberController.text.isEmpty;
-                  isEmptyBankName = bankNameController.text.isEmpty;
-                  isEmptyContent = contentController.text.isEmpty;
-                });
-              },
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.White,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.Black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: const Offset(0, 1), // changes position of shadow
                     ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    "Xác nhận",
-                    style: TextStyle(
-                      color: AppColors.Black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -168,7 +192,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                   ),
                 ),
                 child: Center(
-                  child: Text("Chỉnh sửa ảnh đại diện",
+                  child: Text("Chọn phương thức",
                       style: AppTextStyle.lato.copyWith(fontSize: 16)),
                 ),
               ),
@@ -261,25 +285,12 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
   }
 
   void takePhoto(ImageSource source) async {
-    // final _pickedFile = await _picker.getImage(source: source);
-    // if (_pickedFile != null) {
-    //   setState(() {
-    //     _imageFile = _pickedFile;
-    //     uploadImage(_imageFile!);
-    //   });
-    // }
+    final _pickedFile = await _picker.getImage(source: source);
+    if (_pickedFile != null) {
+      setState(() {
+        _imageFile = _pickedFile;
+      });
+    }
+    Navigator.pop(context);
   }
-
-  // upload _imageFile to api
-  // void uploadImage(PickedFile _imageFile) async {
-  //   final user = context.read<ProfileProvider>().mdUser;
-  //   final _image = File(_imageFile.path);
-  //   Uint8List avatar = await _image.readAsBytes();
-  //   String imageUrl = await StorageMethods()
-  //       .uploadImageToStorage('profilePics', avatar, false, user.idNumber);
-  //   print('url anh: $imageUrl');
-
-  //   await ProfilePro().updateProfilePictureAPIProvider(imageUrl);
-  //   context.read<ProfileProvider>().setProfilePicture(imageUrl);
-  // }
 }

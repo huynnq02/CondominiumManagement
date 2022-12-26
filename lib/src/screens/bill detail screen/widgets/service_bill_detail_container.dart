@@ -65,7 +65,7 @@ class _ServiceBillDetailContainerState
               ),
               BillRowInfo(
                 name: "Tên hóa đơn:",
-                value: widget.serviceBill.billName,
+                value: widget.serviceBill.billName ?? "Không có tên",
                 topBorder: 1,
                 bottomBorder: 1,
               ),
