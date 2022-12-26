@@ -147,9 +147,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: ImageIcon(
                                         _isObsecureIdNumber
                                             ? const AssetImage(
-                                                'assets/visible-icon.png')
+                                                'assets/invisible-icon.png')
                                             : const AssetImage(
-                                                'assets/invisible-icon.png'),
+                                                'assets/visible-icon.png'),
                                       ),
                                       onTap: _handleWatchIdNumber,
                                     ),
@@ -234,15 +234,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             child: ImageIcon(
                                               _isObsecurePhoneNumber
                                                   ? const AssetImage(
-                                                      'assets/visible-icon.png')
+                                                      'assets/invisible-icon.png')
                                                   : const AssetImage(
-                                                      'assets/invisible-icon.png'),
+                                                      'assets/visible-icon.png'),
                                             ),
                                             onTap: _handleWatchPhoneNumber,
                                           ),
-                                          SizedBox(
-                                            width: width * 0.02,
-                                          ),
+
                                           // InkWell(
                                           //   onTap: () {
                                           //     Navigator.push(

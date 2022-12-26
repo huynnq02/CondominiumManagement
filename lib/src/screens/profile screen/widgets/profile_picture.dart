@@ -92,10 +92,10 @@ class _ProfilePictureState extends State<ProfilePicture> {
               mini: true,
 
               backgroundColor: AppColors.White,
-              child: const Icon(
+              child: Icon(
                 ic.Iconsax.edit_2,
                 color: AppColors.Black,
-                size: 18,
+                size: height * 0.018,
               ),
               onPressed: _showModalBottomSheet,
             ),
