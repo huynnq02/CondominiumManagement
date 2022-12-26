@@ -177,7 +177,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                             "Chụp ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFFE2C6B),
                             ),
                           ),
                         ),
@@ -218,7 +218,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                             "Chọn từ thư viện ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFFE2C6B),
                             ),
                           ),
                         ),
