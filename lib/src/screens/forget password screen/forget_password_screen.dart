@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/reset_password_provider.dart';
+import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/register%20screen/register_otp_screen.dart';
-import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -74,8 +74,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Đã gửi OTP')));
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => RegisterOTPScreen(type: 'forget',email: email,password: 'null',)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => RegisterOTPScreen(
+              type: 'forget',
+              email: email,
+              password: 'null',
+            )));
   }
 
   bool isEmail(String input) => RegExp(
@@ -88,165 +92,144 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<ResetPasswordProvider>(context);
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: AppColors.DarkPink,
+        toolbarHeight: 60,
+        title: const Text(
+          'Quên mật khẩu',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Color(0xFFFCF6F6)),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: SvgPicture.asset(
+              'assets/back.svg',
+              height: 24,
+            )),
+      ),
       backgroundColor: AppColors.White,
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 38, vertical: height*0.05),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              color: AppColors.LightPurple,
-              child: SafeArea(
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 54, horizontal: width * 0.18),
-                      child: Center(
-                        child: OutlinedText(
-                          text:
-                              'Nhập email hoặc số điện thoại dùng đăng kí app để nhận mã OTP',
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                        constraints: const BoxConstraints(),
-                        padding: const EdgeInsets.all(22),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: SvgPicture.asset('assets/back.svg'))
-                  ],
+            SvgPicture.asset('assets/forget-pw-decoration.svg'),
+            SizedBox(
+              height: height*0.027,
+            ),
+            const Text(
+              'Nhập email hoặc số điện thoại đăng nhập tài khoản để nhận mã OTP',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Color(0xFF58583A)),
+                  textAlign: TextAlign.center,
+            ),
+           SizedBox(
+              height: height*0.041,
+            ),
+            Column(
+              children: [
+                Text(
+                  data.emailError,
+                  style: GoogleFonts.inter(
+                      color: data.emailError.isNotEmpty
+                          ? AppColors.Red
+                          : Colors.transparent,
+                      fontSize: 12),
                 ),
-              ),
+                const SizedBox(
+                  height: 5,
+                )
+              ],
             ),
-            const SizedBox(
-              height: 95,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.09),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        data.emailError,
-                        style: GoogleFonts.inter(
-                            color: data.emailError.isNotEmpty
-                                ? AppColors.Red
-                                : Colors.transparent,
-                            fontSize: 12),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      )
-                    ],
-                  ),
-                  Form(
-                    key: _emailKey,
-                    child: TextFormField(
-                      controller: emailController,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.black,
-                      style: const TextStyle(fontSize: 18),
-                      maxLength: 50,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          setState(() {
-                            data.emailError = 'Vui lòng nhập email';
-                          });
-                          return '';
-                        }
-                        final isNum = num.tryParse(value) is num;
-                        if (!isNum) {
-                          if (!isEmail(value)) {
-                            setState(() {
-                              data.emailError =
-                                  'Định dạng email không đúng, vui lòng nhập lại';
-                            });
-                            return '';
-                          }
-                        } else {
-                          if (!isPhone(value) || !value.startsWith('0')) {
-                            setState(() {
-                              data.emailError =
-                                  'Định dạng không hợp lệ, vui lòng nhập lại';
-                            });
-                            return '';
-                          }
-                        }
-                        setState(() {
-                          data.emailError = '';
-                        });
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          counterText: '',
-                          hintText: 'Nhập email',
-                          hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w300, fontSize: 16),
-                          filled: true,
-                          fillColor: Colors.white.withOpacity(0.8),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                color: Colors.black.withOpacity(0.5)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                color: Colors.black.withOpacity(0.5)),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide:
-                                const BorderSide(color: Color(0xFFFF0000)),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide:
-                                const BorderSide(color: Color(0xFFFF0000)),
-                          ),
-                          errorStyle: const TextStyle(height: 0),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 17)),
+            Form(
+              key: _emailKey,
+              child: TextFormField(
+                controller: emailController,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.emailAddress,
+                cursorColor: Colors.black,
+                style: const TextStyle(fontSize: 18),
+                maxLength: 50,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    setState(() {
+                      data.emailError = 'Vui lòng nhập email';
+                    });
+                    return '';
+                  }
+                  final isNum = num.tryParse(value) is num;
+                  if (!isNum) {
+                    if (!isEmail(value)) {
+                      setState(() {
+                        data.emailError =
+                            'Định dạng email không đúng, vui lòng nhập lại';
+                      });
+                      return '';
+                    }
+                  } else {
+                    if (!isPhone(value) || !value.startsWith('0')) {
+                      setState(() {
+                        data.emailError =
+                            'Định dạng không hợp lệ, vui lòng nhập lại';
+                      });
+                      return '';
+                    }
+                  }
+                  setState(() {
+                    data.emailError = '';
+                  });
+                  return null;
+                },
+                decoration: InputDecoration(
+                    counterText: '',
+                    hintText: 'Email / Số điện thoại',
+                    hintStyle:
+                        const TextStyle(fontSize: 18, color: Color(0xFFBBBBBB)),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.8),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide:
+                          BorderSide(color: Colors.black.withOpacity(0.5)),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 95,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.Purple,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 4),
-                        onPressed: () {
-                          if (_emailKey.currentState!.validate()) {
-                            showLoading();
-                            email = emailController.text;
-                            provider!
-                                .sendPasswordResetOTP(email)
-                                .then((_) => handleOTPSent(data));
-                          }
-                        },
-                        child: const Text(
-                          'Gửi mã OTP',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        )),
-                  ),
-                ],
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide:
+                          BorderSide(color: Colors.black.withOpacity(0.5)),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: Color(0xFFFF0000)),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: Color(0xFFFF0000)),
+                    ),
+                    errorStyle: const TextStyle(height: 0),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 20)),
               ),
             ),
+            const Spacer(),
+            CustomButton(
+                onPressed: () {
+                  if (_emailKey.currentState!.validate()) {
+                    showLoading();
+                    email = emailController.text;
+                    provider!
+                        .sendPasswordResetOTP(email)
+                        .then((_) => handleOTPSent(data));
+                  }
+                },
+                label: 'Tiếp tuc')
           ],
         ),
       ),
