@@ -37,4 +37,9 @@ class BillAPIProvider extends BaseProvider<BillAPIRepository> {
     print(res.data);
     return res.data['success'];
   }
+
+  Future getTotalUnpaid() async {
+    final res = await repository.getTotalUnpaid();
+    return res.data['result'];
+  }
 }

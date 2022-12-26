@@ -92,4 +92,17 @@ class BillAPIRepository extends BaseRepository {
       return error.response as Response;
     }
   }
+
+  Future<Response> getTotalUnpaid() async {
+    try {
+      var client = init();
+
+      final authRespone = await client.get(
+        '/api/services/app/Bill/GetTotalUnpaid',
+      );
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
 }

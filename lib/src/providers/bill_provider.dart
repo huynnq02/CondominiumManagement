@@ -30,6 +30,8 @@ class BillProvider extends ChangeNotifier {
   final List<bill.ServiceBill> _refuseServiceBills = [];
   int _currentTab = 0;
   String _billState = "Tất cả";
+  double _totalUnpaid = 0;
+  double get totalUnpaid => _totalUnpaid;
   int get currentTab => _currentTab;
   List<bill.ApartmentBill> get apartmentBills => _apartmentBills;
   List<bill.ApartmentBill> get paidApartmentBills => _paidApartmentBills;
@@ -205,5 +207,11 @@ class BillProvider extends ChangeNotifier {
     String imageUrl = await StorageMethods()
         .uploadImageToStorage(name, paymentConfirmation, false, user.idNumber);
     print(imageUrl);
+  }
+
+  Future getTotalUnpaid() async {
+    final result = await BillAPIProvider().getTotalUnpaid();
+    _totalUnpaid = result;
+    notifyListeners();
   }
 }

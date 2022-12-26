@@ -31,22 +31,25 @@ class _MainScreenState extends State<MainScreen> {
   LoginProvider? loginProvider;
   String? email;
   int _selectedIndex = 0;
+  var pages;
+  
   void _onTapTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  final pages = [
-    const HomeScreen(),
-    FeedbackScreen(),
-    const ServiceScreen(),
-    BillScreen(),
-    ProfileScreen(),
-  ];
+  
   @override
   void initState() {
     super.initState();
+    pages = [
+      HomeScreen(onTapTapped: (p0) => _onTapTapped(p0),),
+      FeedbackScreen(),
+      const ServiceScreen(),
+      BillScreen(),
+      ProfileScreen(),
+    ];
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
 // lấy email và password để cập nhật token mới
     loginProvider!.checkSave();
