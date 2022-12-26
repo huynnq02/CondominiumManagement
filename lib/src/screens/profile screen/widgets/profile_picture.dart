@@ -163,11 +163,11 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/camera-icon.png'),
                             ),
                           ),
@@ -204,11 +204,11 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/gallery-icon.png'),
                             ),
                           ),

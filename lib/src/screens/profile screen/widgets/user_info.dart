@@ -40,13 +40,18 @@ class UserInfo extends StatelessWidget {
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                   blurRadius: 3,
-                  offset: Offset(0, 3),
+                  offset: Offset(0, 4),
                 ),
               ]
             : null,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(
+          left: 12,
+          right: 12,
+          top: 13,
+          bottom: 13,
+        ),
         child: Row(
           children: [
             Image(
@@ -66,7 +71,7 @@ class UserInfo extends StatelessWidget {
             Text(
               value,
               style: AppTextStyle.lato.copyWith(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -244,11 +244,11 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 35),
-                            child: Image(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const Image(
                               image: AssetImage(
                                   'assets/internet-banking-icon.png'),
                             ),
@@ -292,11 +292,11 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 35),
-                            child: Image(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const Image(
                               image: AssetImage('assets/direct-debit-icon.png'),
                             ),
                           ),

@@ -61,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFFCF6F6),
       body: SafeArea(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -73,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   SizedBox(
-                    height: height * 0.05,
+                    height: height * 0.03,
                   ),
                   ProfilePicture(),
                   SizedBox(
@@ -84,6 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: AppTextStyle.lato.copyWith(
                       fontSize: 35,
                       fontWeight: FontWeight.w700,
+                      color: const Color(0xFF3A3A3A),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -116,7 +118,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: AppColors.White,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(
+                              left: 12,
+                              right: 12,
+                              top: 13,
+                              bottom: 13,
+                            ),
                             child: Row(
                               children: [
                                 const Image(
@@ -196,7 +203,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.only(
+                              left: 12,
+                              right: 12,
+                              top: 13,
+                              bottom: 13,
+                            ),
                             child: Row(
                               children: [
                                 const Image(

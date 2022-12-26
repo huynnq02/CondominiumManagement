@@ -210,11 +210,11 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/camera-icon.png'),
                             ),
                           ),
@@ -224,7 +224,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                             "Chụp ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
@@ -250,11 +250,11 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/gallery-icon.png'),
                             ),
                           ),
@@ -264,7 +264,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                             "Chọn từ thư viện ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
