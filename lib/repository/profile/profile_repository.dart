@@ -99,7 +99,7 @@ class ProfileRepository extends BaseRepository {
   }
 
   Future<Response> changePhoneNumberAPIRepository(
-      MDUser? mdUser, String phoneNumber, String otp) async {
+      MDUser? mdUser, String phoneNumber) async {
     try {
       var client = init();
 
@@ -115,7 +115,6 @@ class ProfileRepository extends BaseRepository {
           "name": mdUser.name,
           "surname": mdUser.surname,
           "phoneNumber": phoneNumber,
-          "otp": otp,
           "apartmentId": mdUser.apartmentId,
         },
       );

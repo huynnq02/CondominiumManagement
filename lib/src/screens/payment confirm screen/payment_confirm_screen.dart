@@ -213,10 +213,9 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         const Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 29,
+                            padding: EdgeInsets.only(left: 20),
+                            child: ImageIcon(
+                              AssetImage('assets/camera-icon.png'),
                             ),
                           ),
                         ),
@@ -254,9 +253,9 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         const Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: EdgeInsets.only(left: 20),
                             child: ImageIcon(
-                              AssetImage('assets/galery-icon.png'),
+                              AssetImage('assets/gallery-icon.png'),
                             ),
                           ),
                         ),
