@@ -163,11 +163,11 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/camera-icon.png'),
                             ),
                           ),
@@ -177,7 +177,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                             "Chụp ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFFE2C6B),
                             ),
                           ),
                         ),
@@ -204,11 +204,11 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/gallery-icon.png'),
                             ),
                           ),
@@ -218,7 +218,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                             "Chọn từ thư viện ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFFE2C6B),
                             ),
                           ),
                         ),

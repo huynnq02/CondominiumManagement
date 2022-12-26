@@ -390,11 +390,11 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: Icon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const Icon(
                               Icons.camera_alt,
                               size: 29,
                             ),
@@ -405,7 +405,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                             "Chụp ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFFE2C6B),
                             ),
                           ),
                         ),
@@ -431,11 +431,11 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: ImageIcon(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
                               AssetImage('assets/galery-icon.png'),
                             ),
                           ),
@@ -445,7 +445,7 @@ class _CreateFeedbackScreenState extends State<CreateFeedbackScreen> {
                             "Chọn từ thư viện ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFFE2C6B),
                             ),
                           ),
                         ),

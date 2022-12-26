@@ -23,14 +23,18 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
     final width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ServiceBillDetailScreen(
-              serviceBill: widget.serviceBill,
+        if (widget.serviceBill.state == "Chưa thanh toán") {
+          _showModalBottomSheet();
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ServiceBillDetailScreen(
+                serviceBill: widget.serviceBill,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(width * 0.02, 0, width * 0.02, 0),
@@ -138,15 +142,12 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                             ),
                           )
                         : widget.serviceBill.state == "Chưa thanh toán"
-                            ? InkWell(
-                                onTap: _showModalBottomSheet,
-                                child: Text(
-                                  "Chưa thanh toán",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFFF47D00),
-                                  ),
+                            ? Text(
+                                "Chưa thanh toán",
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFFF47D00),
                                 ),
                               )
                             // ? InkWell(
@@ -244,11 +245,11 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 35),
-                            child: Image(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const Image(
                               image: AssetImage(
                                   'assets/internet-banking-icon.png'),
                             ),
@@ -292,11 +293,11 @@ class _ItemServiceBillState extends State<ItemServiceBill> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 35),
-                            child: Image(
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const Image(
                               image: AssetImage('assets/direct-debit-icon.png'),
                             ),
                           ),

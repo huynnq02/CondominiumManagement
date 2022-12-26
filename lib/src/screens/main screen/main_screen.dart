@@ -175,8 +175,8 @@ class _MainScreenState extends State<MainScreen> {
                       const AssetImage(
                           'assets/bottom_navigation_bar_icon/home.png'),
                       color: _selectedIndex == 0
-                          ? const Color(0xFF1D6D54)
-                          : AppColors.Black,
+                          ? const Color(0xFFDB2F68)
+                          : const Color(0xFF292D32),
                     ),
                     label: 'Trang chủ',
                   ),
@@ -185,8 +185,8 @@ class _MainScreenState extends State<MainScreen> {
                       const AssetImage(
                           'assets/bottom_navigation_bar_icon/2.png'),
                       color: _selectedIndex == 1
-                          ? const Color(0xFF1D6D54)
-                          : AppColors.Black,
+                          ? const Color(0xFFDB2F68)
+                          : const Color(0xFF292D32),
                     ),
                     label: "Ý kiến",
                   ),
@@ -195,8 +195,8 @@ class _MainScreenState extends State<MainScreen> {
                       const AssetImage(
                           'assets/bottom_navigation_bar_icon/ic_service.png'),
                       color: _selectedIndex == 2
-                          ? const Color(0xFF1D6D54)
-                          : AppColors.Black,
+                          ? const Color(0xFFDB2F68)
+                          : const Color(0xFF292D32),
                     ),
                     label: 'Dịch vụ',
                   ),
@@ -205,8 +205,8 @@ class _MainScreenState extends State<MainScreen> {
                       const AssetImage(
                           'assets/bottom_navigation_bar_icon/bill.png'),
                       color: _selectedIndex == 3
-                          ? const Color(0xFF1D6D54)
-                          : AppColors.Black,
+                          ? const Color(0xFFDB2F68)
+                          : const Color(0xFF292D32),
                     ),
                     label: 'Hóa đơn',
                   ),
@@ -215,15 +215,15 @@ class _MainScreenState extends State<MainScreen> {
                       const AssetImage(
                           'assets/bottom_navigation_bar_icon/profile.png'),
                       color: _selectedIndex == 4
-                          ? const Color(0xFF1D6D54)
-                          : AppColors.Black,
+                          ? const Color(0xFFDB2F68)
+                          : const Color(0xFF292D32),
                     ),
                     label: 'Cá nhân',
                   ),
                 ],
                 currentIndex: _selectedIndex,
-                unselectedItemColor: AppColors.Black,
-                selectedItemColor: const Color(0xFF1D6D54),
+                unselectedItemColor: const Color(0xFF292D32),
+                selectedItemColor: const Color(0xFFDB2F68),
                 unselectedLabelStyle: AppTextStyle.robotoSize14.copyWith(
                   fontSize: 10,
                 ),

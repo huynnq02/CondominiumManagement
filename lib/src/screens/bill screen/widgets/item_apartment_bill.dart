@@ -24,14 +24,18 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
 
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ApartmentBillDetailScreen(
-              apartmentBill: widget.apartmentBill,
+        if (widget.apartmentBill.state == "Chưa thanh toán") {
+          _showModalBottomSheet();
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ApartmentBillDetailScreen(
+                apartmentBill: widget.apartmentBill,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(width * 0.02, 0, width * 0.02, 0),
@@ -135,15 +139,12 @@ class _ItemAparmentBillState extends State<ItemAparmentBill> {
                             ),
                           )
                         : widget.apartmentBill.state == "Chưa thanh toán"
-                            ? InkWell(
-                                onTap: _showModalBottomSheet,
-                                child: Text(
-                                  "Chưa thanh toán",
-                                  style: AppTextStyle.lato.copyWith(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFFF47D00),
-                                  ),
+                            ? Text(
+                                "Chưa thanh toán",
+                                style: AppTextStyle.lato.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFFF47D00),
                                 ),
                               )
                             : Text(

@@ -50,7 +50,12 @@ class UserOption extends StatelessWidget {
             : null,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(
+          left: 12,
+          right: 12,
+          top: 13,
+          bottom: 13,
+        ),
         child: Row(
           children: [
             Image(
