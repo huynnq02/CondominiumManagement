@@ -423,7 +423,8 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                             .verifyOTP(
                                                 context,
                                                 otpController.text,
-                                                phoneNumberController.text);
+                                                phoneNumberController.text,
+                                                user.mdUser);
                                         print(user.isValidOTPProvider);
                                       }
                                     },

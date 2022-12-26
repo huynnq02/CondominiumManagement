@@ -1,15 +1,12 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/models/user.dart';
-import 'package:untitled/src/providers/repository_provider.dart';
 import '../../repository/profile/profileAPI_provider.dart';
 import '../../utils/helper/app_preference.dart';
-import 'dart:convert';
-
+import '../../utils/helper/show_snack_bar.dart';
 import '../screens/change phone number screen/widgets/change_phone_number_successful_dialog.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -146,8 +143,8 @@ class ProfileProvider extends ChangeNotifier {
     SharedPreferences pref;
     setIsLoading(true);
     print("vao 2");
-    var success = await ProfilePro()
-        .changePhoneNumberAPIProvider(mdUser, phoneNumber, otp);
+    var success =
+        await ProfilePro().changePhoneNumberAPIProvider(mdUser, phoneNumber);
     pref = await SharedPreferences.getInstance();
 
     if (success == true) {
@@ -217,8 +214,7 @@ class ProfileProvider extends ChangeNotifier {
         _isSent = true;
         print("da gui otp");
         // show snack bar
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Đã gửi OTP đến số điện thoại bạn muốn đổi')));
+        showSnackBar(context, 'Đã gửi OTP đến số điện thoại bạn muốn đổi');
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
@@ -231,8 +227,8 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   // verify otp
-  Future<void> verifyOTP(
-      BuildContext context, String otp, String phoneNumber) async {
+  Future<void> verifyOTP(BuildContext context, String otp, String phoneNumber,
+      MDUser mdUser) async {
     try {
       setIsLoading(true);
 
@@ -243,12 +239,19 @@ class ProfileProvider extends ChangeNotifier {
         // on error
         if (value.user != null) {
           // show snack bar
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Thành công')));
+
           setIsValidOTP(true);
           print("sdt ne");
           print(phoneNumber);
-          setNewPhoneNumber(phoneNumber);
+          var successChange = await ProfilePro()
+              .changePhoneNumberAPIProvider(mdUser, phoneNumber);
+          if (successChange == true) {
+            setNewPhoneNumber(phoneNumber);
+            showSnackBar(context, 'Thành công');
+          } else if (successChange == false) {
+            setNewPhoneNumber(phoneNumber);
+            showSnackBar(context, 'Vui lòng thử lại sau');
+          }
           Navigator.of(context)
             ..pop()
             ..pop();
@@ -258,16 +261,15 @@ class ProfileProvider extends ChangeNotifier {
           setIsValidOTP(false);
           setIsLoading(false);
           // show snack bar
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content:
-                  Text('Xác thực OTP thất bại, vui lòng kiểm tra lại OTP')));
+          showSnackBar(
+              context, 'Xác thực OTP thất bại, vui lòng kiểm tra lại OTP');
         },
       );
       setIsLoading(false);
     } catch (e) {
       // show snack bar
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Lỗi')));
+      showSnackBar(context, 'Có lỗi xảy ra, vui lòng thử lại sau');
+
       setIsValidOTP(false);
       setIsLoading(false);
     }

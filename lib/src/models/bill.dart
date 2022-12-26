@@ -12,6 +12,7 @@ class Bill {
   String endDay;
   int price;
   String? datePayment;
+  String? reason;
   Bill({
     this.billID,
     required this.billName,
@@ -24,6 +25,7 @@ class Bill {
     required this.price,
     this.datePayment,
     required this.id,
+    this.reason,
   });
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -38,6 +40,7 @@ class Bill {
       'price': price,
       'datePayment': datePayment,
       'id': id,
+      'reason': reason,
     };
   }
 
@@ -54,6 +57,7 @@ class Bill {
       price: map['price'] as int,
       datePayment: map['datePayment']?.toString(),
       id: map['id'],
+      reason: map['reason'],
     );
   }
 
@@ -81,6 +85,7 @@ class ServiceBill extends Bill {
     required int id,
     String? billID,
     String? billName,
+    String? reason,
     required String emailAddress,
     required String ownerName,
     required String paymentTerm,
@@ -103,6 +108,7 @@ class ServiceBill extends Bill {
           endDay: endDay,
           price: price,
           datePayment: datePayment,
+          reason: reason,
         );
 
   @override
@@ -126,6 +132,7 @@ class ServiceBill extends Bill {
       'serviceName': serviceName,
       'phoneNumber': phoneNumber,
       'datePayment': datePayment,
+      'reason': reason,
     };
   }
 
@@ -149,6 +156,7 @@ class ServiceBill extends Bill {
       startDay: map['startDay'],
       endDay: map['endDay'],
       datePayment: map['datePayment']?.toString(),
+      reason: map['reason']?.toString(),
     );
   }
 
@@ -188,6 +196,7 @@ class ApartmentBill extends Bill {
     required String startDay,
     required String endDay,
     String? datePayment,
+    String? reason,
     required this.areaOfApartment,
     required this.priceOfApartment,
   }) : super(
@@ -202,6 +211,7 @@ class ApartmentBill extends Bill {
           endDay: endDay,
           price: price,
           datePayment: datePayment,
+          reason: reason,
         );
 
   @override
@@ -227,6 +237,7 @@ class ApartmentBill extends Bill {
       'datePayment': datePayment,
       'areaOfApartment': areaOfApartment,
       'priceOfApartment': priceOfApartment,
+      'reason': reason,
     };
   }
 
@@ -252,6 +263,7 @@ class ApartmentBill extends Bill {
       datePayment: map['datePayment']?.toString(),
       areaOfApartment: map['areaOfApartment'] as double,
       priceOfApartment: map['priceOfApartment'] as double,
+      reason: map['reason']?.toString(),
     );
   }
 

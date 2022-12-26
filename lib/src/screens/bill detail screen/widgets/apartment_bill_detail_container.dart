@@ -167,7 +167,7 @@ class _ApartmentBillDetailContainerState
                   children: [
                     Center(
                       child: Text(
-                        "Hóa đơn bị từ chối thanh toán vì",
+                        "Hóa đơn bị từ chối thanh toán vì: ",
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 14,
                           color: const Color(0xFFFF0000),
@@ -178,7 +178,7 @@ class _ApartmentBillDetailContainerState
                     ),
                     Center(
                       child: Text(
-                        "..................",
+                        widget.apartmentBill.reason ?? "Chưa rõ lí do",
                         style: AppTextStyle.lato.copyWith(
                           fontSize: 14,
                           color: const Color(0xFFFF0000),

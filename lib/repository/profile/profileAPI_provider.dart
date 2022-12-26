@@ -49,9 +49,9 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
   }
 
   Future changePhoneNumberAPIProvider(
-      MDUser? mdUser, String phoneNumber, String otp) async {
+      MDUser? mdUser, String phoneNumber) async {
     final res = await repository.changePhoneNumberAPIRepository(
-        mdUser, phoneNumber, otp);
+        mdUser, phoneNumber);
     print("kq neee:");
     print(res.data['success']);
     return res.data['success'];
