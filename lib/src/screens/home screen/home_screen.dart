@@ -10,13 +10,12 @@ import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/providers/user_service_provider.dart';
 import '../../../repository/service/serviceAPI_provider.dart';
 import '../../../utils/app_constant/app_colors.dart';
-import 'package:untitled/src/models/user.dart';
-import 'package:untitled/src/screens/home screen/widgets/custom_button.dart';
 import 'package:untitled/src/screens/home%20screen/widgets/home_item.dart';
 import 'package:untitled/src/models/feedback.dart' as f;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final void Function(int)? onTapTapped;
+  const HomeScreen({Key? key,this.onTapTapped}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -61,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
     profileProvider.getProfilePicture();
     billProvider.getAllApartmentBill();
     billProvider.getAllServiceBill();
-    await profileProvider.getCurrentUserProfile();
   }
 
   void getProfilePicture() async {
@@ -91,195 +89,244 @@ class _HomeScreenState extends State<HomeScreen> {
     final user = Provider.of<ProfileProvider>(context);
     if (user.mdUser.apartmentId == '') {
       return const Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: AppColors.DarkPink,
+        ),
       );
     } else {
       return Scaffold(
-        backgroundColor: AppColors.White,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          flexibleSpace: SafeArea(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Xin chào! ${user.mdUser.surname + user.mdUser.name}',
-                style: TextStyle(fontSize: 15, shadows: [
-                  Shadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: const Offset(0, 4),
-                      blurRadius: 4)
-                ]),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                user.mdUser.apartmentId != null
-                    ? 'Tòa ${user.mdUser.apartmentId?.split('.')[0]} - ${user.mdUser.apartmentId?.split('.')[1]}'
-                    : 'Account không có apartmentId',
-                style: const TextStyle(fontSize: 12),
-              )
-            ],
-          )),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.only(top: 22, bottom: 86),
-            child: Column(children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 30,
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 19),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(0, 4),
-                          blurRadius: 4)
-                    ]),
-                child: Column(
-                  children: [
-                    Text(
-                      'Tổng thanh toán tháng ${now.month}/${now.year}',
-                      style: const TextStyle(fontSize: 12),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/home-bg.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 39),
+                child: Column(children: [
+                  RichText(
+                    text: TextSpan(
+                      text: 'Xin chào, ',
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: user.mdUser.surname + user.mdUser.name,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24))
+                      ],
                     ),
-                    const SizedBox(
-                      height: 13,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: '1.690.000',
-                              style: TextStyle(
-                                  fontSize: 36,
-                                  color: const Color(0xFFFF8A00),
-                                  shadows: [
-                                    Shadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 4)
-                                  ])),
-                          const TextSpan(
-                              text: ' vnđ',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.black)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomButton(
-                          label: 'Chi tiết',
-                          onPressed: () {},
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  ((user.mdUser.apartmentId == null)||(user.mdUser.apartmentId!.split('.')[1].length <= 2))
+                      ? const Text(
+                          'Acc sai mã căn hộ',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : RichText(
+                          text: TextSpan(
+                            text: 'Tòa ',
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.white),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: user.mdUser.apartmentId?.split('.')[0],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                      color: AppColors.DarkPink)),
+                              const TextSpan(text: ' - Tầng '),
+                              TextSpan(
+                                  text: user.mdUser.apartmentId
+                                      ?.split('.')[1]
+                                      .substring(0, 2),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                      color: AppColors.DarkPink)),
+                              const TextSpan(text: ' - Căn hộ '),
+                              TextSpan(
+                                  text: user.mdUser.apartmentId
+                                      ?.split('.')[1]
+                                      .substring(2),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                      color: AppColors.DarkPink)),
+                            ],
+                          ),
                         ),
-                        CustomButton(
-                          label: 'Thanh toán',
-                          onPressed: () {},
-                          backgroundColor: const Color(0xFF5FC5FF),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(
+                      top: 14,
+                      bottom: 12,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Cần thanh toán trong tháng này',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: '1.690.000',
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFFD4A93A),
+                                      shadows: [
+                                        Shadow(
+                                            color:
+                                                Colors.black.withOpacity(0.25),
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 4)
+                                      ])),
+                              const TextSpan(
+                                  text: ' đ',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        ElevatedButton(
+                          onPressed: () => widget.onTapTapped!(3),
+                          child: const Text(
+                            'Chi tiết',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.DarkPink,
+                              shadowColor: Colors.transparent,
+                              fixedSize: const Size(198, 37),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)))),
                         )
                       ],
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(height: 46),
-              CustomButton(
-                label: 'Chung cư APATO',
-                onPressed: () {},
-                width: 240,
-                backgroundColor: const Color(0xFFFFC000),
-              ),
-              const SizedBox(
-                height: 42,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 33),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    HomeItem(
-                      title: 'Ban quản lý',
-                      iconPath: 'assets/home_icons/office-building.png',
                     ),
-                    HomeItem(
-                      title: 'Nội quy',
-                      iconPath: 'assets/home_icons/rules.png',
+                  ),
+                  const SizedBox(height: 27),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 19),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        HomeItem(
+                          title: 'Ban quản lý',
+                          iconPath: 'assets/home_icons/office-building.svg',
+                        ),
+                        HomeItem(
+                          title: 'Bảng tin',
+                          iconPath: 'assets/home_icons/newspaper.svg',
+                        ),
+                        HomeItem(
+                          title: 'Nội quy',
+                          iconPath: 'assets/home_icons/rules.svg',
+                        ),
+                      ],
                     ),
-                    HomeItem(
-                      title: 'Bảng tin',
-                      iconPath: 'assets/home_icons/newspaper.png',
+                  ),
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Image.asset('assets/banner.png'),
+                  ),
+                  const SizedBox(
+                    height: 11,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 11, horizontal: 38),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(12),
+                      ),
                     ),
-                  ],
-                ),
+                    child: const Text(
+                      'Các dịch vụ phổ biến',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 19),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        HomeItem(
+                          title: 'Đăng ký khách',
+                          iconPath: 'assets/home_icons/guest-list.svg',
+                        ),
+                        HomeItem(
+                          title: 'Giặt ủi',
+                          iconPath: 'assets/home_icons/laundry-machine.svg',
+                        ),
+                        HomeItem(
+                          title: 'Góp ý',
+                          iconPath: 'assets/home_icons/feedback.svg',
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 19),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        HomeItem(
+                          title: 'Đăng ký thẻ xe',
+                          iconPath: 'assets/home_icons/credit.svg',
+                        ),
+                        HomeItem(
+                          title: 'Đăng ký phòng gym',
+                          iconPath: 'assets/home_icons/gym.svg',
+                        ),
+                        HomeItem(
+                          title: 'Đăng ký vệ sinh phòng',
+                          iconPath: 'assets/home_icons/cleaning.svg',
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
               ),
-              const SizedBox(
-                height: 47,
-              ),
-              CustomButton(
-                label: 'Các tính năng thường dùng',
-                onPressed: () {},
-                width: 240,
-                backgroundColor: const Color(0xFFFFC000),
-              ),
-              const SizedBox(
-                height: 42,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 33),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    HomeItem(
-                      title: 'Đăng ký khách',
-                      iconPath: 'assets/home_icons/guest-list.png',
-                    ),
-                    HomeItem(
-                      title: 'Giặt ủi',
-                      iconPath: 'assets/home_icons/laundry-machine.png',
-                    ),
-                    HomeItem(
-                      title: 'Góp ý',
-                      iconPath: 'assets/home_icons/feedback.png',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 33),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    HomeItem(
-                      title: 'Đăng ký thẻ xe',
-                      iconPath: 'assets/home_icons/credit.png',
-                    ),
-                    HomeItem(
-                      title: 'Đăng ký phòng gym',
-                      iconPath: 'assets/home_icons/gym.png',
-                    ),
-                    HomeItem(
-                      title: 'Đăng ký vệ sinh phòng',
-                      iconPath: 'assets/home_icons/cleaning.png',
-                    ),
-                  ],
-                ),
-              ),
-            ]),
+            ),
           ),
         ),
       );
