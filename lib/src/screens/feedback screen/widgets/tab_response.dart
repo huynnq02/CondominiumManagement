@@ -32,7 +32,6 @@ class _TabResponseState extends State<TabResponse> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
     if (!isNewest) {
       widget.feedbacks.sort((a, b) => a.time.compareTo(b.time));
@@ -40,7 +39,7 @@ class _TabResponseState extends State<TabResponse> {
       widget.feedbacks.sort((b, a) => a.time.compareTo(b.time));
     }
 
-    return ListView(
+    return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -95,9 +94,7 @@ class _TabResponseState extends State<TabResponse> {
           ),
         ),
         const SizedBox(height: 15),
-        SizedBox(
-          height: size.height,
-          width: size.width,
+        Expanded(
           child: ListView.builder(
             itemCount: widget.feedbacks.length,
             itemBuilder: (context, index) {

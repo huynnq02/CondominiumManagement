@@ -65,55 +65,53 @@ class _FeedbackScreenState extends State<FeedbackScreen>
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: size.height,
-          width: size.width,
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
+      body: SizedBox(
+        height: size.height,
+        width: size.width,
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: const Color(0xFFEDEDED),
+              ),
+              child: TabBar(
+                controller: tabController,
+                labelStyle: AppTextStyle.lato.copyWith(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+                indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
-                  color: const Color(0xFFEDEDED),
+                  color: const Color(0xFFDB2F68),
                 ),
-                child: TabBar(
-                  controller: tabController,
-                  labelStyle: AppTextStyle.lato.copyWith(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    color: const Color(0xFFDB2F68),
-                  ),
-                  indicatorColor: Colors.transparent,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: const Color(0xFF909090),
-                  tabs: const [
-                    Tab(text: 'Chưa phản hồi'),
-                    Tab(text: 'Đã phản hồi'),
-                  ],
-                ),
+                indicatorColor: Colors.transparent,
+                labelColor: Colors.white,
+                unselectedLabelColor: const Color(0xFF909090),
+                tabs: const [
+                  Tab(text: 'Chưa phản hồi'),
+                  Tab(text: 'Đã phản hồi'),
+                ],
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    TabNotResponse(
-                      feedbacks: feedbacksNotResponse,
-                    ),
-                    TabResponse(
-                      feedbacks: feedbacksResponse,
-                    ),
-                  ],
-                ),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  TabNotResponse(
+                    feedbacks: feedbacksNotResponse,
+                  ),
+                  TabResponse(
+                    feedbacks: feedbacksResponse,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: ElevatedButton(
