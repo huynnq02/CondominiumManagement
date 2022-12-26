@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:untitled/src/models/user.dart';
-import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
 import 'package:untitled/src/screens/register%20screen/register_otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../repository/auth/authAPI_provider.dart';
+import '../../utils/app_constant/app_colors.dart';
 
 class OTPProvider extends ChangeNotifier {
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
@@ -30,8 +28,18 @@ class OTPProvider extends ChangeNotifier {
     _otpError = '';
   }
 
-  Future sendOTP(MDUser mdUser, BuildContext context) async {
-    data = await authAPIProvider.sendOTP(mdUser: mdUser);
+  Future sendEmailOTP(
+      String email, String password, BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.DarkPink,
+            ),
+          );
+        });
+    data = await authAPIProvider.sendEmailOTP(email);
     print(data);
 
     //Dừng trạng thái loading
@@ -44,23 +52,51 @@ class OTPProvider extends ChangeNotifier {
           content: Text('Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.')));
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => RegisterOTPScreen(
-          mdUser: mdUser,
-          password: '123456',
+          email: email,
+          password: password,
         ),
       ));
     } else {
       String errMessage = data['error']['message'];
-      if (errMessage == 'Email đã được người khác đăng ký!') {
+      if (errMessage == 'Email này đã tồn tại!') {
         emailError = errMessage;
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(errMessage)));
       } else {
         // Sai thông tin dăng kí thông báo cho người dùng
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Đăng ký thất bại, kiểm tra lại thông tin')));
       }
     }
-    notifyListeners();
+  }
+
+  Future confirmEmailOTP(
+      String email, String password, String otp, BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.DarkPink,
+            ),
+          );
+        });
+    data = await authAPIProvider.confirmEmailOTP(email, otp);
+    print(data);
+
+    //Dừng trạng thái loading
+    Navigator.of(context).pop();
+
+    // kiểm tra reponse từ api
+    if (data['result']['isCorrect'] == true) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => RegisterInfoScreen(
+          email: email,
+          password: password,
+          isEmail: true,
+        ),
+      ));
+    } else {
+      otpError = 'OTP không đúng!';
+    }
   }
 
   Future sendSMSOTP(
@@ -81,8 +117,7 @@ class OTPProvider extends ChangeNotifier {
           ));
         }).onError((error, stackTrace) {
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('OTP không đúng.')));
+          otpError = 'OTP không đúng!';
         });
       },
       verificationFailed: (error) {
@@ -124,11 +159,12 @@ class OTPProvider extends ChangeNotifier {
             ),
           ));
         }).onError((error, stackTrace) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('OTP không đúng.')));
+          otpError = 'OTP không đúng!';
         });
       },
-      verificationFailed: (error) {print(error);},
+      verificationFailed: (error) {
+        print(error);
+      },
       codeSent: (verificationId, forceResendingToken) {
         //Gửi OTP thành công
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

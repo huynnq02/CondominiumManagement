@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/register_provider.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_textfield.dart';
-import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 const List<String> genderList = <String>['Nam', 'Nữ'];
@@ -19,6 +19,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   RegisterProvider? provider;
+  OTPProvider? otpProvider;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool? checkBoxValue = false;
@@ -28,11 +29,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     provider = Provider.of<RegisterProvider>(context, listen: false);
+    otpProvider = Provider.of<OTPProvider>(context, listen: false);
   }
 
   @override
   void dispose() {
-    provider!.reset();
+    otpProvider!.reset();
     super.dispose();
   }
 
@@ -60,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<RegisterProvider>(context);
+    final data = Provider.of<OTPProvider>(context);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -203,11 +205,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               isError = false;
                             });
                             if (isEmail(emailController.text)) {
-                              provider!.checkEmailExistence(
-                                context,
-                                emailController.text,
-                                passwordController.text,
-                              );
+                              otpProvider!.sendEmailOTP(emailController.text,
+                                  passwordController.text, context);
                             } else {
                               provider!.checkPhoneExistence(
                                 context,

@@ -31,8 +31,9 @@ class RegisterProvider extends ChangeNotifier {
     _emailError = '';
   }
 
-  Future register(MDUser mdUser, String otp, BuildContext context) async {
-    data = await authAPIProvider.register(mdUser: mdUser, otp: otp);
+  Future registerWithEmail(MDUser mdUser, BuildContext context) async {
+    data = await authAPIProvider.registerWithEmail(mdUser: mdUser);
+    print(data);
 
     //Dừng trạng thái loading
     Navigator.of(context).pop();
@@ -47,14 +48,9 @@ class RegisterProvider extends ChangeNotifier {
             return const RegisterSuccessfulDialog();
           });
     } else {
-      String errMessage = data['error']['message'];
-      if (errMessage == 'OTP không đúng!') {
-        otpError = errMessage;
-      } else {
-        // sai thông tin dăng kí thông báo cho người dùng
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Đăng kí thất bại, kiểm tra lại thông tin')));
-      }
+      // sai thông tin dăng kí thông báo cho người dùng
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Đăng kí thất bại, kiểm tra lại thông tin')));
     }
   }
 

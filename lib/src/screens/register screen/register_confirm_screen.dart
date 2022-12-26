@@ -129,18 +129,18 @@ class _RegisterConfirmScreenState extends State<RegisterConfirmScreen> {
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.DarkPink,
+                                ),
+                              );
+                            });
                         if (widget.isEmail) {
-                          // provider!.register(widget.mdUser!, otpController.text, context);
+                          provider!.registerWithEmail(widget.mdUser, context);
                         } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.DarkPink,
-                                  ),
-                                );
-                              });
                           provider!.registerWithPhone(widget.mdUser, context);
                         }
                       },

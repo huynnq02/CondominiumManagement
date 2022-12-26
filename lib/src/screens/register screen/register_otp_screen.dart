@@ -11,7 +11,6 @@ import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
 import '../../../utils/app_constant/app_colors.dart';
-import '../../providers/register_provider.dart';
 
 class RegisterOTPScreen extends StatefulWidget {
   final MDUser? mdUser;
@@ -36,7 +35,6 @@ class RegisterOTPScreen extends StatefulWidget {
 
 class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
   OTPProvider? otpProvider;
-  RegisterProvider? provider;
   ResetPasswordProvider? forgetPwOtpProvider;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
   final TextEditingController otpController = TextEditingController();
@@ -51,7 +49,6 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
       verificationId = widget.verificationId;
     }
     otpProvider = Provider.of<OTPProvider>(context, listen: false);
-    provider = Provider.of<RegisterProvider>(context, listen: false);
     forgetPwOtpProvider =
         Provider.of<ResetPasswordProvider>(context, listen: false);
     startTimer();
@@ -60,7 +57,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
   @override
   void dispose() {
     timer?.cancel();
-    provider!.reset();
+    otpProvider!.reset();
     super.dispose();
   }
 
@@ -121,8 +118,8 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
         break;
       default:
         if (!isWaiting) {
-          showLoading();
           if (verificationId != null) {
+            showLoading();
             await otpProvider!.retrySendSMSOTP(
                 context,
                 widget.phoneNumber!,
@@ -131,7 +128,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
                 () => handleOTPSent());
           } else {
             otpProvider!
-                .sendOTP(widget.mdUser!, context)
+                .sendEmailOTP(widget.email!, widget.password, context)
                 .then((value) => handleOTPSent());
           }
         }
@@ -151,8 +148,8 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
       default:
         if (_otpFormKey.currentState!.validate()) {
           setState(() {});
-          showLoading();
           if (verificationId != null) {
+            showLoading();
             PhoneAuthCredential credential = PhoneAuthProvider.credential(
               verificationId: verificationId!,
               smsCode: otpController.text,
@@ -174,7 +171,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
                   const SnackBar(content: Text('OTP không đúng.')));
             });
           } else {
-            provider!.register(widget.mdUser!, otpController.text, context);
+            otpProvider!.confirmEmailOTP(widget.email!,widget.password, otpController.text, context);
           }
         }
     }
@@ -188,7 +185,7 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
     if (widget.type == 'forget') {
       data = Provider.of<ResetPasswordProvider>(context);
     } else {
-      data = Provider.of<RegisterProvider>(context);
+      data = Provider.of<OTPProvider>(context);
     }
 
     return Scaffold(
