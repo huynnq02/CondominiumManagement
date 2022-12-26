@@ -13,7 +13,7 @@ showSnackBar(BuildContext context, String content) {
     messageSize: 16,
     message: content,
     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-    duration: const Duration(seconds: 5),
+    duration: const Duration(seconds: 3),
     margin: const EdgeInsets.only(bottom: 72),
     animationDuration: const Duration(milliseconds: 800),
   ).show(context);
