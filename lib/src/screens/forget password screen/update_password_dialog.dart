@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/screens/login%20screen/login_screen.dart';
+import 'package:untitled/utils/app_constant/app_colors.dart';
 
 class UpdatePasswordDialog extends StatefulWidget {
   const UpdatePasswordDialog({Key? key}) : super(key: key);
@@ -49,15 +50,12 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
       ),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.only(top: 22, bottom: 18),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(8),
             ),
-            image: DecorationImage(
-              image: AssetImage("assets/logout-confirm-dialog-background.png"),
-              fit: BoxFit.cover,
-            )),
+            color: Colors.white),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -66,36 +64,33 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
                 'Đổi mật khẩu thành công !',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF6A67E8),
+                    color: AppColors.DarkPink,
                     fontSize: 20),
               ),
               const SizedBox(height: 21),
               Text('Bạn sẽ được quay trở về màn hình đăng nhập trong $sec(s)',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 12)),
+                      color: Color(0xFF625E5E),
+                      fontSize: 12),
+                  textAlign: TextAlign.center),
               const SizedBox(height: 21),
               OutlinedButton(
                 onPressed: navigate,
                 child: const Text(
-                  "Đóng",
+                  "ĐÓNG",
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
+                      color: Color(0xFF625E5E),
+                      fontSize: 12,
                       fontWeight: FontWeight.bold),
                 ),
                 style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEAE6F4),
-                    side: const BorderSide(color: Colors.black),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    minimumSize: Size.zero,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 33, vertical: 3),
-                    shadowColor: Colors.black,
-                    elevation: 4),
+                  side: const BorderSide(color: Color(0xFFD9D9D9)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 52),
+                ),
               ),
             ]),
       ),
