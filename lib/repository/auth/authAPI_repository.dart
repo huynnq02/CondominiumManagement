@@ -22,12 +22,12 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
-  Future<Response> register({MDUser? mdUser, String? otp}) async {
+  Future<Response> registerWithEmail({MDUser? mdUser}) async {
     try {
       var client = init();
 
       final authRespone = await client.post(
-        '/api/services/app/Account/Register',
+        '/api/services/app/Account/RegisterByEmailAddress',
         data: {
           "clientType": 1,
           "fullName": mdUser!.fullName,
@@ -38,7 +38,6 @@ class AuthAPIRepository extends BaseRepository {
           "buildingId": mdUser.buildingId,
           "apartmentId": mdUser.apartmentId,
           "password": mdUser.password,
-          "otp": otp,
           "agreeToTermsAndConditions": true,
         },
       );
@@ -49,27 +48,28 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
-  Future<Response?> sendOTP({MDUser? mdUser}) async {
+  Future<Response?> sendEmailOTP(String email) async {
+    try {
+      var client = init();
+
+      final authRespone = await client
+          .post('/api/services/app/Account/SendEmailAddressOTP', data: {
+        "emailAddress": email,
+      });
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response?> confirmEmailOTP(String email, String otp) async {
     try {
       var client = init();
 
       final authRespone = await client.post(
-          '/api/services/app/Account/SendEmailActivationOTP',
-          data: {
-            "clientType": 1,
-            "fullName": mdUser!.fullName,
-            "emailAddress": mdUser.email,
-            "gender": mdUser.gender,
-            "idNumber": mdUser.idNumber,
-            "birthDate": mdUser.birthDate,
-            "buildingId": mdUser.buildingId,
-            "apartmentId": mdUser.apartmentId,
-            "password": mdUser.password
-          },
-          options: Options(headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }));
+          '/api/services/app/Account/ConfirmEmailAddressOTP',
+          data: {"emailAddress": email, "otp": otp});
 
       return authRespone;
     } on DioError catch (error) {
@@ -154,6 +154,21 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
+  Future<Response> checkPhoneExistence({String? phoneNumber}) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/PhoneNumberIsExist',
+        data: {"phoneNumber": phoneNumber},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
   Future<Response> registerWithPhone({MDUser? mdUser}) async {
     try {
       var client = init();
@@ -163,7 +178,6 @@ class AuthAPIRepository extends BaseRepository {
         data: {
           "clientType": 1,
           "fullName": mdUser!.fullName,
-          "emailAddress": mdUser.email,
           "phoneNumber": mdUser.phoneNumber,
           "gender": mdUser.gender,
           "idNumber": mdUser.idNumber,

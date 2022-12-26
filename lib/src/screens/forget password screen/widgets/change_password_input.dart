@@ -60,7 +60,8 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black.withOpacity(0.2)),
+                  border: ((widget.error != null && widget.error!.isNotEmpty) ||
+            errorText.isNotEmpty) ? Border.all(color: AppColors.Red) :Border.all(color: Colors.black.withOpacity(0.2)),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12)),
               child: Stack(alignment: Alignment.center, children: [
@@ -70,7 +71,7 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                     Text(
                       widget.labelText,
                       style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           fontWeight: FontWeight.w300,
                           color: Colors.black),
                     ),

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 class Bill {
+  int id;
   String? billID;
-  String billName;
+  String? billName;
   String emailAddress;
   String ownerName;
   String paymentTerm;
@@ -11,6 +12,7 @@ class Bill {
   String endDay;
   int price;
   String? datePayment;
+  String? reason;
   Bill({
     this.billID,
     required this.billName,
@@ -22,6 +24,8 @@ class Bill {
     required this.endDay,
     required this.price,
     this.datePayment,
+    required this.id,
+    this.reason,
   });
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -35,6 +39,8 @@ class Bill {
       'endDay': endDay,
       'price': price,
       'datePayment': datePayment,
+      'id': id,
+      'reason': reason,
     };
   }
 
@@ -50,6 +56,8 @@ class Bill {
       endDay: map['endDay'],
       price: map['price'] as int,
       datePayment: map['datePayment']?.toString(),
+      id: map['id'],
+      reason: map['reason'],
     );
   }
 
@@ -74,8 +82,10 @@ class ServiceBill extends Bill {
     this.createName,
     this.cycle,
     this.note,
+    required int id,
     String? billID,
-    required String billName,
+    String? billName,
+    String? reason,
     required String emailAddress,
     required String ownerName,
     required String paymentTerm,
@@ -87,6 +97,7 @@ class ServiceBill extends Bill {
     String? datePayment,
     this.phoneNumber,
   }) : super(
+          id: id,
           billID: billID,
           billName: billName,
           emailAddress: emailAddress,
@@ -97,11 +108,13 @@ class ServiceBill extends Bill {
           endDay: endDay,
           price: price,
           datePayment: datePayment,
+          reason: reason,
         );
 
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'serviceId': serviceId,
       'createDay': createDay,
       'createName': createName,
@@ -119,18 +132,20 @@ class ServiceBill extends Bill {
       'serviceName': serviceName,
       'phoneNumber': phoneNumber,
       'datePayment': datePayment,
+      'reason': reason,
     };
   }
 
   factory ServiceBill.fromMap(Map<String, dynamic> map) {
     return ServiceBill(
+      id: map['id'] as int,
       serviceId: map['serviceId'],
       createDay: map['createDay'],
       createName: map['createName'],
       cycle: map['cycle'],
       note: map['note'],
       billID: map['billID'],
-      billName: map['billName'],
+      billName: map['billName']?.toString(),
       emailAddress: map['emailAddress'],
       ownerName: map['ownerName'],
       paymentTerm: map['paymentTerm'],
@@ -141,6 +156,7 @@ class ServiceBill extends Bill {
       startDay: map['startDay'],
       endDay: map['endDay'],
       datePayment: map['datePayment']?.toString(),
+      reason: map['reason']?.toString(),
     );
   }
 
@@ -162,6 +178,7 @@ class ApartmentBill extends Bill {
   double areaOfApartment;
   double priceOfApartment;
   ApartmentBill({
+    required int id,
     required this.billType,
     required this.apartmentID,
     required this.oldIndex,
@@ -170,7 +187,7 @@ class ApartmentBill extends Bill {
     required this.invoicePeriod,
     required this.createDay,
     String? billID,
-    required String billName,
+    String? billName,
     required String emailAddress,
     required String ownerName,
     required String paymentTerm,
@@ -179,9 +196,11 @@ class ApartmentBill extends Bill {
     required String startDay,
     required String endDay,
     String? datePayment,
+    String? reason,
     required this.areaOfApartment,
     required this.priceOfApartment,
   }) : super(
+          id: id,
           billID: billID,
           billName: billName,
           emailAddress: emailAddress,
@@ -192,11 +211,13 @@ class ApartmentBill extends Bill {
           endDay: endDay,
           price: price,
           datePayment: datePayment,
+          reason: reason,
         );
 
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'billType': billType,
       'apartmentID': apartmentID,
       'oldIndex': oldIndex,
@@ -216,11 +237,13 @@ class ApartmentBill extends Bill {
       'datePayment': datePayment,
       'areaOfApartment': areaOfApartment,
       'priceOfApartment': priceOfApartment,
+      'reason': reason,
     };
   }
 
   factory ApartmentBill.fromMap(Map<String, dynamic> map) {
     return ApartmentBill(
+      id: map['id'],
       billType: map['billType'],
       apartmentID: map['apartmentID'],
       oldIndex: map['oldIndex'] as int,
@@ -229,7 +252,7 @@ class ApartmentBill extends Bill {
       invoicePeriod: map['invoicePeriod'],
       createDay: map['createDay'],
       billID: map['billID'],
-      billName: map['billName'],
+      billName: map['billName']?.toString(),
       emailAddress: map['emailAddress'],
       ownerName: map['ownerName'],
       paymentTerm: map['paymentTerm'],
@@ -240,6 +263,7 @@ class ApartmentBill extends Bill {
       datePayment: map['datePayment']?.toString(),
       areaOfApartment: map['areaOfApartment'] as double,
       priceOfApartment: map['priceOfApartment'] as double,
+      reason: map['reason']?.toString(),
     );
   }
 

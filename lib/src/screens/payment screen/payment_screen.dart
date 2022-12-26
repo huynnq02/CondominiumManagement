@@ -22,6 +22,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    print("id ne");
+    widget.apartmentBill != null
+        ? print(widget.apartmentBill!.id)
+        : print(widget.serviceBill!.id);
     return Scaffold(
       backgroundColor: const Color(0xFFFCF6F6),
       appBar: AppBar(
@@ -317,7 +321,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const PaymentConfirmScreen(),
+                          builder: (context) => PaymentConfirmScreen(
+                            apartmentBill: widget.apartmentBill,
+                          ),
                         ),
                       );
                     },
@@ -621,7 +627,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const PaymentConfirmScreen(),
+                          builder: (context) => PaymentConfirmScreen(
+                            serviceBill: widget.serviceBill,
+                          ),
                         ),
                       );
                     },

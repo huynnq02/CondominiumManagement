@@ -138,6 +138,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     unitCodeCtrlFocusNode.requestFocus();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,11 +224,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           onChanged: (value) {
                             if (widget.type != TextFieldType.name) return;
                             final controller = widget.controller;
-                            if (controller != null) {
-                              controller.value = TextEditingValue(
-                                  text: formatedName(value),
-                                  selection: controller.selection);
-                            }
+                            controller.value = TextEditingValue(
+                                text: formatedName(value),
+                                selection: controller.selection);
                           },
                           enabled: (widget.type != TextFieldType.date),
                           style: const TextStyle(fontSize: 18),
@@ -270,12 +269,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         const SizedBox(
           height: 3,
         ),
-        if ((widget.error != null && widget.error!.isNotEmpty) ||
+        if ((widget.error != null && widget.error! != '') ||
             errorText.isNotEmpty)
           SizedBox(
             width: double.infinity,
             child: Text(
-              (widget.error != null && widget.error!.isNotEmpty)
+              (widget.error != null && widget.error! != '')
                   ? widget.error!
                   : errorText,
               style: GoogleFonts.inter(color: AppColors.Red, fontSize: 12),

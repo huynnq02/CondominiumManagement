@@ -8,6 +8,7 @@ class UserInfo extends StatelessWidget {
   final String value;
   final String icon;
   final double? topRadius, bottomRadius;
+  final bool? shadow;
   const UserInfo({
     Key? key,
     required this.info,
@@ -15,6 +16,7 @@ class UserInfo extends StatelessWidget {
     required this.icon,
     this.topRadius,
     this.bottomRadius,
+    this.shadow,
   }) : super(key: key);
 
   @override
@@ -33,16 +35,18 @@ class UserInfo extends StatelessWidget {
         border: Border.all(
             color: const Color(0x00000033).withOpacity(0.20), width: 1),
         color: AppColors.White,
-        // boxShadow: const [
-        //   BoxShadow(
-        //     color: AppColors.Grey,
-        //     blurRadius: 5,
-        //     offset: Offset(0, 3),
-        //   ),
-        // ],
+        boxShadow: shadow != null
+            ? const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                ),
+              ]
+            : null,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
             Image(
@@ -53,12 +57,18 @@ class UserInfo extends StatelessWidget {
             ),
             Text(
               info,
-              style: AppTextStyle.lato.copyWith(fontSize: 16),
+              style: AppTextStyle.lato.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+              ),
             ),
             const Spacer(),
             Text(
               value,
-              style: AppTextStyle.lato.copyWith(fontSize: 16),
+              style: AppTextStyle.lato.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),

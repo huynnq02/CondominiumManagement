@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
