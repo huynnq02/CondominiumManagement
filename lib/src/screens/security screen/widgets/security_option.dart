@@ -3,25 +3,27 @@ import 'package:flutter/material.dart';
 import '../../../../utils/app_constant/app_colors.dart';
 import '../../../../utils/app_constant/app_text_style.dart';
 
-class UserInfo extends StatelessWidget {
-  final String info;
-  final String value;
-  final String icon;
+class SecurityOption extends StatelessWidget {
+  final String title;
+  final String leadingIcon;
   final double? topRadius, bottomRadius;
-  final bool? shadow;
-  const UserInfo({
+  final double? shadow;
+  final Color? backgroundColor, textColor, borderColor;
+
+  const SecurityOption({
     Key? key,
-    required this.info,
-    required this.value,
-    required this.icon,
+    required this.title,
+    required this.leadingIcon,
     this.topRadius,
     this.bottomRadius,
     this.shadow,
+    this.backgroundColor,
+    this.textColor,
+    this.borderColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -34,13 +36,13 @@ class UserInfo extends StatelessWidget {
         ),
         border: Border.all(
             color: const Color(0x00000033).withOpacity(0.20), width: 1),
-        color: AppColors.White,
+        color: backgroundColor ?? AppColors.White,
         boxShadow: shadow != null
-            ? const [
+            ? [
                 BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                  color: const Color.fromRGBO(0, 0, 0, 0.25),
                   blurRadius: 3,
-                  offset: Offset(0, 3),
+                  offset: Offset(0, shadow!),
                 ),
               ]
             : null,
@@ -50,24 +52,16 @@ class UserInfo extends StatelessWidget {
         child: Row(
           children: [
             Image(
-              image: AssetImage('assets/$icon.png'),
+              image: AssetImage('assets/$leadingIcon.png'),
             ),
             SizedBox(
               width: width * 0.02,
             ),
             Text(
-              info,
+              title,
               style: AppTextStyle.lato.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            const Spacer(),
-            Text(
-              value,
-              style: AppTextStyle.lato.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+                color: textColor ?? AppColors.Black,
               ),
             ),
           ],

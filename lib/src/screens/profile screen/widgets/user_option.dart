@@ -3,25 +3,29 @@ import 'package:flutter/material.dart';
 import '../../../../utils/app_constant/app_colors.dart';
 import '../../../../utils/app_constant/app_text_style.dart';
 
-class UserInfo extends StatelessWidget {
-  final String info;
-  final String value;
+class UserOption extends StatelessWidget {
+  final String title;
+  final String leadingIcon;
   final String icon;
   final double? topRadius, bottomRadius;
   final bool? shadow;
-  const UserInfo({
+  final Color? backgroundColor, textColor, borderColor;
+
+  const UserOption({
     Key? key,
-    required this.info,
-    required this.value,
+    required this.title,
+    required this.leadingIcon,
     required this.icon,
     this.topRadius,
     this.bottomRadius,
     this.shadow,
+    this.backgroundColor,
+    this.textColor,
+    this.borderColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -34,13 +38,13 @@ class UserInfo extends StatelessWidget {
         ),
         border: Border.all(
             color: const Color(0x00000033).withOpacity(0.20), width: 1),
-        color: AppColors.White,
+        color: backgroundColor ?? AppColors.White,
         boxShadow: shadow != null
             ? const [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                   blurRadius: 3,
-                  offset: Offset(0, 3),
+                  offset: Offset(0, 4),
                 ),
               ]
             : null,
@@ -50,25 +54,21 @@ class UserInfo extends StatelessWidget {
         child: Row(
           children: [
             Image(
-              image: AssetImage('assets/$icon.png'),
+              image: AssetImage('assets/$leadingIcon.png'),
             ),
             SizedBox(
               width: width * 0.02,
             ),
             Text(
-              info,
+              title,
               style: AppTextStyle.lato.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.w300,
+                color: textColor ?? AppColors.Black,
               ),
             ),
             const Spacer(),
-            Text(
-              value,
-              style: AppTextStyle.lato.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+            Image(
+              image: AssetImage('assets/$icon.png'),
             ),
           ],
         ),

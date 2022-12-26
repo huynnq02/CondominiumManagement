@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -184,6 +185,91 @@ class ProfileProvider extends ChangeNotifier {
       await pref.setBool("isValidOTP", false);
       print(pref.getBool("isValidOTP"));
       print('failed');
+    }
+  }
+
+  String _verificationId = '';
+  bool _isValidOTPProvider = true;
+  bool get isValidOTPProvider => _isValidOTPProvider;
+  void setIsValidOTP(bool isValidOTP) {
+    _isValidOTPProvider = isValidOTP;
+    notifyListeners();
+  }
+
+  // send otp from firebase to phonenumber
+  Future<void> sendOTPToPhoneNumber(
+      BuildContext context, String phoneNumber) async {
+    setIsLoading(true);
+    print('+84 ${phoneNumber.substring(1)}');
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      timeout: const Duration(seconds: 120),
+      phoneNumber: '+84 ${phoneNumber.substring(1)}',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {
+          print('The provided phone number is not valid.');
+        }
+      },
+      codeSent: (verificationId, _) async {
+        _verificationId = verificationId;
+        _isSent = true;
+        print("da gui otp");
+        // show snack bar
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Đã gửi OTP đến số điện thoại bạn muốn đổi')));
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+    setIsLoading(false);
+  }
+
+  void setNewPhoneNumber(String phoneNumber) {
+    _mdUser.phoneNumber = phoneNumber;
+    notifyListeners();
+  }
+
+  // verify otp
+  Future<void> verifyOTP(
+      BuildContext context, String otp, String phoneNumber) async {
+    try {
+      setIsLoading(true);
+
+      await FirebaseAuth.instance
+          .signInWithCredential(PhoneAuthProvider.credential(
+              verificationId: _verificationId, smsCode: otp))
+          .then((value) async {
+        // on error
+        if (value.user != null) {
+          // show snack bar
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Thành công')));
+          setIsValidOTP(true);
+          print("sdt ne");
+          print(phoneNumber);
+          setNewPhoneNumber(phoneNumber);
+          Navigator.of(context)
+            ..pop()
+            ..pop();
+        }
+      }).catchError(
+        (e) {
+          setIsValidOTP(false);
+          setIsLoading(false);
+          // show snack bar
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content:
+                  Text('Xác thực OTP thất bại, vui lòng kiểm tra lại OTP')));
+        },
+      );
+      setIsLoading(false);
+    } catch (e) {
+      // show snack bar
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Lỗi')));
+      setIsValidOTP(false);
+      setIsLoading(false);
     }
   }
 }

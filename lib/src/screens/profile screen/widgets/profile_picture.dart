@@ -10,6 +10,7 @@ import 'package:untitled/utils/app_constant/app_colors.dart';
 
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/storage_methods.dart';
+import 'package:iconsax/iconsax.dart' as ic;
 
 class ProfilePicture extends StatefulWidget {
   ProfilePicture({Key? key}) : super(key: key);
@@ -38,30 +39,63 @@ class _ProfilePictureState extends State<ProfilePicture> {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: width * 0.25,
-          width: width * 0.25,
+          height: width * 0.3,
+          width: width * 0.3,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: AppColors.Black, width: 1),
-            image: DecorationImage(
-              image: user.profilePicture != null
-                  ? NetworkImage(user.profilePicture!) as ImageProvider
-                  : const AssetImage("assets/default-profile-picture.png"),
-              fit: BoxFit.cover,
-            ),
+            border: Border.all(color: const Color(0xFFFFFFFF), width: 3),
+            image: user.profilePicture != null
+                ? DecorationImage(
+                    image: NetworkImage(user.profilePicture!),
+                    fit: BoxFit.cover,
+                  )
+                : null,
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.25),
+                blurRadius: 4,
+                offset: Offset(0, 3),
+              ),
+            ],
           ),
+          child: user.profilePicture == null
+              ? Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: const Color(0xFFD9D9D9),
+                      ),
+                    ),
+                    const Center(
+                      child: Icon(
+                        ic.Iconsax.user,
+                        color: Color(0xFF7D7D7D),
+                        size: 40,
+                      ),
+                    )
+                  ],
+                )
+              : null,
         ),
         Positioned(
-          bottom: -13,
-          right: 3,
+          bottom: 0,
+          right: 12,
           child: SizedBox(
-            width: width * 0.05,
+            height: height * 0.032,
+            width: height * 0.032,
             child: FloatingActionButton(
-              backgroundColor: const Color(0xFF55F75C),
-              child: const ImageIcon(
-                AssetImage('assets/change-profile-picture-icon.png'),
-                color: AppColors.White,
-                size: 10,
+              shape: const StadiumBorder(
+                side: BorderSide(color: Color(0xFF9B8E8E), width: 1),
+              ),
+              // set size for floating action buton
+              mini: true,
+
+              backgroundColor: AppColors.White,
+              child: const Icon(
+                ic.Iconsax.edit_2,
+                color: AppColors.Black,
+                size: 18,
               ),
               onPressed: _showModalBottomSheet,
             ),
@@ -98,11 +132,15 @@ class _ProfilePictureState extends State<ProfilePicture> {
               Container(
                 height: height * 0.065,
                 width: width,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.White,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(18),
                     topRight: Radius.circular(18),
+                  ),
+                  border: Border.all(
+                    color: const Color.fromRGBO(0, 0, 0, 0.1),
+                    width: 1,
                   ),
                 ),
                 child: Center(
@@ -110,14 +148,15 @@ class _ProfilePictureState extends State<ProfilePicture> {
                       style: AppTextStyle.lato.copyWith(fontSize: 16)),
                 ),
               ),
-              SizedBox(
-                height: height * 0.001,
-              ),
               Container(
                 height: height * 0.065,
                 width: width,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.White,
+                  border: Border.all(
+                    color: const Color.fromRGBO(0, 0, 0, 0.1),
+                    width: 1,
+                  ),
                 ),
                 child: Material(
                   color: Colors.transparent,
@@ -128,9 +167,8 @@ class _ProfilePictureState extends State<ProfilePicture> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.only(left: 12),
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 29,
+                            child: ImageIcon(
+                              AssetImage('assets/camera-icon.png'),
                             ),
                           ),
                         ),
@@ -151,14 +189,15 @@ class _ProfilePictureState extends State<ProfilePicture> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.001,
-              ),
               Container(
                 height: height * 0.065,
                 width: width,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.White,
+                  border: Border.all(
+                    color: const Color.fromRGBO(0, 0, 0, 0.1),
+                    width: 1,
+                  ),
                 ),
                 child: Material(
                   color: Colors.transparent,
@@ -170,7 +209,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15),
                             child: ImageIcon(
-                              AssetImage('assets/galery-icon.png'),
+                              AssetImage('assets/gallery-icon.png'),
                             ),
                           ),
                         ),
