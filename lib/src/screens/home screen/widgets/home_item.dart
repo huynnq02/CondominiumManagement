@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 
 class HomeItem extends StatelessWidget {
   final String title;
@@ -20,7 +21,10 @@ class HomeItem extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                   shadowColor: Colors.transparent),
-              onPressed: () {},
+              onPressed: () {
+                showSnackBar(context,
+                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!');
+              },
               child: SvgPicture.asset(iconPath, width: 35, height: 35)),
         ),
         const SizedBox(height: 2),

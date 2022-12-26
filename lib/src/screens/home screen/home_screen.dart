@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/repository/feedback/feedbackAPI_Provider.dart';
 import 'package:untitled/src/models/apartment_service.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final DateTime now = DateTime.now();
+  final formatter = NumberFormat('#,###');
 
   @override
   void initState() {
@@ -60,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     profileProvider.getProfilePicture();
     billProvider.getAllApartmentBill();
     billProvider.getAllServiceBill();
+    billProvider.getTotalUnpaid();
   }
 
   void getProfilePicture() async {
@@ -87,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<ProfileProvider>(context);
+    final bill = Provider.of<BillProvider>(context);
     if (user.mdUser.apartmentId == '') {
       return const Center(
         child: CircularProgressIndicator(
@@ -186,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: TextSpan(
                             children: <TextSpan>[
                               TextSpan(
-                                  text: '1.690.000',
+                                  text: formatter.format(bill.totalUnpaid).replaceAll(',', '.'),
                                   style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
