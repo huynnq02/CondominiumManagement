@@ -34,8 +34,8 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     return res?.data;
   }
 
-  Future confirmEmailOTP(String email,String otp) async {
-    final res = await repository.confirmEmailOTP(email,otp);
+  Future confirmEmailOTP(String email, String otp) async {
+    final res = await repository.confirmEmailOTP(email, otp);
     return res?.data;
   }
 
@@ -52,6 +52,11 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
   Future resetPassword({String? email, String? password}) async {
     final res =
         await repository.resetPassword(email: email, password: password);
+    return res.data['success'];
+  }
+
+  Future resetPasswordWithPhone(String phoneNumber, String password) async {
+    final res = await repository.resetPasswordWithPhone(phoneNumber, password);
     return res.data['success'];
   }
 

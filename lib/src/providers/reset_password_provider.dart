@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
 import 'package:untitled/src/screens/forget%20password%20screen/update_password_dialog.dart';
+import 'package:untitled/src/screens/register%20screen/register_otp_screen.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 import '../../repository/auth/authAPI_provider.dart';
 
 class ResetPasswordProvider extends ChangeNotifier {
@@ -45,7 +48,7 @@ class ResetPasswordProvider extends ChangeNotifier {
     _pwError = '';
   }
 
-  Future sendPasswordResetOTP(String email) async {
+  Future sendPasswordResetOTP(String email, BuildContext context) async {
     var success = await authAPIProvider.sendPasswordResetOTP(email: email);
 
     // kiểm tra reponse từ api
@@ -65,8 +68,7 @@ class ResetPasswordProvider extends ChangeNotifier {
 
     // kiểm tra reponse từ api
     if (success == true) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Xác thực OTP thành công.')));
+      showSnackBar(context, 'Xác thực OTP thành công.');
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: ((context) =>
               UpdateNewPasswordScreen(isLoggedIn: false, email: email))));
@@ -91,8 +93,29 @@ class ResetPasswordProvider extends ChangeNotifier {
             return const UpdatePasswordDialog();
           });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Đổi mật khẩu thất bại! Hãy kiểm tra lại thông tin.')));
+      showSnackBar(
+          context, 'Đổi mật khẩu thất bại! Hãy kiểm tra lại thông tin.');
+    }
+  }
+
+  Future resetPasswordWithPhone(
+      String phoneNumber, String password, BuildContext context) async {
+    var success =
+        await authAPIProvider.resetPasswordWithPhone(phoneNumber, password);
+        print(success);
+    Navigator.of(context).pop();
+
+    // kiểm tra reponse từ api
+    if (success == true) {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) {
+            return const UpdatePasswordDialog();
+          });
+    } else {
+      showSnackBar(
+          context, 'Đổi mật khẩu thất bại! Hãy kiểm tra lại thông tin.');
     }
   }
 
@@ -122,5 +145,75 @@ class ResetPasswordProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('userId');
     prefs.remove('token');
+  }
+
+  Future sendSMSOTP(BuildContext context, String phoneNumber) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+84 ${phoneNumber.substring(1)}',
+      timeout: const Duration(seconds: 120),
+      verificationCompleted: (phoneAuthCredential) async {
+        await FirebaseAuth.instance
+            .signInWithCredential(phoneAuthCredential)
+            .then((value) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UpdateNewPasswordScreen(
+              email: phoneNumber,
+              isLoggedIn: false,
+              isEmail: false,
+            ),
+          ));
+        }).onError((error, stackTrace) {
+          Navigator.of(context).pop();
+          otpError = 'OTP không đúng!';
+        });
+      },
+      verificationFailed: (error) {
+        Navigator.of(context).pop();
+      },
+      codeSent: (verificationId, _) {
+        Navigator.of(context).pop();
+        //Gửi OTP thành công
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => RegisterOTPScreen(
+            verificationId: verificationId,
+            phoneNumber: phoneNumber,
+            type: 'forget',
+          ),
+        ));
+      },
+      codeAutoRetrievalTimeout: (verificationId) {},
+    );
+  }
+
+  Future retrySendSMSOTP(BuildContext context, String phoneNumber,
+      Function(String) onCodeSent) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+84 ${phoneNumber.substring(1)}',
+      timeout: const Duration(seconds: 120),
+      verificationCompleted: (phoneAuthCredential) async {
+        await FirebaseAuth.instance
+            .signInWithCredential(phoneAuthCredential)
+            .then((value) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UpdateNewPasswordScreen(
+              email: phoneNumber,
+              isLoggedIn: false,
+              isEmail: false,
+            ),
+          ));
+        }).onError((error, stackTrace) {
+          otpError = 'OTP không đúng!';
+        });
+      },
+      verificationFailed: (error) {
+        print(error);
+      },
+      codeSent: (verificationId, forceResendingToken) {
+        //Gửi OTP thành công
+        showSnackBar(context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
+        onCodeSent(verificationId);
+      },
+      codeAutoRetrievalTimeout: (verificationId) {},
+    );
   }
 }

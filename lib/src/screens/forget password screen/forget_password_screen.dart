@@ -7,6 +7,7 @@ import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/register%20screen/register_otp_screen.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({Key? key}) : super(key: key);
@@ -65,15 +66,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         context: context,
         builder: (context) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: AppColors.DarkPink,
+            ),
           );
         });
   }
 
   void handleOTPSent(ResetPasswordProvider data) {
     Navigator.of(context).pop();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Đã gửi OTP')));
+    showSnackBar(context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => RegisterOTPScreen(
               type: 'forget',
@@ -117,12 +119,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       ),
       backgroundColor: AppColors.White,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 38, vertical: height*0.05),
+        padding: EdgeInsets.symmetric(horizontal: 38, vertical: height * 0.05),
         child: Column(
           children: [
             SvgPicture.asset('assets/forget-pw-decoration.svg'),
             SizedBox(
-              height: height*0.027,
+              height: height * 0.027,
             ),
             const Text(
               'Nhập email hoặc số điện thoại đăng nhập tài khoản để nhận mã OTP',
@@ -130,10 +132,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: Color(0xFF58583A)),
-                  textAlign: TextAlign.center,
+              textAlign: TextAlign.center,
             ),
-           SizedBox(
-              height: height*0.041,
+            SizedBox(
+              height: height * 0.041,
             ),
             Column(
               children: [
@@ -223,10 +225,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 onPressed: () {
                   if (_emailKey.currentState!.validate()) {
                     showLoading();
-                    email = emailController.text;
-                    provider!
-                        .sendPasswordResetOTP(email)
-                        .then((_) => handleOTPSent(data));
+                    if (isEmail(emailController.text)) {
+                      email = emailController.text;
+                      provider!
+                          .sendPasswordResetOTP(email, context)
+                          .then((value) => handleOTPSent(data));
+                    } else {
+                      provider!.sendSMSOTP(context, emailController.text);
+                    }
                   }
                 },
                 label: 'Tiếp tuc')

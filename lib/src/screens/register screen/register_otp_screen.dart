@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
 import 'package:untitled/src/providers/reset_password_provider.dart';
+import 'package:untitled/src/screens/forget%20password%20screen/update_new_password_screen.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 import '../../../utils/app_constant/app_colors.dart';
 
 class RegisterOTPScreen extends StatefulWidget {
@@ -17,7 +19,7 @@ class RegisterOTPScreen extends StatefulWidget {
   final String? type;
   final String? email;
   final String? phoneNumber;
-  final String password;
+  final String? password;
   final String? verificationId;
   const RegisterOTPScreen(
       {Key? key,
@@ -26,7 +28,7 @@ class RegisterOTPScreen extends StatefulWidget {
       this.email,
       this.phoneNumber,
       this.verificationId,
-      required this.password})
+      this.password})
       : super(key: key);
 
   @override
@@ -100,9 +102,8 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
     Navigator.of(context).pop();
     isWaiting = true;
     startTimer();
-    if (widget.type == 'forget') {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Đã gửi OTP')));
+    if (widget.type == 'forget' && verificationId == null) {
+      showSnackBar(context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
     }
   }
 
@@ -111,9 +112,16 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
       case 'forget':
         if (!isWaiting) {
           showLoading();
-          forgetPwOtpProvider!
-              .sendPasswordResetOTP(widget.email!)
-              .then((_) => handleOTPSent());
+          if (verificationId != null) {
+            await forgetPwOtpProvider!
+                .retrySendSMSOTP(context, widget.phoneNumber!,
+                    (value) => verificationId = value)
+                .then((value) => handleOTPSent());
+          } else {
+            forgetPwOtpProvider!
+                .sendPasswordResetOTP(widget.email!, context)
+                .then((_) => handleOTPSent());
+          }
         }
         break;
       default:
@@ -123,26 +131,48 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
             await otpProvider!.retrySendSMSOTP(
                 context,
                 widget.phoneNumber!,
-                widget.password,
+                widget.password!,
                 (value) => verificationId = value,
                 () => handleOTPSent());
           } else {
             otpProvider!
-                .sendEmailOTP(widget.email!, widget.password, context)
+                .sendEmailOTP(widget.email!, widget.password!, context)
                 .then((value) => handleOTPSent());
           }
         }
     }
   }
 
-  void handleValidate() async {
+  void handleValidate(data) async {
     switch (widget.type) {
       case 'forget':
         if (_otpFormKey.currentState!.validate()) {
           setState(() {});
           showLoading();
-          forgetPwOtpProvider!.checkPasswordResetOTP(
-              widget.email!, otpController.text, context);
+          if (verificationId != null) {
+            PhoneAuthCredential credential = PhoneAuthProvider.credential(
+              verificationId: verificationId!,
+              smsCode: otpController.text,
+            );
+            await FirebaseAuth.instance
+                .signInWithCredential(credential)
+                .then((value) {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UpdateNewPasswordScreen(
+                  email: widget.phoneNumber!,
+                  isLoggedIn: false,
+                  isEmail: false,
+                ),
+              ));
+            }).onError((error, stackTrace) {
+              Navigator.of(context).pop();
+              data.otpError = 'OTP không đúng.';
+            });
+          } else {
+            forgetPwOtpProvider!.checkPasswordResetOTP(
+                widget.email!, otpController.text, context);
+          }
         }
         break;
       default:
@@ -161,17 +191,17 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => RegisterInfoScreen(
                   email: widget.phoneNumber!,
-                  password: widget.password,
+                  password: widget.password!,
                   isEmail: false,
                 ),
               ));
             }).onError((error, stackTrace) {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('OTP không đúng.')));
+              data.otpError = 'OTP không đúng.';
             });
           } else {
-            otpProvider!.confirmEmailOTP(widget.email!,widget.password, otpController.text, context);
+            otpProvider!.confirmEmailOTP(
+                widget.email!, widget.password!, otpController.text, context);
           }
         }
     }
@@ -323,7 +353,8 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
                     ),
                   ),
             const Spacer(),
-            CustomButton(onPressed: () => handleValidate(), label: 'Xác thực')
+            CustomButton(
+                onPressed: () => handleValidate(data), label: 'Xác thực')
           ],
         ),
       ),

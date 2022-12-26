@@ -4,14 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/providers/reset_password_provider.dart';
 import 'package:untitled/src/screens/forget%20password%20screen/widgets/change_password_input.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
-import 'package:untitled/src/widget/outlined_text.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 
 class UpdateNewPasswordScreen extends StatefulWidget {
-  final bool isLoggedIn;
+  final bool isLoggedIn, isEmail;
   final String? email;
   const UpdateNewPasswordScreen(
-      {Key? key, required this.isLoggedIn, this.email})
+      {Key? key, required this.isLoggedIn, this.email, this.isEmail = true})
       : super(key: key);
 
   @override
@@ -68,12 +67,13 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
         ),
         backgroundColor: AppColors.White,
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: width*0.09, vertical: height*0.056),
+          padding: EdgeInsets.symmetric(
+              horizontal: width * 0.09, vertical: height * 0.056),
           child: Column(
             children: [
               SvgPicture.asset('assets/change-pw-decoration.svg'),
               SizedBox(
-                height: height*0.027,
+                height: height * 0.027,
               ),
               Text(
                 widget.isLoggedIn
@@ -85,7 +85,7 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                     color: Color(0xFF58583A)),
               ),
               SizedBox(
-                height: height*0.06,
+                height: height * 0.06,
               ),
               Form(
                 key: _formKey,
@@ -141,12 +141,17 @@ class _UpdateNewPasswordScreenState extends State<UpdateNewPasswordScreen> {
                             context: context,
                             builder: (context) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(color: AppColors.Pink,),
                               );
                             });
                         if (!widget.isLoggedIn) {
-                          provider!.resetPassword(
-                              widget.email!, newPwController.text, context);
+                          if (widget.isEmail) {
+                            provider!.resetPassword(
+                                widget.email!, newPwController.text, context);
+                          }
+                          else {
+                            provider!.resetPasswordWithPhone(widget.email!, newPwController.text, context);
+                          }
                         } else {
                           provider!.changePassword(currentPwController.text,
                               newPwController.text, context);
