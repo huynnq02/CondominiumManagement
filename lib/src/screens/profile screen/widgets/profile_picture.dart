@@ -166,7 +166,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                         const Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 12),
+                            padding: EdgeInsets.only(left: 20),
                             child: ImageIcon(
                               AssetImage('assets/camera-icon.png'),
                             ),
@@ -207,7 +207,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                         const Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: EdgeInsets.only(left: 20),
                             child: ImageIcon(
                               AssetImage('assets/gallery-icon.png'),
                             ),
