@@ -43,6 +43,7 @@ class _ItemWithStateState extends State<ItemServiceWithState> {
             : Padding(
                 padding: EdgeInsets.only(top: height * 0.01),
                 child: ListView.builder(
+                  physics: const ClampingScrollPhysics(),
                   itemCount: widget.serviceBills.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) => Padding(
