@@ -12,6 +12,7 @@ class DropDownMenu extends StatefulWidget {
 }
 
 class _DropDownMenuState extends State<DropDownMenu> {
+  String _selected = 'Tất cả';
   List<String> choices = <String>[
     'Tất cả',
     'Đã thanh toán',
@@ -22,22 +23,23 @@ class _DropDownMenuState extends State<DropDownMenu> {
 
   @override
   Widget build(BuildContext context) {
-    String _selected = Provider.of<BillProvider>(context).billState;
+    _selected = Provider.of<BillProvider>(context).billState;
     // final billProvider = Provider.of<BillProvider>(context);
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
     return Container(
+      height: height * 0.05,
       decoration: BoxDecoration(
-        color: AppColors.White,
+        color: const Color(0xFFFCF6F6),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: AppColors.Black,
-          width: 1,
+          width: 0.5,
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+        padding: EdgeInsets.only(left: width * 0.02, right: width * 0.02),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -45,7 +47,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
               underline: Container(
                 color: AppColors.White,
               ),
-              hint: Text("Selected Blank"),
+              hint: const Text("Selected Blank"),
               value: _selected,
               onChanged: (newValue) {
                 setState(() {

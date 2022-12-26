@@ -4,6 +4,7 @@ import 'package:untitled/src/providers/bill_provider.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/drop_down_menu.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/apartment_bill.dart';
 import 'package:untitled/src/screens/bill%20screen/widgets/service_bill.dart';
+import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 
 class BillScreen extends StatefulWidget {
@@ -88,21 +89,24 @@ class _BillScreenState extends State<BillScreen>
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color(0xFFFCF6F6),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFFDB2F68),
+          elevation: 0,
+          title: Text(
+            "Hóa đơn",
+            style: AppTextStyle.montserrat.copyWith(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.05),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.05),
-                child: Center(
-                  child: Text(
-                    "Hóa đơn",
-                    style: AppTextStyle.montserrat.copyWith(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: height * 0.02,
               ),
@@ -120,30 +124,27 @@ class _BillScreenState extends State<BillScreen>
                           .setCurrentTab(index);
                     },
                     controller: tabController,
-                    indicatorColor: Colors.transparent,
-                    labelColor: Colors.red,
-                    unselectedLabelColor: Colors.black,
+                    labelStyle: AppTextStyle.lato.copyWith(
+                      fontSize: 14,
+                    ),
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Colors.white,
+                      color: const Color(0xFFDB2F68),
                     ),
-                    tabs: [
+                    indicatorColor: Colors.transparent,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: const Color(0xFF979A9C),
+                    // set liner gradient color to background of unselected tab
+
+                    tabs: const [
                       Tab(
                         child: Text(
                           "Hóa đơn căn hộ",
-                          style: AppTextStyle.montserrat.copyWith(
-                            fontSize: 14,
-                            color: const Color(0xFF1D6D54),
-                          ),
                         ),
                       ),
                       Tab(
                         child: Text(
                           "Hóa đơn dịch vụ",
-                          style: AppTextStyle.montserrat.copyWith(
-                            fontSize: 14,
-                            color: const Color(0xFF1D6D54),
-                          ),
                         ),
                       ),
                     ],
@@ -156,14 +157,38 @@ class _BillScreenState extends State<BillScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Có ${getNumOfBills(Provider.of<BillProvider>(context).currentTab, context)} hóa đơn",
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 14,
-                      color: const Color(0xFF1D6D54),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Có ",
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xFF000000),
+                          ),
+                        ),
+                        TextSpan(
+                          text:
+                              "${getNumOfBills(Provider.of<BillProvider>(context).currentTab, context)} ",
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xFFDB2F68),
+                          ),
+                        ),
+                        TextSpan(
+                          text: "hóa đơn",
+                          style: AppTextStyle.lato.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xFF000000),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  DropDownMenu(),
+                  const DropDownMenu(),
                 ],
               ),
               SizedBox(
@@ -173,7 +198,7 @@ class _BillScreenState extends State<BillScreen>
                 child: TabBarView(
                   controller: tabController,
                   children: const [
-                    AparmentBilll(),
+                    AparmentBill(),
                     ServiceBill(),
                   ],
                 ),
