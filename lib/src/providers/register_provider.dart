@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/otp_provider.dart';
-import 'package:untitled/src/screens/register%20screen/register_info_screen.dart';
 import 'package:untitled/src/screens/register%20screen/widget/register_successful_dialog.dart';
-
 import '../../repository/auth/authAPI_provider.dart';
 import '../../utils/app_constant/app_colors.dart';
+import '../../utils/helper/show_snack_bar.dart';
 
 class RegisterProvider extends ChangeNotifier {
   AuthAPIProvider authAPIProvider = AuthAPIProvider();
@@ -49,8 +48,7 @@ class RegisterProvider extends ChangeNotifier {
           });
     } else {
       // sai thông tin dăng kí thông báo cho người dùng
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Đăng kí thất bại, kiểm tra lại thông tin')));
+      showSnackBar(context, 'Đăng kí thất bại, kiểm tra lại thông tin');
     }
   }
 
@@ -71,12 +69,10 @@ class RegisterProvider extends ChangeNotifier {
           });
     } else {
       if (data['error']['message'] != null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(data['error']['message'])));
+        showSnackBar(context, data['error']['message']);
       } else {
         // sai thông tin dăng kí thông báo cho người dùng
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Đăng kí thất bại, kiểm tra lại thông tin')));
+        showSnackBar(context, 'Đăng kí thất bại, kiểm tra lại thông tin');
       }
     }
   }
