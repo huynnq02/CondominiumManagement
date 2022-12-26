@@ -8,7 +8,9 @@ import 'package:untitled/src/screens/login%20screen/widget/custom_button.dart';
 import 'package:untitled/src/screens/login%20screen/widget/custom_textfield.dart';
 import 'package:untitled/src/screens/register%20screen/register_screen.dart';
 import 'package:untitled/utils/helper/app_preference.dart';
+
 import '../../../utils/app_constant/app_colors.dart';
+import '../../../utils/helper/show_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,21 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
     loginProvider!.checkSave();
-  }
-
-  void showSnackBar() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Color(0xFF323232),
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        padding: EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12))),
-        content: Text(
-          'Chức năng đang được phát triển, vui lòng truy cập lại sau!',
-          style: TextStyle(fontSize: 13, color: Colors.white),
-          textAlign: TextAlign.center,
-        )));
   }
 
   @override
@@ -181,20 +168,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                                onTap: () => showSnackBar(),
+                                onTap: () => showSnackBar(context,
+                                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
                                 child: SvgPicture.asset(
                                     'assets/facebook-btn.svg')),
                             SizedBox(
                               width: width * 0.07,
                             ),
                             InkWell(
-                                onTap: () => showSnackBar(),
+                                onTap: () => showSnackBar(context,
+                                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
                                 child: SvgPicture.asset('assets/google.svg')),
                             SizedBox(
                               width: width * 0.07,
                             ),
                             InkWell(
-                                onTap: () => showSnackBar(),
+                                onTap: () => showSnackBar(context,
+                                    'Chức năng đang được phát triển, vui lòng truy cập lại sau!'),
                                 child: SvgPicture.asset(
                                     'assets/apple.svg')), /*  */
                           ],
