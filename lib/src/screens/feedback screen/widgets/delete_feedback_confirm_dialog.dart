@@ -33,6 +33,7 @@ class _DeleteFeedbackConfirmDialogState
       title: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
               "Bạn có chắc chắc muốn\nxóa ý kiến này không?",
@@ -47,7 +48,7 @@ class _DeleteFeedbackConfirmDialogState
               height: height * 0.023,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -58,7 +59,10 @@ class _DeleteFeedbackConfirmDialogState
                         Radius.circular(10),
                       ),
                     ),
-                    fixedSize: const Size(120, 30),
+                    fixedSize: Size(
+                      width * 0.28,
+                      height * 0.035,
+                    ),
                   ),
                   child: const Center(
                     child: Text(

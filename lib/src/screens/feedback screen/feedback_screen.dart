@@ -64,6 +64,7 @@ class _FeedbackScreenState extends State<FeedbackScreen>
           ),
         ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: SizedBox(

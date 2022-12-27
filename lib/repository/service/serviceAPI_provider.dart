@@ -54,6 +54,14 @@ class ServicePro extends BaseProvider<ServiceRepository> {
     return jsonData['success'];
   }
 
+  Future<bool> checkExistService(int idService) async {
+    final res = await repository.checkExistService(idService);
+    String resBody = res.toString();
+    var jsonData = jsonDecode(resBody);
+    print('dk chua: ${jsonData['result']}');
+    return jsonData['result'];
+  }
+
   Future<int> getNumBill() async {
     final res = await repository.getNumBill();
     String resBody = res.toString();

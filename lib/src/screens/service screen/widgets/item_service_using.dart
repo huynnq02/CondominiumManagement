@@ -104,7 +104,10 @@ class ItemServiceUsing extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      service.price.round().toVND(),
+                      service.price.round().toVND() +
+                          '/' +
+                          service.cycle +
+                          ' ngày',
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyle.lato.copyWith(
                         fontSize: 16,
