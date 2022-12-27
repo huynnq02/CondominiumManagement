@@ -124,6 +124,22 @@ class AuthAPIRepository extends BaseRepository {
     }
   }
 
+  Future<Response> resetPasswordWithPhone(
+      String phoneNumber, String password) async {
+    try {
+      var client = init();
+
+      final authRespone = await client.post(
+        '/api/services/app/Account/ResetPasswordWithPhoneNumber',
+        data: {"phoneNumber": phoneNumber, "password": password},
+      );
+
+      return authRespone;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
   Future<Response> changePassword({String? currentPw, String? newPw}) async {
     try {
       var client = init();
@@ -186,6 +202,7 @@ class AuthAPIRepository extends BaseRepository {
           "apartmentId": mdUser.apartmentId,
           "password": mdUser.password,
           "agreeToTermsAndConditions": true,
+          "emailAddress": ""
         },
       );
 
