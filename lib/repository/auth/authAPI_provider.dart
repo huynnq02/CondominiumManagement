@@ -41,7 +41,7 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
 
   Future sendPasswordResetOTP({String? email}) async {
     final res = await repository.sendPasswordResetOTP(email: email);
-    return res.data['success'];
+    return res.data;
   }
 
   Future checkPasswordResetOTP({String? email, String? otp}) async {
