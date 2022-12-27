@@ -83,6 +83,23 @@ class ServiceRepository extends BaseRepository {
     }
   }
 
+  Future<Response> checkExistService(int idService) async {
+    try {
+      var client = init();
+      final response = await client.post(
+        '/api/services/app/UserServiceRegister/CheckRegisteredService',
+        queryParameters: {
+          "serviceId": idService.toString(),
+        },
+      );
+
+      return response;
+    } on DioError catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
   Future<Response> getNumBill() async {
     try {
       var client = init();

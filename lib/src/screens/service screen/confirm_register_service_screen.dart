@@ -48,6 +48,7 @@ class _ConfirmRegisterServiceScreenState
   void initState() {
     super.initState();
     print('Loai hinh dich vu: ${widget.service.typeService}');
+    print('id dich vu: ${widget.service.id}');
 
     getData();
   }
@@ -56,15 +57,22 @@ class _ConfirmRegisterServiceScreenState
     List<UserService> userServices =
         context.read<UserServiceProvider>().services;
 
-    for (var service in userServices) {
-      if (service.serviceID == widget.service.id.toString()) {
-        Navigator.pop(context, true);
-        showSnackBar(context, 'Bạn đã đăng kí dịch vụ này rồi');
-        return;
-      }
+    // for (var service in userServices) {
+    //   if (service.serviceID == widget.service.id.toString()) {
+    //     Navigator.pop(context, true);
+    //     showSnackBar(context, 'Bạn đã đăng kí dịch vụ này rồi');
+    //     return;
+    //   }
+    // }
+
+    bool isExist = await ServicePro().checkExistService(widget.service.id);
+
+    if (isExist) {
+      Navigator.pop(context, true);
+      showSnackBar(context, 'Bạn đã đăng kí dịch vụ này rồi');
+      return;
     }
 
-    print('Ma hoa don: $maHD');
     final userProvider = context.read<ProfileProvider>();
     setState(() {
       isRegister = true;

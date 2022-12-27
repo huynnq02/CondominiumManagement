@@ -130,7 +130,10 @@ class ServiceDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      service.serviceCharge.toVND(),
+                      service.serviceCharge.toVND() +
+                          '/' +
+                          service.cycle +
+                          ' ngày',
                       style: AppTextStyle.lato.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,

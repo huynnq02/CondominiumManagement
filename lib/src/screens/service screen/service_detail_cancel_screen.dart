@@ -123,7 +123,7 @@ class ServiceDetailCancelScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      service.price.toVND(),
+                      service.price.toVND() + '/' + service.cycle + ' ngày',
                       style: AppTextStyle.lato.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
