@@ -73,17 +73,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         });
   }
 
-  void handleOTPSent(ResetPasswordProvider data) {
-    Navigator.of(context).pop();
-    showSnackBar(context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => RegisterOTPScreen(
-              type: 'forget',
-              email: email,
-              password: 'null',
-            )));
-  }
-
   bool isEmail(String input) => RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
       .hasMatch(input);
@@ -228,8 +217,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     if (isEmail(emailController.text)) {
                       email = emailController.text;
                       provider!
-                          .sendPasswordResetOTP(email, context)
-                          .then((value) => handleOTPSent(data));
+                          .sendPasswordResetOTP(email, context);
                     } else {
                       provider!.sendSMSOTP(context, emailController.text);
                     }

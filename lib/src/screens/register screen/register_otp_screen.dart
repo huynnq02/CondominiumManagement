@@ -114,9 +114,15 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
           showLoading();
           if (verificationId != null) {
             await forgetPwOtpProvider!
-                .retrySendSMSOTP(context, widget.phoneNumber!,
-                    (value) => verificationId = value)
-                .then((value) => handleOTPSent());
+                .retrySendSMSOTP(context, widget.phoneNumber!, (value) {
+              verificationId = value;
+              Navigator.of(context).pop();
+              //Gửi OTP thành công
+              showSnackBar(
+                  context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
+              isWaiting = true;
+              startTimer();
+            });
           } else {
             forgetPwOtpProvider!
                 .sendPasswordResetOTP(widget.email!, context)
@@ -129,11 +135,15 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
           if (verificationId != null) {
             showLoading();
             await otpProvider!.retrySendSMSOTP(
-                context,
-                widget.phoneNumber!,
-                widget.password!,
-                (value) => verificationId = value,
-                () => handleOTPSent());
+                context, widget.phoneNumber!, widget.password!, (value) {
+              verificationId = value;
+              Navigator.of(context).pop();
+              //Gửi OTP thành công
+              showSnackBar(
+                  context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
+              isWaiting = true;
+              startTimer();
+            });
           } else {
             otpProvider!
                 .sendEmailOTP(widget.email!, widget.password!, context)
@@ -241,121 +251,126 @@ class _RegisterOTPScreenState extends State<RegisterOTPScreen> {
               height: 24,
             )),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 37, vertical: height * 0.054),
-        child: Column(
-          children: [
-            SvgPicture.asset('assets/otp-screen-decoration.svg'),
-            const SizedBox(
-              height: 29,
-            ),
-            const Text(
-              'Xác thực OTP',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Color(0xFF58583A)),
-            ),
-            SizedBox(height: height * 0.074),
-            Form(
-                key: _otpFormKey,
-                child: TextFormField(
-                  controller: otpController,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 18),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  maxLength: 6,
-                  validator: (value) {
-                    if (value != null && value.isEmpty) {
-                      setState(() {
-                        data.otpError = 'Vui lòng nhập OTP';
-                      });
-                      return '';
-                    }
-                    setState(() {
-                      data.otpError = '';
-                    });
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 25),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color(0xFFD9D9D9))),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: data.otpError.isNotEmpty
-                            ? const BorderSide(color: AppColors.Red)
-                            : const BorderSide(color: Color(0xFFD9D9D9))),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                            color: data.otpError.isNotEmpty
-                                ? AppColors.Red
-                                : const Color(0xFFD9D9D9))),
-                    counterText: "",
-                    errorStyle: const TextStyle(height: 0),
-                  ),
-                )),
-            if (data.otpError != '')
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(data.otpError,
-                      style: GoogleFonts.inter(
-                          color: const Color(0xFFFF0000), fontSize: 12)),
-                ],
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Container(
+          padding:
+              EdgeInsets.symmetric(horizontal: 37, vertical: height * 0.054),
+          child: Column(
+            children: [
+              SvgPicture.asset('assets/otp-screen-decoration.svg'),
+              const SizedBox(
+                height: 29,
               ),
-            SizedBox(height: height * 0.05),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-              child: const Text(
-                'Vui lòng kiểm tra email hoặc điện thoại của bạn để nhận mã OTP',
+              const Text(
+                'Xác thực OTP',
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF140E09),
-                ),
-                textAlign: TextAlign.center,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Color(0xFF58583A)),
               ),
-            ),
-            const SizedBox(
-              height: 29,
-            ),
-            isWaiting
-                ? RichText(
-                    text: TextSpan(
-                      text: 'Bạn có thể gửi lại mã OTP sau ',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 16,
-                          color: Colors.black),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: '$min:$sec',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xFFBEBAB7)))
-                      ],
+              SizedBox(height: height * 0.074),
+              Form(
+                  key: _otpFormKey,
+                  child: TextFormField(
+                    controller: otpController,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    maxLength: 6,
+                    validator: (value) {
+                      if (value != null && value.isEmpty) {
+                        setState(() {
+                          data.otpError = 'Vui lòng nhập OTP';
+                        });
+                        return '';
+                      }
+                      setState(() {
+                        data.otpError = '';
+                      });
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 25),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFD9D9D9))),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: data.otpError.isNotEmpty
+                              ? const BorderSide(color: AppColors.Red)
+                              : const BorderSide(color: Color(0xFFD9D9D9))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                              color: data.otpError.isNotEmpty
+                                  ? AppColors.Red
+                                  : const Color(0xFFD9D9D9))),
+                      counterText: "",
+                      errorStyle: const TextStyle(height: 0),
                     ),
-                  )
-                : InkWell(
-                    onTap: () => handleResent(),
-                    child: const Text(
-                      'Gửi mã OTP',
-                      style: TextStyle(
-                          color: AppColors.Pink,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          decoration: TextDecoration.underline),
+                  )),
+              if (data.otpError != '')
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 4,
                     ),
+                    Text(data.otpError,
+                        style: GoogleFonts.inter(
+                            color: const Color(0xFFFF0000), fontSize: 12)),
+                  ],
+                ),
+              SizedBox(height: height * 0.05),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                child: const Text(
+                  'Vui lòng kiểm tra email hoặc điện thoại của bạn để nhận mã OTP',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF140E09),
                   ),
-            const Spacer(),
-            CustomButton(
-                onPressed: () => handleValidate(data), label: 'Xác thực')
-          ],
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(
+                height: 29,
+              ),
+              isWaiting
+                  ? RichText(
+                      text: TextSpan(
+                        text: 'Bạn có thể gửi lại mã OTP sau ',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 16,
+                            color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: '$min:$sec',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFFBEBAB7)))
+                        ],
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () => handleResent(),
+                      child: const Text(
+                        'Gửi mã OTP',
+                        style: TextStyle(
+                            color: AppColors.Pink,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline),
+                      ),
+                    ),
+              const Spacer(),
+              CustomButton(
+                  onPressed: () => handleValidate(data), label: 'Xác thực')
+            ],
+          ),
         ),
       ),
     );

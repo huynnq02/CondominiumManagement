@@ -140,8 +140,7 @@ class OTPProvider extends ChangeNotifier {
       BuildContext context,
       String phoneNumber,
       String password,
-      Function(String) onCodeSent,
-      Function handleOTPSent) async {
+      Function(String) onCodeSent) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '+84 ${phoneNumber.substring(1)}',
       timeout: const Duration(seconds: 120),
@@ -164,9 +163,6 @@ class OTPProvider extends ChangeNotifier {
         print(error);
       },
       codeSent: (verificationId, forceResendingToken) {
-        //Gửi OTP thành công
-        showSnackBar(context, 'Đã gửi OTP. Hãy kiểm tra hộp thư của bạn.');
-        handleOTPSent();
         onCodeSent(verificationId);
       },
       codeAutoRetrievalTimeout: (verificationId) {},
