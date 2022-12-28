@@ -79,6 +79,7 @@ class _ConfirmRegisterServiceScreenState
     });
     print(cycle);
     UserService userService = UserService(
+      urlPicture: widget.service.urlPicture,
       billID: maHD,
       billName: widget.service.serviceName,
       serviceID: '${widget.service.id}',
@@ -144,6 +145,7 @@ class _ConfirmRegisterServiceScreenState
             fontWeight: FontWeight.w700,
           ),
         ),
+        centerTitle: true,
       ),
       backgroundColor: const Color(0xFFFCF6F6),
       body: isLoading
@@ -214,6 +216,23 @@ class _ConfirmRegisterServiceScreenState
                           color: const Color(0xFFFF0000),
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      controller: noteController,
+                      decoration: const InputDecoration(
+                        hintText: 'Thêm ghi chú',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                      ),
+                      minLines: 3,
+                      maxLines: null,
                     ),
                   ),
                   const SizedBox(height: 20),

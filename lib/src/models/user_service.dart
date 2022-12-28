@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class UserService {
   final int? id;
   final String billID;
@@ -17,6 +16,7 @@ class UserService {
   final String startDate;
   final String endDate;
   final String? typeService;
+  final String? urlPicture;
 
   UserService({
     this.id,
@@ -34,6 +34,7 @@ class UserService {
     required this.startDate,
     required this.endDate,
     required this.typeService,
+    this.urlPicture,
   });
 
   UserService setId(int idService) {
@@ -53,6 +54,7 @@ class UserService {
       startDate: startDate,
       endDate: endDate,
       typeService: typeService,
+      urlPicture: urlPicture,
     );
   }
 
@@ -73,6 +75,7 @@ class UserService {
       'startDate': startDate,
       'endDate': endDate,
       'typeService': typeService,
+      'urlPicture': urlPicture,
     };
   }
 
@@ -94,6 +97,8 @@ class UserService {
       endDate: map['endDate'] as String,
       typeService:
           map['typeService'] != null ? map['typeService'] as String : null,
+      urlPicture:
+          map['urlPicture'] != null ? map['urlPicture'] as String : null,
     );
   }
 

@@ -60,10 +60,13 @@ class ServiceDetailCancelScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(
-                      'assets/service.png',
-                      height: size.height * .25,
-                      fit: BoxFit.cover,
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.network(
+                        service.urlPicture!,
+                        height: size.height * .25,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     Text(

@@ -41,6 +41,7 @@ class ServiceDetailScreen extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+        centerTitle: true,
       ),
       backgroundColor: const Color(0xFFFCF6F6),
       body: SizedBox(
