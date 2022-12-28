@@ -31,9 +31,11 @@ class ItemService extends StatelessWidget {
           Container(
             width: 100,
             height: 100,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/service.png'),
+                image: service.urlPicture!.isNotEmpty
+                    ? NetworkImage(service.urlPicture!) as ImageProvider
+                    : const AssetImage('assets/service.png'),
                 fit: BoxFit.cover,
               ),
               shape: BoxShape.circle,
