@@ -3,6 +3,7 @@ import 'package:untitled/src/models/user.dart';
 import 'package:iconsax/iconsax.dart' as ic;
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
 
 class ChangeEmailScreen extends StatefulWidget {
@@ -132,6 +133,8 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                             _isValidEmail = false;
                           });
                         }
+                        showSnackBar(context,
+                            "Chức năng đang được phát triển, vui lòng truy cập lại sau!");
                       },
                       splashColor: Colors.grey,
                       child: Center(
