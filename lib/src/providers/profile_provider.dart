@@ -113,24 +113,14 @@ class ProfileProvider extends ChangeNotifier {
     setProfilePicture(urlImage);
   }
 
-  Future sendOTPToChangePhoneNumber(
-      MDUser? mdUser, BuildContext context) async {
+  Future sendOTPToChangeEmail(String email, BuildContext context) async {
     print('111');
-    var success =
-        await ProfilePro().sendOTPToChangePhoneNumberAPIProvider(mdUser);
-    // kiểm tra reponse từ api
+    var success = await ProfilePro().sendOTPToChangeEmailAPIProvider(email);
     if (success == true) {
-      setIsSent(true);
-      //Gửi OTP thành công
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(const SnackBar(content: Text('Gửi OTP thành công')));
     } else {
-      // sai thông tin dăng kí thông báo cho người dùng
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Gửi OTP thất bại, kiểm tra lại thông tin')));
     }
-
-    notifyListeners();
   }
 
   void showSuccessfulDialog(BuildContext context) => showDialog(
@@ -167,22 +157,37 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future checkOTP(BuildContext context, String otp, MDUser mdUser) async {
-    var result = await ProfilePro().checkOTPAPIProvider(otp, mdUser);
-    SharedPreferences pref;
-    pref = await SharedPreferences.getInstance();
+  Future checkOTP(
+      BuildContext context, String otp, MDUser mdUser, String email) async {
+    setIsLoading(true);
 
-    if (result == true) {
-      print("dung r nha");
-      // showSuccessfulDialog(context);
-      await pref.setBool("isValidOTP", true);
-      print('success');
+    var result = await ProfilePro().checkOTPAPIProvider(otp, email);
+
+    if (result["isCorrect"] == true) {
+      print("dc 1");
+      setIsValidOTP(true);
+      var successChangeEmail =
+          await ProfilePro().changeEmailAPIProvider(mdUser, email);
+      if (successChangeEmail == true) {
+        print("dc 2");
+
+        setNewEmail(email);
+        Navigator.of(context)
+          ..pop()
+          ..pop();
+        showSnackBar(context, "Cập nhật thành công");
+      } else {
+        showSnackBar(context, "Cập nhật thất bại");
+      }
     } else {
-      print("sai me r");
-      await pref.setBool("isValidOTP", false);
-      print(pref.getBool("isValidOTP"));
-      print('failed');
+      setIsValidOTP(false);
     }
+    setIsLoading(false);
+  }
+
+  void setNewEmail(String email) {
+    _mdUser.email = email;
+    notifyListeners();
   }
 
   String _verificationId = '';

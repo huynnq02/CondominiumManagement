@@ -71,21 +71,14 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future<Response> sendOTPToChangePhoneNumberAPIRepository(
-      MDUser? mdUser) async {
+  Future<Response> sendOTPToChangeEmailAPIRepository(String email) async {
     try {
       var client = init();
       print("Go in OTP");
       final profileResponse = await client.post(
-          '/api/services/app/Profile/SendEmailActivationOTP',
+          '/api/services/app/Account/SendEmailAddressOTP',
           data: {
-            "emailAddress": mdUser!.email,
-            "gender": mdUser.gender,
-            "idNumber": mdUser.idNumber,
-            "birthDate": mdUser.birthDate,
-            "userName": mdUser.userName,
-            "name": mdUser.name,
-            "surname": mdUser.surname,
+            "emailAddress": email,
           },
           options: Options(headers: {
             'Content-Type': 'application/json',
@@ -125,23 +118,42 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future checkOTPAPIRepository(String otp, MDUser? mdUser) async {
+  Future<Response> changeEmailAPIRepository(
+      MDUser? mdUser, String email) async {
     try {
       var client = init();
 
-      final profileResponse = await client.post(
-        '/api/services/app/Profile/CheckOTP',
+      print(email);
+      final profileResponse = await client.put(
+        '/api/services/app/Profile/UpdateCurrentUserProfile',
         data: {
-          "emailAddress": mdUser!.email,
-          "gender": mdUser.gender,
+          "emailAddress": email,
+          "gender": mdUser!.gender,
           "idNumber": mdUser.idNumber,
           "birthDate": mdUser.birthDate,
           "userName": mdUser.userName,
           "name": mdUser.name,
           "surname": mdUser.surname,
           "phoneNumber": mdUser.phoneNumber,
-          "otp": otp,
           "apartmentId": mdUser.apartmentId,
+        },
+      );
+
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future checkOTPAPIRepository(String otp, String email) async {
+    try {
+      var client = init();
+
+      final profileResponse = await client.post(
+        '/api/services/app/Account/ConfirmEmailAddressOTP',
+        data: {
+          "emailAddress": email,
+          "otp": otp,
         },
       );
       print(profileResponse.data['success']);

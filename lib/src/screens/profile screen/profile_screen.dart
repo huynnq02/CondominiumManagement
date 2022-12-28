@@ -71,246 +71,251 @@ class _ProfileScreenState extends State<ProfileScreen> {
               minWidth: width,
             ),
             child: IntrinsicHeight(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                  ProfilePicture(),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  Text(
-                    user.mdUser.surname + ' ' + user.mdUser.name,
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF3A3A3A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      height: height * 0.03,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  Flexible(
-                    flex: 6,
-                    child: Column(
-                      children: [
-                        UserInfo(
-                          info: 'Ngày sinh',
-                          value: formatDatetime(
-                            user.mdUser.birthDate,
-                          ),
-                          icon: 'birthday-cake-icon',
-                          topRadius: 8,
-                        ),
-                        UserInfo(
-                            info: 'Giới tính',
-                            value: user.mdUser.gender,
-                            icon: 'gender-icon'),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color(0xFF000033).withOpacity(0.20),
-                              width: 1,
+                    ProfilePicture(),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Text(
+                      user.mdUser.surname + ' ' + user.mdUser.name,
+                      style: AppTextStyle.lato.copyWith(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF3A3A3A),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: Column(
+                        children: [
+                          UserInfo(
+                            info: 'Ngày sinh',
+                            value: formatDatetime(
+                              user.mdUser.birthDate,
                             ),
-                            color: AppColors.White,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 12,
-                              right: 12,
-                              top: 13,
-                              bottom: 13,
-                            ),
-                            child: Row(
-                              children: [
-                                const Image(
-                                  image: AssetImage('assets/identify-icon.png'),
-                                ),
-                                SizedBox(
-                                  width: width * 0.02,
-                                ),
-                                Text(
-                                  "CMND/CCCD",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Text(
-                                      _isObsecureIdNumber
-                                          ? "*" * user.mdUser.idNumber.length
-                                          : user.mdUser.idNumber,
-                                      style: AppTextStyle.lato
-                                          .copyWith(fontSize: 16),
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: ImageIcon(
-                                        _isObsecureIdNumber
-                                            ? const AssetImage(
-                                                'assets/invisible-icon.png')
-                                            : const AssetImage(
-                                                'assets/visible-icon.png'),
-                                      ),
-                                      onTap: _handleWatchIdNumber,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        UserInfo(
-                          info: 'Mã căn hộ',
-                          value: user.mdUser.apartmentId ?? '',
-                          icon: 'apartment-icon',
-                          bottomRadius: 8,
-                          shadow: true,
-                        ),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        UserInfo(
-                          info: 'Email',
-                          value: user.mdUser.email,
-                          icon: 'email-icon',
-                          topRadius: 8,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                            ),
-                            border: Border.all(
-                                color:
-                                    const Color(0xFF00000033).withOpacity(0.20),
-                                width: 1),
-                            color: AppColors.White,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                blurRadius: 3,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 12,
-                              right: 12,
-                              top: 13,
-                              bottom: 13,
-                            ),
-                            child: Row(
-                              children: [
-                                const Image(
-                                  image: AssetImage('assets/phone-icon.png'),
-                                ),
-                                SizedBox(
-                                  width: width * 0.02,
-                                ),
-                                Text(
-                                  "Số điện thoại",
-                                  style:
-                                      AppTextStyle.lato.copyWith(fontSize: 16),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Text(
-                                      user.mdUser.phoneNumber == null
-                                          ? "Chưa cập nhật"
-                                          : _isObsecurePhoneNumber
-                                              ? "*" *
-                                                  user.mdUser.phoneNumber!
-                                                      .length
-                                              : user.mdUser.phoneNumber!,
-                                      style: AppTextStyle.lato
-                                          .copyWith(fontSize: 16),
-                                    ),
-                                    if (user.mdUser.phoneNumber != null)
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: width * 0.02,
-                                          ),
-                                          InkWell(
-                                            child: ImageIcon(
-                                              _isObsecurePhoneNumber
-                                                  ? const AssetImage(
-                                                      'assets/invisible-icon.png')
-                                                  : const AssetImage(
-                                                      'assets/visible-icon.png'),
-                                            ),
-                                            onTap: _handleWatchPhoneNumber,
-                                          ),
-                                        ],
-                                      )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showSnackBar(context,
-                                "Chức năng đang được phát triển, vui lòng truy cập lại sau!");
-                          },
-                          child: const UserOption(
-                            leadingIcon: "setting-icon",
-                            title: "Cài đặt",
-                            icon: "black-arrow-right-icon",
+                            icon: 'birthday-cake-icon',
                             topRadius: 8,
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: ((context) => SecurityScreen(
-                                      mdUser: user.mdUser,
-                                    ))));
-                          },
-                          child: const UserOption(
-                            leadingIcon: "security-icon",
-                            title: "Bảo mật",
-                            icon: "black-arrow-right-icon",
+                          UserInfo(
+                              info: 'Giới tính',
+                              value: user.mdUser.gender,
+                              icon: 'gender-icon'),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    const Color(0xFF000033).withOpacity(0.20),
+                                width: 1,
+                              ),
+                              color: AppColors.White,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 12,
+                                right: 12,
+                                top: 13,
+                                bottom: 13,
+                              ),
+                              child: Row(
+                                children: [
+                                  const Image(
+                                    image:
+                                        AssetImage('assets/identify-icon.png'),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.02,
+                                  ),
+                                  Text(
+                                    "CMND/CCCD",
+                                    style: AppTextStyle.lato
+                                        .copyWith(fontSize: 16),
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        _isObsecureIdNumber
+                                            ? "*" * user.mdUser.idNumber.length
+                                            : user.mdUser.idNumber,
+                                        style: AppTextStyle.lato
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: ImageIcon(
+                                          _isObsecureIdNumber
+                                              ? const AssetImage(
+                                                  'assets/invisible-icon.png')
+                                              : const AssetImage(
+                                                  'assets/visible-icon.png'),
+                                        ),
+                                        onTap: _handleWatchIdNumber,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          UserInfo(
+                            info: 'Mã căn hộ',
+                            value: user.mdUser.apartmentId ?? '',
+                            icon: 'apartment-icon',
                             bottomRadius: 8,
                             shadow: true,
                           ),
-                        ),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        InkWell(
-                          onTap: () => showLogoutConfirmPopupDialog(
-                              context, height, width),
-                          child: const UserOption(
-                            leadingIcon: "logout-icon",
-                            title: "Đăng xuất",
-                            icon: "white-arrow-right-icon",
-                            bottomRadius: 8,
-                            topRadius: 8,
-                            textColor: Color(0xFFFFFFFF),
-                            backgroundColor: Color(0xFFDB2F68),
+                          SizedBox(
+                            height: height * 0.03,
                           ),
-                        ),
-                      ],
+                          UserInfo(
+                            info: 'Email',
+                            value: user.mdUser.email,
+                            icon: 'email-icon',
+                            topRadius: 8,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8),
+                              ),
+                              border: Border.all(
+                                  color: const Color(0xFF00000033)
+                                      .withOpacity(0.20),
+                                  width: 1),
+                              color: AppColors.White,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  blurRadius: 3,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 12,
+                                right: 12,
+                                top: 13,
+                                bottom: 13,
+                              ),
+                              child: Row(
+                                children: [
+                                  const Image(
+                                    image: AssetImage('assets/phone-icon.png'),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.02,
+                                  ),
+                                  Text(
+                                    "Số điện thoại",
+                                    style: AppTextStyle.lato
+                                        .copyWith(fontSize: 16),
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        user.mdUser.phoneNumber == null
+                                            ? "Chưa cập nhật"
+                                            : _isObsecurePhoneNumber
+                                                ? "*" *
+                                                    user.mdUser.phoneNumber!
+                                                        .length
+                                                : user.mdUser.phoneNumber!,
+                                        style: AppTextStyle.lato
+                                            .copyWith(fontSize: 16),
+                                      ),
+                                      if (user.mdUser.phoneNumber != null)
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: width * 0.02,
+                                            ),
+                                            InkWell(
+                                              child: ImageIcon(
+                                                _isObsecurePhoneNumber
+                                                    ? const AssetImage(
+                                                        'assets/invisible-icon.png')
+                                                    : const AssetImage(
+                                                        'assets/visible-icon.png'),
+                                              ),
+                                              onTap: _handleWatchPhoneNumber,
+                                            ),
+                                          ],
+                                        )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.03,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showSnackBar(context,
+                                  'Chức năng đang được phát triển, vui lòng truy cập lại sau!');
+                            },
+                            child: const UserOption(
+                              leadingIcon: "setting-icon",
+                              title: "Cài đặt",
+                              icon: "black-arrow-right-icon",
+                              topRadius: 8,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: ((context) => SecurityScreen(
+                                        mdUser: user.mdUser,
+                                      ))));
+                            },
+                            child: const UserOption(
+                              leadingIcon: "security-icon",
+                              title: "Bảo mật",
+                              icon: "black-arrow-right-icon",
+                              bottomRadius: 8,
+                              shadow: true,
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.03,
+                          ),
+                          InkWell(
+                            onTap: () => showLogoutConfirmPopupDialog(
+                                context, height, width),
+                            child: const UserOption(
+                              leadingIcon: "logout-icon",
+                              title: "Đăng xuất",
+                              icon: "white-arrow-right-icon",
+                              bottomRadius: 8,
+                              topRadius: 8,
+                              textColor: Color(0xFFFFFFFF),
+                              backgroundColor: Color(0xFFDB2F68),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -40,9 +40,8 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     return res.data;
   }
 
-  Future sendOTPToChangePhoneNumberAPIProvider(MDUser? mdUser) async {
-    final res =
-        await repository.sendOTPToChangePhoneNumberAPIRepository(mdUser);
+  Future sendOTPToChangeEmailAPIProvider(String email) async {
+    final res = await repository.sendOTPToChangeEmailAPIRepository(email);
     print("kq ne:");
     print(res.data);
     return res.data['success'];
@@ -50,15 +49,23 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
 
   Future changePhoneNumberAPIProvider(
       MDUser? mdUser, String phoneNumber) async {
-    final res = await repository.changePhoneNumberAPIRepository(
-        mdUser, phoneNumber);
+    final res =
+        await repository.changePhoneNumberAPIRepository(mdUser, phoneNumber);
     print("kq neee:");
     print(res.data['success']);
     return res.data['success'];
   }
 
-  Future checkOTPAPIProvider(String otp, MDUser? mdUser) async {
-    final res = await repository.checkOTPAPIRepository(otp, mdUser);
+  Future changeEmailAPIProvider(MDUser? mdUser, String email) async {
+    final res = await repository.changeEmailAPIRepository(mdUser, email);
+    print("kq neee:");
+    print(res.data);
+    print(res.data['success']);
+    return res.data['success'];
+  }
+
+  Future checkOTPAPIProvider(String otp, String email) async {
+    final res = await repository.checkOTPAPIRepository(otp, email);
     print("kq neee:");
     print("check otp co thanh cong:");
     print(res.data);
