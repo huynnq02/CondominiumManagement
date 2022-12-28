@@ -17,8 +17,10 @@ class BillScreen extends StatefulWidget {
 class _BillScreenState extends State<BillScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  int _selectedTab = -1;
   @override
   void initState() {
+    _selectedTab = 0;
     tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -34,7 +36,9 @@ class _BillScreenState extends State<BillScreen>
   }
 
   int getNumOfBills(int index, BuildContext context) {
-    if (index == 0) {
+    if (_selectedTab == 0) {
+      _selectedTab += 1;
+
       if (Provider.of<BillProvider>(context).billState == "Tất cả") {
         return Provider.of<BillProvider>(context, listen: false)
             .apartmentBills
@@ -60,29 +64,56 @@ class _BillScreenState extends State<BillScreen>
             .length;
       }
     } else {
-      if (Provider.of<BillProvider>(context).billState == "Tất cả") {
-        return Provider.of<BillProvider>(context, listen: false)
-            .serviceBills
-            .length;
-      } else if (Provider.of<BillProvider>(context).billState ==
-          "Chưa thanh toán") {
-        return Provider.of<BillProvider>(context, listen: false)
-            .unpaidServiceBills
-            .length;
-      } else if (Provider.of<BillProvider>(context).billState ==
-          "Đã thanh toán") {
-        return Provider.of<BillProvider>(context, listen: false)
-            .paidServiceBills
-            .length;
-      } else if (Provider.of<BillProvider>(context).billState ==
-          "Từ chối thanh toán") {
-        return Provider.of<BillProvider>(context, listen: false)
-            .refuseServiceBills
-            .length;
+      if (index == 0) {
+        if (Provider.of<BillProvider>(context).billState == "Tất cả") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .apartmentBills
+              .length;
+        } else if (Provider.of<BillProvider>(context).billState ==
+            "Chưa thanh toán") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .unpaidApartmentBills
+              .length;
+        } else if (Provider.of<BillProvider>(context).billState ==
+            "Đã thanh toán") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .paidApartmentBills
+              .length;
+        } else if (Provider.of<BillProvider>(context).billState ==
+            "Từ chối thanh toán") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .refuseApartmentBills
+              .length;
+        } else {
+          return Provider.of<BillProvider>(context, listen: false)
+              .waitingApartmentBills
+              .length;
+        }
       } else {
-        return Provider.of<BillProvider>(context, listen: false)
-            .waitingServiceBills
-            .length;
+        if (Provider.of<BillProvider>(context).billState == "Tất cả") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .serviceBills
+              .length;
+        } else if (Provider.of<BillProvider>(context).billState ==
+            "Chưa thanh toán") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .unpaidServiceBills
+              .length;
+        } else if (Provider.of<BillProvider>(context).billState ==
+            "Đã thanh toán") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .paidServiceBills
+              .length;
+        } else if (Provider.of<BillProvider>(context).billState ==
+            "Từ chối thanh toán") {
+          return Provider.of<BillProvider>(context, listen: false)
+              .refuseServiceBills
+              .length;
+        } else {
+          return Provider.of<BillProvider>(context, listen: false)
+              .waitingServiceBills
+              .length;
+        }
       }
     }
   }
