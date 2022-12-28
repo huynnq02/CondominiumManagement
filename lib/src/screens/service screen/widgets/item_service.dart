@@ -31,53 +31,59 @@ class ItemService extends StatelessWidget {
           Container(
             width: 100,
             height: 100,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/service.png'),
+                image: service.urlPicture!.isNotEmpty
+                    ? NetworkImage(service.urlPicture!) as ImageProvider
+                    : const AssetImage('assets/service.png'),
                 fit: BoxFit.cover,
               ),
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                service.serviceName,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyle.lato.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  service.serviceName,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Text(
-                    'Chi phí:    ',
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    const Text(
+                      'Chi phí: ',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w100,
+                      ),
                     ),
-                  ),
-                  Text(
-                    service.serviceCharge.toVND() +
-                        '/' +
-                        service.cycle +
-                        ' ngày',
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.lato.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFDB2F68),
+                    Expanded(
+                      child: Text(
+                        service.serviceCharge.toVND() +
+                            '/' +
+                            service.cycle +
+                            ' ngày',
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFFDB2F68),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),
