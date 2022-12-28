@@ -120,6 +120,7 @@ class OTPProvider extends ChangeNotifier {
       },
       verificationFailed: (error) {
         Navigator.of(context).pop();
+        showSnackBar(context, error.toString());
       },
       codeSent: (verificationId, _) {
         Navigator.of(context).pop();

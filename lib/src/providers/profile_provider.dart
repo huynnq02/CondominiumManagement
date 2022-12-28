@@ -208,6 +208,7 @@ class ProfileProvider extends ChangeNotifier {
         if (e.code == 'invalid-phone-number') {
           print('The provided phone number is not valid.');
         }
+        showSnackBar(context, e.toString());
       },
       codeSent: (verificationId, _) async {
         _verificationId = verificationId;

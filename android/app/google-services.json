@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "407806233579",
+    "firebase_url": "https://se214-efcaa-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "se214-efcaa",
     "storage_bucket": "se214-efcaa.appspot.com"
   },
@@ -19,6 +20,22 @@
           "android_info": {
             "package_name": "com.example.untitled",
             "certificate_hash": "55a89bb374bc4d9610a2ce67a6f5a218788b21ee"
+          }
+        },
+        {
+          "client_id": "407806233579-fr7hvcqpjrlh36jhd7n6o21j8uh7kdot.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.untitled",
+            "certificate_hash": "e92996785ab4b8fd1b17962f519b364e0b84c337"
+          }
+        },
+        {
+          "client_id": "407806233579-lcio8lsjhh1f3sovt5vk11983vma6oam.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.untitled",
+            "certificate_hash": "de204dbc25d251c3e2c599ed69eb1c15a86ab203"
           }
         },
         {
