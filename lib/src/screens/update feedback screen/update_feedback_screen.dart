@@ -389,11 +389,8 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    "Chọn phương thức",
-                    style: AppTextStyle.lato
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                  child: Text("Chọn phương thức",
+                      style: AppTextStyle.lato.copyWith(fontSize: 16)),
                 ),
               ),
               SizedBox(
@@ -410,13 +407,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 29,
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
+                              AssetImage('assets/camera-icon.png'),
                             ),
                           ),
                         ),
@@ -425,7 +421,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                             "Chụp ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
@@ -451,12 +447,12 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                   child: InkWell(
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: ImageIcon(
-                              AssetImage('assets/galery-icon.png'),
+                            padding: EdgeInsets.only(left: width * 0.1),
+                            child: const ImageIcon(
+                              AssetImage('assets/gallery-icon.png'),
                             ),
                           ),
                         ),
@@ -465,7 +461,7 @@ class _UpdateFeedbackScreenState extends State<UpdateFeedbackScreen> {
                             "Chọn từ thư viện ảnh",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 16,
-                              color: const Color(0xFF12C82F),
+                              color: const Color(0xFFD0255E),
                             ),
                           ),
                         ),
