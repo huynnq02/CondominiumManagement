@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:untitled/repository/base/base_repository.dart';
 import 'package:untitled/src/models/user.dart';
+import 'package:flutter_user_agentx/flutter_user_agent.dart';
 
 class AuthAPIRepository extends BaseRepository {
   Future<Response> login({
@@ -10,11 +10,11 @@ class AuthAPIRepository extends BaseRepository {
   }) async {
     try {
       var client = init();
+      String userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
 
-      final authRespone = await client.post(
-        '/api/TokenAuth/Authenticate',
-        data: {'userNameOrEmailAddress': id, 'password': password},
-      );
+      final authRespone = await client.post('/api/TokenAuth/Authenticate',
+          data: {'userNameOrEmailAddress': id, 'password': password},
+          options: Options(headers: {'User-Agent': userAgent}));
 
       return authRespone;
     } on DioError catch (error) {
