@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -231,6 +232,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           enabled: (widget.type != TextFieldType.date),
                           style: const TextStyle(fontSize: 18),
                           maxLength: widget.maxLength,
+                          inputFormatters: widget.type == TextFieldType.password
+                              ? [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp("[a-zA-Z0-9]"))
+                                ]
+                              : null,
                           validator: ((value) =>
                               getValidator(value, widget.type)),
                           decoration: const InputDecoration(

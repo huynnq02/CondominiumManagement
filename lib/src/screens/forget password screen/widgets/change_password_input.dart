@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
@@ -61,7 +62,9 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               decoration: BoxDecoration(
                   border: ((widget.error != null && widget.error!.isNotEmpty) ||
-            errorText.isNotEmpty) ? Border.all(color: AppColors.Red) :Border.all(color: Colors.black.withOpacity(0.2)),
+                          errorText.isNotEmpty)
+                      ? Border.all(color: AppColors.Red)
+                      : Border.all(color: Colors.black.withOpacity(0.2)),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12)),
               child: Stack(alignment: Alignment.center, children: [
@@ -85,6 +88,9 @@ class _ChangePasswordInputState extends State<ChangePasswordInput> {
                       obscuringCharacter: '*',
                       style: const TextStyle(fontSize: 18),
                       maxLength: 20,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]"))
+                      ],
                       validator: (value) {
                         if (value!.isEmpty) {
                           setState(() {

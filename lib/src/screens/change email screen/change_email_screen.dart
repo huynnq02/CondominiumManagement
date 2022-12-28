@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/models/user.dart';
-import 'package:iconsax/iconsax.dart' as ic;
 import 'package:untitled/src/providers/profile_provider.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:untitled/utils/helper/string_extensions.dart';
+import 'package:flutter/services.dart';
 
 class ChangeEmailScreen extends StatefulWidget {
   MDUser? mdUser;
@@ -19,7 +19,7 @@ class ChangeEmailScreen extends StatefulWidget {
 
 class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
   final GlobalKey<FormState> _emailFormKey = GlobalKey<FormState>();
-  bool? _isValidOTP, _isDone, _isValidEmail;
+  bool? _isValidOTP, _isDone, _isValidEmail, _isOldEmail;
   bool _isExpired = true;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
 
@@ -127,7 +127,9 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color:
-                                _isValidEmail == null || _isValidEmail == true
+                                _isValidEmail == null && _isOldEmail == null ||
+                                        _isOldEmail == false &&
+                                            _isValidEmail == true
                                     ? const Color(0xFFD9D9D9)
                                     : Colors.red,
                             width: 1,
@@ -144,6 +146,9 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                                     readOnly: _isExpired == true ? true : false,
                                     style: const TextStyle(fontSize: 18),
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(6)
+                                    ],
                                     validator: (value) {
                                       if (value != null) {
                                         if (value.length < 6) {
@@ -175,9 +180,12 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                                     controller: _emailController,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 18),
-                                    keyboardType: TextInputType.number,
                                     onChanged: (value) => {
                                       setState(() {
+                                        _isOldEmail =
+                                            (widget.mdUser!.email == value)
+                                                ? true
+                                                : false;
                                         _isValidEmail = value.isValidEmail();
                                       })
                                     },
@@ -208,11 +216,24 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                             ),
                           ),
                         ),
-                      if (_isValidEmail == false)
+                      if (_isOldEmail != true)
+                        if (_isValidEmail == false)
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Email không hợp lệ",
+                              style: AppTextStyle.lato.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.Red,
+                              ),
+                            ),
+                          ),
+                      if (_isOldEmail == true)
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "Email không hợp lệ",
+                            "Email mới không được trùng với email cũ",
                             style: AppTextStyle.lato.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -315,7 +336,9 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                       SizedBox(
                         height: height * 0.1,
                       ),
-                      if (_isValidEmail == true && _isDone != true)
+                      if (_isValidEmail == true &&
+                          _isDone != true &&
+                          _isOldEmail != true)
                         user.isLoading
                             ? const CircularProgressIndicator(
                                 color: AppColors.DarkPink,
