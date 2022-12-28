@@ -71,8 +71,7 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future<Response> sendOTPToChangePhoneNumberAPIRepository(
-      MDUser? mdUser) async {
+  Future<Response> sendOTPToChangeEmailAPIRepository(MDUser? mdUser) async {
     try {
       var client = init();
       print("Go in OTP");
@@ -115,6 +114,33 @@ class ProfileRepository extends BaseRepository {
           "name": mdUser.name,
           "surname": mdUser.surname,
           "phoneNumber": phoneNumber,
+          "apartmentId": mdUser.apartmentId,
+        },
+      );
+
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> changeEmailAPIRepository(
+      MDUser? mdUser, String email) async {
+    try {
+      var client = init();
+
+      print(email);
+      final profileResponse = await client.put(
+        '/api/services/app/Profile/UpdateCurrentUserProfile',
+        data: {
+          "emailAddress": email,
+          "gender": mdUser!.gender,
+          "idNumber": mdUser.idNumber,
+          "birthDate": mdUser.birthDate,
+          "userName": mdUser.userName,
+          "name": mdUser.name,
+          "surname": mdUser.surname,
+          "phoneNumber": mdUser.phoneNumber,
           "apartmentId": mdUser.apartmentId,
         },
       );
