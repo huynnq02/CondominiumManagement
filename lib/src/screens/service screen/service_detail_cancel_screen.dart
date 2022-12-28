@@ -35,6 +35,7 @@ class ServiceDetailCancelScreen extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+        centerTitle: true,
       ),
       body: SizedBox(
         width: double.infinity,
