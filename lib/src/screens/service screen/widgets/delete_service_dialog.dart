@@ -41,9 +41,10 @@ class _DeleteServiceDialogState extends State<DeleteServiceDialog> {
           : Padding(
               padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "Bạn có chắc chắn muốn huỷ\n đăng kí dịch vụ này không?",
+                    "Bạn có chắc chắn muốn\nhuỷ dịch vụ này không?",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -71,17 +72,17 @@ class _DeleteServiceDialogState extends State<DeleteServiceDialog> {
                             ),
                           ),
                         ),
-                        child: const Text(
-                          "HUỶ",
-                          style: TextStyle(
-                            color: AppColors.Black,
-                            fontSize: 14,
+                        child: const Center(
+                          child: Text(
+                            "HUỶ",
+                            style: TextStyle(
+                              color: AppColors.Black,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: width * 0.08,
-                      ),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () async {
                           setState(() {
@@ -96,18 +97,6 @@ class _DeleteServiceDialogState extends State<DeleteServiceDialog> {
                           setState(() {
                             isDelete = false;
                           });
-                          // print("id feedback
-                          //: ${widget.feedback.id}");
-                          // feedbackProvider.deleteFeedback(
-                          //   context,
-                          //   widget.feedback.id!,
-                          // );
-                          // Navigator.of(context).pop();
-
-                          // showSnackBar(
-                          //   context,
-                          //   "Đã xoá ý kiến!",
-                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFDB2F68),
@@ -116,6 +105,7 @@ class _DeleteServiceDialogState extends State<DeleteServiceDialog> {
                               Radius.circular(10),
                             ),
                           ),
+                          fixedSize: const Size(120, 30),
                         ),
                         child: const Text(
                           "CHẮC CHẮN",
