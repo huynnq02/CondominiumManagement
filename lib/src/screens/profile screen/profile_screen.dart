@@ -9,6 +9,7 @@ import 'package:untitled/src/screens/security%20screen/security_screen.dart';
 
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
+import 'package:untitled/utils/helper/show_snack_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -252,21 +253,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ),
                                             onTap: _handleWatchPhoneNumber,
                                           ),
-
-                                          // InkWell(
-                                          //   onTap: () {
-                                          //     Navigator.push(
-                                          //       context,
-                                          //       MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             ChangePhoneNumberScreen(
-                                          //           mdUser: user.mdUser,
-                                          //         ),
-                                          //       ),
-                                          //     );
-                                          //   },
-                                          //   child: const Icon(Icons.edit),
-                                          // )
                                         ],
                                       )
                                   ],
@@ -275,57 +261,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                        // Container(
-                        //   margin: const EdgeInsets.symmetric(horizontal: 10),
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: const BorderRadius.only(
-                        //       bottomLeft: Radius.circular(10),
-                        //       bottomRight: Radius.circular(10),
-                        //     ),
-                        //     border: Border.all(
-                        //         color: const Color(0x00000033).withOpacity(0.20),
-                        //         width: 1),
-                        //     color: AppColors.White,
-                        //   ),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8),
-                        //     child: Row(
-                        //       children: [
-                        //         const Image(
-                        //           image: AssetImage('assets/reset-password-icon.png'),
-                        //         ),
-                        //         SizedBox(
-                        //           width: width * 0.02,
-                        //         ),
-                        //         Text(
-                        //           "Đổi mật khẩu",
-                        //           style: AppTextStyle.lato.copyWith(fontSize: 16),
-                        //         ),
-                        //         const Spacer(),
-                        //         InkWell(
-                        //           onTap: () {
-                        //             Navigator.of(context).push(MaterialPageRoute(
-                        //                 builder: ((context) =>
-                        //                     const UpdateNewPasswordScreen(
-                        //                       isLoggedIn: true,
-                        //                     ))));
-                        //           },
-                        //           child: const Icon(
-                        //             Icons.arrow_forward_ios,
-                        //           ),
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                         SizedBox(
                           height: height * 0.03,
                         ),
-                        const UserOption(
-                          leadingIcon: "setting-icon",
-                          title: "Cài đặt",
-                          icon: "black-arrow-right-icon",
-                          topRadius: 8,
+                        InkWell(
+                          onTap: () {
+                            showSnackBar(context,
+                                "Chức năng đang được phát triển, vui lòng truy cập lại sau!");
+                          },
+                          child: const UserOption(
+                            leadingIcon: "setting-icon",
+                            title: "Cài đặt",
+                            icon: "black-arrow-right-icon",
+                            topRadius: 8,
+                          ),
                         ),
                         InkWell(
                           onTap: () {
@@ -358,44 +307,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundColor: Color(0xFFDB2F68),
                           ),
                         ),
-                        // Container(
-                        //   margin: const EdgeInsets.symmetric(horizontal: 10),
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: const BorderRadius.all(
-                        //       Radius.circular(10),
-                        //     ),
-                        //     border: Border.all(
-                        //         color:
-                        //             const Color(0x00000033).withOpacity(0.20),
-                        //         width: 1),
-                        //     color: AppColors.White,
-                        //   ),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: [
-                        //         const Image(
-                        //             image:
-                        //                 AssetImage('assets/logout-icon.png')),
-                        //         SizedBox(
-                        //           width: width * 0.02,
-                        //         ),
-                        //         Text(
-                        //           "Đăng xuất",
-                        //           style:
-                        //               AppTextStyle.lato.copyWith(fontSize: 16),
-                        //         ),
-                        //         const Spacer(),
-                        //         InkWell(
-                        //           onTap: () => showLogoutConfirmPopupDialog(
-                        //               context, height, width),
-                        //           child: const Icon(Icons.arrow_forward_ios),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

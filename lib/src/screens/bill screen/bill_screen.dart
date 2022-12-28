@@ -23,6 +23,10 @@ class _BillScreenState extends State<BillScreen>
     super.initState();
   }
 
+  // void setDefaultTab() {
+  //   Provider.of<BillProvider>(context, listen: false).setCurrentTab(0);
+  // }
+
   @override
   void dispose() {
     tabController.dispose();
@@ -87,124 +91,122 @@ class _BillScreenState extends State<BillScreen>
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFFCF6F6),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFFDB2F68),
-          elevation: 0,
-          title: Text(
-            "Hóa đơn",
-            style: AppTextStyle.montserrat.copyWith(
-              fontSize: 20,
-              color: Colors.white,
-            ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFFCF6F6),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFDB2F68),
+        elevation: 0,
+        title: Text(
+          "Hóa đơn",
+          style: AppTextStyle.montserrat.copyWith(
+            fontSize: 20,
+            color: Colors.white,
           ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-          child: Column(
-            children: [
-              SizedBox(
-                height: height * 0.02,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+        child: Column(
+          children: [
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Container(
+              height: height * 0.05,
+              decoration: BoxDecoration(
+                color: const Color(0xFFEDEDED),
+                borderRadius: BorderRadius.circular(5),
               ),
-              Container(
-                height: height * 0.05,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEDEDED),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: TabBar(
-                    onTap: (index) {
-                      Provider.of<BillProvider>(context, listen: false)
-                          .setCurrentTab(index);
-                    },
-                    controller: tabController,
-                    labelStyle: AppTextStyle.lato.copyWith(
-                      fontSize: 14,
-                    ),
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: const Color(0xFFDB2F68),
-                    ),
-                    indicatorColor: Colors.transparent,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: const Color(0xFF979A9C),
-                    // set liner gradient color to background of unselected tab
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: TabBar(
+                  onTap: (index) {
+                    Provider.of<BillProvider>(context, listen: false)
+                        .setCurrentTab(index);
+                  },
+                  controller: tabController,
+                  labelStyle: AppTextStyle.lato.copyWith(
+                    fontSize: 14,
+                  ),
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: const Color(0xFFDB2F68),
+                  ),
+                  indicatorColor: Colors.transparent,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: const Color(0xFF979A9C),
+                  // set liner gradient color to background of unselected tab
 
-                    tabs: const [
-                      Tab(
-                        child: Text(
-                          "Hóa đơn căn hộ",
+                  tabs: const [
+                    Tab(
+                      child: Text(
+                        "Hóa đơn căn hộ",
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        "Hóa đơn dịch vụ",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Có ",
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                          color: const Color(0xFF000000),
                         ),
                       ),
-                      Tab(
-                        child: Text(
-                          "Hóa đơn dịch vụ",
+                      TextSpan(
+                        text:
+                            "${getNumOfBills(Provider.of<BillProvider>(context).currentTab, context)} ",
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                          color: const Color(0xFFDB2F68),
+                        ),
+                      ),
+                      TextSpan(
+                        text: "hóa đơn",
+                        style: AppTextStyle.lato.copyWith(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                          color: const Color(0xFF000000),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Có ",
-                          style: AppTextStyle.lato.copyWith(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w300,
-                            color: const Color(0xFF000000),
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              "${getNumOfBills(Provider.of<BillProvider>(context).currentTab, context)} ",
-                          style: AppTextStyle.lato.copyWith(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w300,
-                            color: const Color(0xFFDB2F68),
-                          ),
-                        ),
-                        TextSpan(
-                          text: "hóa đơn",
-                          style: AppTextStyle.lato.copyWith(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w300,
-                            color: const Color(0xFF000000),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const DropDownMenu(),
+                const DropDownMenu(),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: const [
+                  AparmentBill(),
+                  ServiceBill(),
                 ],
               ),
-              SizedBox(
-                height: height * 0.05,
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: const [
-                    AparmentBill(),
-                    ServiceBill(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
