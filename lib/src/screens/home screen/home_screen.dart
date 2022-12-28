@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: const TextStyle(fontSize: 20, color: Colors.white),
                       children: <TextSpan>[
                         TextSpan(
-                            text: user.mdUser.surname + user.mdUser.name,
+                            text: user.mdUser.surname + ' ' + user.mdUser.name,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 24))
                       ],
