@@ -183,6 +183,8 @@ class ResetPasswordProvider extends ChangeNotifier {
         },
         verificationFailed: (error) {
           Navigator.of(context).pop();
+
+          showSnackBar(context, '$error');
         },
         codeSent: (verificationId, _) {
           Navigator.of(context).pop();
