@@ -260,7 +260,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                                       Provider.of<ProfileProvider>(context,
                                               listen: false)
                                           .sendOTPToChangeEmail(
-                                              user.mdUser, context);
+                                              _emailController.text, context);
                                       startTimer();
                                     },
                                     child: RichText(
@@ -336,7 +336,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
                                       Provider.of<ProfileProvider>(context,
                                               listen: false)
                                           .sendOTPToChangeEmail(
-                                              user.mdUser, context);
+                                              _emailController.text, context);
                                       print("ok");
                                       setState(() {
                                         _isDone = true;

@@ -71,20 +71,14 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future<Response> sendOTPToChangeEmailAPIRepository(MDUser? mdUser) async {
+  Future<Response> sendOTPToChangeEmailAPIRepository(String email) async {
     try {
       var client = init();
       print("Go in OTP");
       final profileResponse = await client.post(
-          '/api/services/app/Profile/SendEmailActivationOTP',
+          '/api/services/app/Account/SendEmailAddressOTP',
           data: {
-            "emailAddress": mdUser!.email,
-            "gender": mdUser.gender,
-            "idNumber": mdUser.idNumber,
-            "birthDate": mdUser.birthDate,
-            "userName": mdUser.userName,
-            "name": mdUser.name,
-            "surname": mdUser.surname,
+            "emailAddress": email,
           },
           options: Options(headers: {
             'Content-Type': 'application/json',
@@ -151,23 +145,15 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future checkOTPAPIRepository(String otp, MDUser? mdUser) async {
+  Future checkOTPAPIRepository(String otp, String email) async {
     try {
       var client = init();
 
       final profileResponse = await client.post(
-        '/api/services/app/Profile/CheckOTP',
+        '/api/services/app/Account/ConfirmEmailAddressOTP',
         data: {
-          "emailAddress": mdUser!.email,
-          "gender": mdUser.gender,
-          "idNumber": mdUser.idNumber,
-          "birthDate": mdUser.birthDate,
-          "userName": mdUser.userName,
-          "name": mdUser.name,
-          "surname": mdUser.surname,
-          "phoneNumber": mdUser.phoneNumber,
+          "emailAddress": email,
           "otp": otp,
-          "apartmentId": mdUser.apartmentId,
         },
       );
       print(profileResponse.data['success']);

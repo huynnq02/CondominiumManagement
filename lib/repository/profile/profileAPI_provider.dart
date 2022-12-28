@@ -40,8 +40,8 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     return res.data;
   }
 
-  Future sendOTPToChangeEmailAPIProvider(MDUser? mdUser) async {
-    final res = await repository.sendOTPToChangeEmailAPIRepository(mdUser);
+  Future sendOTPToChangeEmailAPIProvider(String email) async {
+    final res = await repository.sendOTPToChangeEmailAPIRepository(email);
     print("kq ne:");
     print(res.data);
     return res.data['success'];
@@ -64,8 +64,8 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     return res.data['success'];
   }
 
-  Future checkOTPAPIProvider(String otp, MDUser? mdUser) async {
-    final res = await repository.checkOTPAPIRepository(otp, mdUser);
+  Future checkOTPAPIProvider(String otp, String email) async {
+    final res = await repository.checkOTPAPIRepository(otp, email);
     print("kq neee:");
     print("check otp co thanh cong:");
     print(res.data);

@@ -113,9 +113,9 @@ class ProfileProvider extends ChangeNotifier {
     setProfilePicture(urlImage);
   }
 
-  Future sendOTPToChangeEmail(MDUser? mdUser, BuildContext context) async {
+  Future sendOTPToChangeEmail(String email, BuildContext context) async {
     print('111');
-    var success = await ProfilePro().sendOTPToChangeEmailAPIProvider(mdUser);
+    var success = await ProfilePro().sendOTPToChangeEmailAPIProvider(email);
     if (success == true) {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -161,9 +161,9 @@ class ProfileProvider extends ChangeNotifier {
       BuildContext context, String otp, MDUser mdUser, String email) async {
     setIsLoading(true);
 
-    var result = await ProfilePro().checkOTPAPIProvider(otp, mdUser);
+    var result = await ProfilePro().checkOTPAPIProvider(otp, email);
 
-    if (result == true) {
+    if (result["isCorrect"] == true) {
       print("dc 1");
       setIsValidOTP(true);
       var successChangeEmail =
@@ -172,10 +172,12 @@ class ProfileProvider extends ChangeNotifier {
         print("dc 2");
 
         setNewEmail(email);
-        showSnackBar(context, "Cập nhật thành công");
         Navigator.of(context)
           ..pop()
           ..pop();
+        showSnackBar(context, "Cập nhật thành công");
+      } else {
+        showSnackBar(context, "Cập nhật thất bại");
       }
     } else {
       setIsValidOTP(false);
