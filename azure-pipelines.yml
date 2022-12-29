@@ -7,13 +7,21 @@
 
 trigger:
   - main
-  - sprint01
-  - sprint02
-  - sprint03
-  - sprint04
-  - sprint05
-  - sprint06
   - sprint07
+
+schedule:
+  - cron: "0 13 * * *"
+    displayName: Daily afternoon build
+    branches:
+      include:
+      - main
+      - sprint07
+  - cron: "0 22 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+      - main
+      - sprint07
 
 pool:
   vmImage: macOS-12
