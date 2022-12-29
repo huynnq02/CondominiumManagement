@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:untitled/repository/auth/authAPI_provider.dart';
-import '../screens/login screen/widget/login_error_dialog.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   var status;

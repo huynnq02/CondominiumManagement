@@ -7,7 +7,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.post(
-        '/api/UserFeedback/AddFeedBack',
+        '/api/services/app/UserFeedback/AddFeedback',
         data: {
           "email": feedback.email,
           "type": feedback.type,
@@ -29,7 +29,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.get(
-        '/api/UserFeedback/GetCurrentUserFeedback',
+        '/api/services/app/UserFeedback/GetCurrentUserFeedback',
       );
       return feedbackResponse;
     } on DioError catch (error) {
@@ -40,8 +40,9 @@ class FeedbackAPIRepository extends BaseRepository {
   Future<Response> updateFeedbackAPIRepository(Feedback feedback) async {
     try {
       var client = init();
+      print('feedback id: ${feedback.id}');
       final feedbackResponse = await client.put(
-        '/api/UserFeedback/UpdateFeedback',
+        '/api/services/app/UserFeedback/UpdateFeedback',
         data: {
           "id": feedback.id,
           "email": feedback.email,
@@ -56,6 +57,7 @@ class FeedbackAPIRepository extends BaseRepository {
       );
       return feedbackResponse;
     } on DioError catch (error) {
+      print(error.toString());
       return error.response as Response;
     }
   }
@@ -64,7 +66,7 @@ class FeedbackAPIRepository extends BaseRepository {
     try {
       var client = init();
       final feedbackResponse = await client.delete(
-        '/api/UserFeedback/DeleteFeedback',
+        '/api/services/app/UserFeedback/DeleteFeedback',
         queryParameters: {
           "id": id,
         },

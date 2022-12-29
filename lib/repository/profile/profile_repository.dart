@@ -28,7 +28,7 @@ class ProfileRepository extends BaseRepository {
     try {
       var client = init();
       final profileResponse = await client.get(
-        '/api/services/app/Profile/GetProfilePicture',
+        '/api/services/app/Profile/GetAvatarProfile',
       );
 
       return profileResponse;
@@ -51,54 +51,34 @@ class ProfileRepository extends BaseRepository {
     }
   }
 
-  Future<Response> updateProfilePictureAPIRepository(File _image) async {
+  Future<Response> updateProfilePictureAPIRepository(String imageUrl) async {
     try {
       var client = init();
       // upload image to asp.net core server
-      final _imageBytes = _image.readAsBytesSync();
-      final _imageBase64 = base64UrlEncode(_imageBytes);
-      print("sai ho bo: " + _imageBase64);
-      var formData = FormData.fromMap({
-        "fileToken": _imageBase64,
-        "fileName": "ProfilePicture",
-        "fileType": "image/png",
-      });
-      print("fom data");
+
       final profileResponse = await client.put(
-          '/api/services/app/Profile/UpdateProfilePicture',
-          data: formData);
-      // final _imageBytes = _image.readAsBytesSync();
-      // final _imageBase64 = base64UrlEncode(_imageBytes);
-      // print("sai ho bo: " + _imageBase64);
-      // final profileResponse = await client.put(
-      //   '/api/services/app/Profile/UpdateProfilePicture',
-      //   data: {"fileToken": _imageBase64},
-      // );
+        '/api/services/app/Profile/UpdateAvatarProfile',
+        queryParameters: {
+          'url': imageUrl,
+        },
+      );
 
-      print("duoc k z");
-      print(profileResponse.data['result']);
-
+      print("respone update image: $profileResponse");
       return profileResponse;
     } on DioError catch (error) {
+      print('error update image: ${error.toString()}');
       return error.response as Response;
     }
   }
 
-  Future<Response> sendOTPToChangePhoneNumberAPIRepository(
-      MDUser? mdUser) async {
+  Future<Response> sendOTPToChangeEmailAPIRepository(String email) async {
     try {
       var client = init();
       print("Go in OTP");
       final profileResponse = await client.post(
-          '/api/services/app/Profile/SendEmailActivationOTP',
+          '/api/services/app/Account/SendEmailAddressOTP',
           data: {
-            "emailAddress": mdUser!.email,
-            "gender": mdUser.gender,
-            "idNumber": mdUser.idNumber,
-            "birthDate": mdUser.birthDate,
-            "userName": mdUser.userName,
-            "name": mdUser.name,
-            "surname": mdUser.surname,
+            "emailAddress": email,
           },
           options: Options(headers: {
             'Content-Type': 'application/json',
@@ -112,7 +92,7 @@ class ProfileRepository extends BaseRepository {
   }
 
   Future<Response> changePhoneNumberAPIRepository(
-      MDUser? mdUser, String phoneNumber, String otp) async {
+      MDUser? mdUser, String phoneNumber) async {
     try {
       var client = init();
 
@@ -128,11 +108,55 @@ class ProfileRepository extends BaseRepository {
           "name": mdUser.name,
           "surname": mdUser.surname,
           "phoneNumber": phoneNumber,
-          "otp": otp,
           "apartmentId": mdUser.apartmentId,
         },
       );
 
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future<Response> changeEmailAPIRepository(
+      MDUser? mdUser, String email) async {
+    try {
+      var client = init();
+
+      print(email);
+      final profileResponse = await client.put(
+        '/api/services/app/Profile/UpdateCurrentUserProfile',
+        data: {
+          "emailAddress": email,
+          "gender": mdUser!.gender,
+          "idNumber": mdUser.idNumber,
+          "birthDate": mdUser.birthDate,
+          "userName": mdUser.userName,
+          "name": mdUser.name,
+          "surname": mdUser.surname,
+          "phoneNumber": mdUser.phoneNumber,
+          "apartmentId": mdUser.apartmentId,
+        },
+      );
+
+      return profileResponse;
+    } on DioError catch (error) {
+      return error.response as Response;
+    }
+  }
+
+  Future checkOTPAPIRepository(String otp, String email) async {
+    try {
+      var client = init();
+
+      final profileResponse = await client.post(
+        '/api/services/app/Account/ConfirmEmailAddressOTP',
+        data: {
+          "emailAddress": email,
+          "otp": otp,
+        },
+      );
+      print(profileResponse.data['success']);
       return profileResponse;
     } on DioError catch (error) {
       return error.response as Response;

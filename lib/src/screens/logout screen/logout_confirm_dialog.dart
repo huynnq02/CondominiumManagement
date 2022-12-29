@@ -29,101 +29,89 @@ class _LogOutConfirmDialogState extends State<LogOutConfirmDialog> {
   Widget build(BuildContext context) {
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Dialog(
       backgroundColor: Colors.transparent,
-      child: Container(
-        color: Colors.transparent,
-        height: height * 0.18,
-        width: width * 0.8,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Stack(
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 22, bottom: 17, left: 15, right: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  ),
-                  image: DecorationImage(
-                    image: AssetImage(
-                        "assets/logout-confirm-dialog-background.png"),
-                    fit: BoxFit.cover,
-                  ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  "Bạn có chắc chắn muốn đăng xuất không?",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.Pink),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 17, left: 8, right: 8),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Bạn có chắc chắn không?",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+              const SizedBox(
+                height: 27,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: OutlinedButton.styleFrom(
+                      fixedSize: Size(
+                        width * 0.324,
+                        35,
+                      ),
+                      side:
+                          const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.023,
+                    child: const Text(
+                      "KHÔNG",
+                      style: TextStyle(
+                          color: Color(0xFF625E5E),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            context.read<ProfileProvider>().setEmptyUser();
-                            context.read<FeedbackProvider>().setEmptyFeedback();
-                            removeToken(); //remove token khi đăng xuất
-                            loginProvider.check = false;
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.LogoutButtonColor,
-                            fixedSize: Size(
-                              width * 0.28,
-                              height * 0.035,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14)),
-                            ),
-                          ),
-                          child: const Text(
-                            "Đăng xuất",
-                            style:
-                                TextStyle(color: AppColors.White, fontSize: 14),
-                          ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<ProfileProvider>().setEmptyUser();
+                      context.read<FeedbackProvider>().setEmptyFeedback();
+                      removeToken(); //remove token khi đăng xuất
+                      loginProvider.check = false;
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LoginScreen()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.DarkPink,
+                        fixedSize: Size(
+                          width * 0.324,
+                          35,
                         ),
-                        SizedBox(
-                          width: width * 0.08,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
-                        ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.Black,
-                            fixedSize: Size(
-                              width * 0.28,
-                              height * 0.035,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(14)),
-                            ),
-                          ),
-                          child: const Text(
-                            "Hủy",
-                            style:
-                                TextStyle(color: AppColors.White, fontSize: 14),
-                          ),
-                        )
-                      ],
+                        shadowColor: Colors.transparent),
+                    child: const Text(
+                      "CHẮC CHẮN",
+                      style: TextStyle(
+                          color: AppColors.White,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/src/models/user.dart';
 import 'package:untitled/src/providers/profile_provider.dart';
-import 'package:untitled/src/screens/change%20phone%20number%20screen/widgets/change_phone_number_successful_dialog.dart';
 import 'package:untitled/utils/app_constant/app_colors.dart';
 import 'package:untitled/utils/app_constant/app_text_style.dart';
 import 'package:flutter/services.dart';
@@ -29,294 +28,159 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
     );
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   SharedPreferences? pref;
-  bool _isExpired = true, _isOTPSent = false;
-  bool? _isValidOTP, _isWaiting, _isValidPhoneNumber;
+  bool _isExpired = true;
+  bool? _isValidOTP, _isDone, _isValidPhoneNumber, _isOldPhoneNumber;
   final GlobalKey<FormState> _otpFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
+
   ProfileProvider? profileProvider;
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
-
   String? otp;
   int min = 0, sec = 60;
   void startTimer() {
     const onSec = Duration(seconds: 1);
     Timer timer = Timer.periodic(onSec, (timer) {
+      _isExpired = false;
       if (min == 0 && sec == 0) {
-        setState(() {
-          timer.cancel();
-          _isWaiting = false;
+        if (mounted) {
+          setState(() {
+            timer.cancel();
+            _isExpired = true;
 
-          min = 0;
-          sec = 60;
-        });
-      } else {
-        setState(() {
-          if (min > 0 && sec == 0) {
-            min--;
+            min = 0;
             sec = 60;
-          }
-          //_isWaiting = true;
-          sec--;
-        });
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            if (min > 0 && sec == 0) {
+              min--;
+              sec = 60;
+            }
+            //_isWaiting = true;
+            sec--;
+          });
+        }
       }
     });
   }
 
-  getSharedPreferences() async {
-    pref = await SharedPreferences.getInstance();
-  }
+  getSharedPreferences() async {}
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<ProfileProvider>(context);
+    // print("is valid otp");
+    // print(_isValidOTP);
+    // print("is expired otp");
+
+    // print(_isExpired);
     //print('hihi');
 
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: AppColors.AppBackground,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: AppColors.RedTheme,
+        elevation: 0,
+        title: Text(
+          "Cập nhật số điện thoại",
+          style: AppTextStyle.lato.copyWith(
+            fontSize: 23,
+            color: AppColors.White,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.White,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SingleChildScrollView(
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.05),
             height: height,
             width: width,
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              image: DecorationImage(
-                image: AssetImage("assets/login-screen-background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
             child: Column(
               children: [
                 SizedBox(
-                  height: height * 0.05,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: AppColors.White,
-                    ),
-                  ),
-                ),
-                const Spacer(
-                  flex: 2,
+                  height: height * 0.1,
                 ),
                 Expanded(
-                  flex: 6,
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          Center(
-                            child: Text(
-                              "Nhập số điện thoại mới",
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 22,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 1
-                                  ..color = AppColors.Black.withOpacity(0.2),
-                              ),
+                      _isDone == true
+                          ? const Image(
+                              image: AssetImage("assets/big-message-icon.png"),
+                            )
+                          : const Image(
+                              image: AssetImage("assets/big-phone-icon.png"),
                             ),
-                          ),
-                          Center(
-                            child: Text(
-                              "Nhập số điện thoại mới",
-                              style: AppTextStyle.lato.copyWith(
-                                fontSize: 22,
-                                color: AppColors.White,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       SizedBox(
                         height: height * 0.05,
                       ),
+                      Text(
+                        _isDone == true
+                            ? "Xác thực OTP"
+                            : "Nhập số điện thoại mới",
+                        style: AppTextStyle.lato.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 21,
+                            color: const Color(0xFF58583A)),
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
                       Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
-                          color: AppColors.White.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(15),
+                          color: const Color(0xFFFCF6F6),
+                          // .withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: AppColors.Black.withOpacity(0.5),
+                            color: _isValidPhoneNumber == null &&
+                                        _isOldPhoneNumber == null ||
+                                    _isValidPhoneNumber == true &&
+                                        _isOldPhoneNumber == false
+                                ? const Color(0xFFD9D9D9)
+                                : Colors.red,
                             width: 1,
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 13),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Số điện thoại",
-                                style: AppTextStyle.lato.copyWith(
-                                  fontSize: 14,
-                                  color: AppColors.Black.withOpacity(0.5),
-                                ),
-                              ),
-                              TextField(
-                                textAlign: TextAlign.center,
-                                controller: phoneNumberController,
-                                keyboardType: TextInputType.number,
-                                readOnly: _isWaiting == true ? true : false,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.all(0),
-                                  hintText: "Nhập số điện thoại",
-                                  hintStyle: AppTextStyle.lato.copyWith(
-                                    fontSize: 18,
-                                    color: AppColors.Black.withOpacity(0.5),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.05,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          user.setIsSent(false);
-                          user.setChangePhoneFail(false);
-
-                          if (_isWaiting == false) {
-                            setState(() {
-                              otpController.text = "";
-                            });
-                          }
-                          if (_isOTPSent == true && _isWaiting == false) {
-                            setState(() {
-                              _isValidOTP = null;
-                            });
-                          }
-                          if (phoneNumberController.text.isValidPhoneNumber()) {
-                            setState(() {
-                              _isValidPhoneNumber = true;
-                            });
-                            if ((_isWaiting == null || _isWaiting == false)) {
-                              startTimer();
-                              profileProvider!.sendOTPToChangePhoneNumber(
-                                  widget.mdUser!, context);
-                              setState(() {
-                                _isOTPSent = true;
-                                _isWaiting = true;
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              _isValidPhoneNumber = false;
-                            });
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            if (_isValidPhoneNumber == false)
-                              Text(
-                                "Số điện thoại không hợp lệ",
-                                style: AppTextStyle.lato.copyWith(
-                                  fontSize: 14,
-                                  color: AppColors.Red,
-                                ),
-                              ),
-                            if (_isValidPhoneNumber == false)
-                              SizedBox(
-                                height: height * 0.01,
-                              ),
-                            if (_isOTPSent == false)
-                              ButtonContainer(
-                                height: height,
-                                width: width,
-                                text: "Gửi mã OTP",
-                                color: const Color(0xFF5FC5FF),
-                              ),
-                            if (_isOTPSent == true &&
-                                _isWaiting == true &&
-                                user.isSent == true)
-                              ButtonContainer(
-                                height: height,
-                                width: width,
-                                text: sec / 10 == 0
-                                    ? "0$min:0$sec"
-                                    : "0$min:$sec",
-                                color: const Color(0xFFCDCDCD),
-                              ),
-                            if (_isOTPSent == true && _isWaiting == false)
-                              ButtonContainer(
-                                height: height,
-                                width: width,
-                                text: "Gửi lại OTP",
-                                color: const Color(0xFF5FC5FF),
-                              ),
-                          ],
-                        ),
-                      ),
-                      if (_isOTPSent)
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: height * 0.08,
-                            ),
-                            SizedBox(
-                              width: width * 0.7,
-                              child: Text(
-                                user.isSent == true && _isWaiting == true
-                                    ? user.changePhoneFail
-                                        ? "OTP không đúng"
-                                        : "Đã gửi OTP, vui lòng check trong hộp thư Email của bạn và điền mã OTP vào ô dưới đây"
-                                    : _isWaiting == true
-                                        ? ''
-                                        : "OTP đã hết hạn, vui lòng gửi lại OTP",
-                                style: AppTextStyle.lato.copyWith(
-                                    fontSize: 13, color: AppColors.Red),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.015,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.White.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColors.Grey,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
+                        child: _isDone == true
+                            ? Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: Form(
                                   key: _otpFormKey,
                                   child: TextFormField(
                                     controller: otpController,
                                     textAlign: TextAlign.center,
-                                    readOnly:
-                                        user.isSent == true ? false : true,
+                                    readOnly: _isExpired == true ? true : false,
                                     style: const TextStyle(fontSize: 18),
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(6)
                                     ],
-                                    onChanged: (value) => otp = value,
                                     validator: (value) {
                                       if (value != null) {
                                         if (value.length < 6) {
-                                          user.setChangePhoneFail(true);
+                                          setState(() {
+                                            _isValidOTP = false;
+                                          });
                                           return '';
                                         }
                                       }
@@ -333,57 +197,272 @@ class _ChangePhoneNumberScreenState extends State<ChangePhoneNumberScreen> {
                                     ),
                                   ),
                                 ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Form(
+                                  key: _phoneFormKey,
+                                  child: TextFormField(
+                                    controller: phoneNumberController,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 18),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(14)
+                                    ],
+                                    onChanged: (value) => {
+                                      setState(() {
+                                        _isOldPhoneNumber =
+                                            (widget.mdUser!.phoneNumber ==
+                                                    value)
+                                                ? true
+                                                : false;
+
+                                        _isValidPhoneNumber =
+                                            value.isValidPhoneNumber();
+                                      })
+                                    },
+                                    decoration: const InputDecoration(
+                                      hintText: "Số điện thoại",
+                                      border: InputBorder.none,
+                                      errorStyle: TextStyle(height: 0),
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ),
+                      SizedBox(
+                        height: height * 0.007,
+                      ),
+                      if (_isValidOTP == false && _isExpired == false ||
+                          user.isValidOTPProvider == false &&
+                              _isExpired == false)
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Mã OTP không đúng, vui lòng nhập lại",
+                            style: AppTextStyle.lato.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.Red,
+                            ),
+                          ),
+                        ),
+                      if (_isOldPhoneNumber != true)
+                        if (_isValidPhoneNumber == false)
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Số điện thoại không hợp lệ",
+                              style: AppTextStyle.lato.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.Red,
                               ),
                             ),
-                            SizedBox(
-                              height: height * 0.03,
+                          ),
+                      if (_isOldPhoneNumber == true)
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Số điện thoại mới phải khác số cũ",
+                            style: AppTextStyle.lato.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.Red,
                             ),
-                            InkWell(
-                              onTap: () async {
-                                user.setChangePhoneFail(false);
-
-                                if (_isWaiting == true && _isWaiting != null) {
-                                  if (min >= 0 && sec > 0) {
-                                    if (_otpFormKey.currentState!.validate()) {
-                                      if (_isValidOTP == true) {
-                                        if (_isValidOTP == true &&
-                                            _isOTPSent == true &&
-                                            phoneNumberController
-                                                .text.isNotEmpty) {
-                                          await profileProvider!
-                                              .changePhoneNumber(
-                                            context,
-                                            widget.mdUser,
-                                            phoneNumberController.text,
-                                            otp!,
-                                          );
-                                          getSharedPreferences();
-                                          setState(() {
-                                            _isValidOTP =
-                                                pref!.getBool("isValidOTP");
-                                          });
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              },
-                              child: user.isLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : ButtonContainer(
-                                      height: height,
-                                      width: width,
-                                      text: "Xác thực",
-                                      color: _isWaiting == false
-                                          ? const Color(0xFFCDCDCD)
-                                          : AppColors.White),
-                            ),
+                          ),
+                        ),
+                      if (_isDone == true)
+                        Column(
+                          children: [
+                            if (!_isExpired)
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.01,
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.7,
+                                    child: Text(
+                                      "Vui lòng kiểm tra điện thoại của bạn để nhận mã OTP",
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyle.lato.copyWith(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xFF140E09),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.01,
+                                  ),
+                                ],
+                              ),
+                            if (_isExpired)
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.01,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      otpController.clear();
+                                      _isValidOTP = true;
+                                      user.setIsValidOTP(true);
+                                      Provider.of<ProfileProvider>(context,
+                                              listen: false)
+                                          .sendOTPToPhoneNumber(
+                                              context,
+                                              phoneNumberController.text
+                                                  .trim());
+                                      startTimer();
+                                    },
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: "Chưa nhận được mã OTP? ",
+                                        style: AppTextStyle.lato.copyWith(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF140E09),
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: "Gửi lại",
+                                            style: AppTextStyle.lato.copyWith(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w800,
+                                              color: const Color(0xFFFE2C6B),
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            if (!_isExpired)
+                              RichText(
+                                text: TextSpan(
+                                  text: "Bạn có thể gửi lại mã OTP sau ",
+                                  style: AppTextStyle.lato.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF140E09),
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "$min:$sec",
+                                      style: AppTextStyle.lato.copyWith(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w800,
+                                        color: const Color(0xFFBEBAB7),
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                           ],
                         ),
+                      SizedBox(
+                        height: height * 0.1,
+                      ),
+                      if (_isValidPhoneNumber == true &&
+                          _isDone != true &&
+                          _isOldPhoneNumber != true)
+                        user.isLoading
+                            ? const CircularProgressIndicator()
+                            : Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: AppColors.RedTheme,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.02,
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Provider.of<ProfileProvider>(context,
+                                              listen: false)
+                                          .sendOTPToPhoneNumber(
+                                              context,
+                                              phoneNumberController.text
+                                                  .trim());
+                                      print("ok");
+                                      setState(() {
+                                        _isDone = true;
+                                      });
+                                      startTimer();
+                                    },
+                                    splashColor: Colors.grey,
+                                    child: Center(
+                                      child: Text(
+                                        "Tiếp tục",
+                                        style: AppTextStyle.lato.copyWith(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      if (_isDone == true && _isExpired == false)
+                        user.isLoading
+                            ? const CircularProgressIndicator()
+                            : Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: AppColors.RedTheme,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.02,
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (_otpFormKey.currentState!
+                                          .validate()) {
+                                        Provider.of<ProfileProvider>(context,
+                                                listen: false)
+                                            .verifyOTP(
+                                                context,
+                                                otpController.text,
+                                                phoneNumberController.text,
+                                                user.mdUser);
+                                        print(user.isValidOTPProvider);
+                                      }
+                                    },
+                                    splashColor: Colors.grey,
+                                    child: Center(
+                                      child: Text(
+                                        "Hoàn thành",
+                                        style: AppTextStyle.lato.copyWith(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -409,8 +488,13 @@ class ButtonContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height * 0.05,
-      width: width * 0.45,
+      margin: EdgeInsets.symmetric(
+        horizontal: width * 0.23,
+      ),
+      padding: EdgeInsets.only(
+        top: height * 0.013,
+        bottom: height * .013,
+      ),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(12),

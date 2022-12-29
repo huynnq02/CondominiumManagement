@@ -1,22 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 extension StringExtensions on String {
   bool isValidEmail() => RegExp(
           r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
       .hasMatch(this);
 
-  bool isValidPhoneNumber() =>
-      RegExp(r"^(?:[+84][0])?[0-9]{10,12}$").hasMatch(this);
+  bool isValidPhoneNumber() {
+    return RegExp(r"^(\+84|0)\d{9,13}$").hasMatch(this);
+  }
 
   String formatDateTime() {
     final result = DateTime.parse(this);
-    String day = result.day / 10 < 1
-        ? "0" + result.day.toString()
-        : result.day.toString();
-    String month = result.month / 10 < 1
-        ? "0" + result.month.toString()
-        : result.month.toString();
+    final formattedDate = DateFormat('dd-MM-yyyy').format(result);
+    // replace - to /
+    return formattedDate.replaceAll("-", "/");
+    // return formattedDate;
+  }
 
-    final formattedDate = "$day/$month/${result.year}";
-    return formattedDate;
+  String formatDateTimeMonthYear() {
+    final result = DateTime.parse(this);
+    final formattedDate = DateFormat('MM-yyyy').format(result);
+    // replace - to /
+    return formattedDate.replaceAll("-", "/");
+    // return formattedDate;
   }
 
   String standardlizeString() {
@@ -28,10 +35,20 @@ extension StringExtensions on String {
   }
 
   String formatMoney() {
-    var result = this;
-    result = result.replaceAllMapped(
-        RegExp(r"(\d)(?=(\d{3})+(?!\d))"), (match) => "${match[1]}.");
-    result += "đ";
-    return result;
+    // var result = this;
+    // var length = result.length;
+    // var count = 0;
+    // for (var i = length - 1; i >= 0; i--) {
+    //   count++;
+    //   if (count == 3 && i != 0) {
+    //     result = result.substring(0, i) + "." + result.substring(i);
+    //     count = 0;
+    //   }
+    // }
+    // return result + "đ";
+    // format money from xxxxxx.abc to xxx.xxx.abc
+    final formatter = NumberFormat("#,###");
+
+    return formatter.format(double.parse(this)) + "đ";
   }
 }

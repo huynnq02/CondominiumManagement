@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/services.dart';
+
 import '../../utils/app_constant/app_colors.dart';
 
 enum TextFieldType { email, password, number, date, name, autocomplete }

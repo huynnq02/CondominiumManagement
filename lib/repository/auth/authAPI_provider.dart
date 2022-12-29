@@ -19,19 +19,29 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     return res.data;
   }
 
-  Future register({MDUser? mdUser, String? otp}) async {
-    final res = await repository.register(mdUser: mdUser, otp: otp);
+  Future registerWithEmail({MDUser? mdUser}) async {
+    final res = await repository.registerWithEmail(mdUser: mdUser);
     return res.data;
   }
 
-  Future sendOTP({MDUser? mdUser}) async {
-    final res = await repository.sendOTP(mdUser: mdUser);
+  Future registerWithPhone({MDUser? mdUser}) async {
+    final res = await repository.registerWithPhone(mdUser: mdUser);
+    return res.data;
+  }
+
+  Future sendEmailOTP(String email) async {
+    final res = await repository.sendEmailOTP(email);
+    return res?.data;
+  }
+
+  Future confirmEmailOTP(String email, String otp) async {
+    final res = await repository.confirmEmailOTP(email, otp);
     return res?.data;
   }
 
   Future sendPasswordResetOTP({String? email}) async {
     final res = await repository.sendPasswordResetOTP(email: email);
-    return res.data['success'];
+    return res.data;
   }
 
   Future checkPasswordResetOTP({String? email, String? otp}) async {
@@ -45,9 +55,24 @@ class AuthAPIProvider extends BaseProvider<AuthAPIRepository> {
     return res.data['success'];
   }
 
+  Future resetPasswordWithPhone(String phoneNumber, String password) async {
+    final res = await repository.resetPasswordWithPhone(phoneNumber, password);
+    return res.data['success'];
+  }
+
   Future changePassword({String? currentPw, String? newPw}) async {
     final res =
         await repository.changePassword(currentPw: currentPw, newPw: newPw);
     return res.data;
+  }
+
+  Future checkEmailExistence({String? email}) async {
+    final res = await repository.checkEmailExistence(email: email);
+    return res.data['result'];
+  }
+
+  Future checkPhoneExistence({String? phoneNumber}) async {
+    final res = await repository.checkPhoneExistence(phoneNumber: phoneNumber);
+    return res.data['result'];
   }
 }

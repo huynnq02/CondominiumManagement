@@ -20,19 +20,17 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
- def keystoreProperties = new Properties() 
 
-   def keystorePropertiesFile = rootProject.file('key.properties') 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
-   if (keystorePropertiesFile.exists()) { 
-
-       keystoreProperties.load(new FileInputStream(keystorePropertiesFile)) 
-
-   } 
 android {
     compileSdkVersion flutter.compileSdkVersion
 
@@ -51,11 +49,20 @@ android {
         multiDexEnabled true
     }
 
-    buildTypes {
-        release {
-           signingConfig signingConfigs.debug
+    signingConfigs {
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
        }
-    }
+   }
+   
+   buildTypes {
+       release {
+           signingConfig signingConfigs.release
+       }
+   }
 
     lintOptions {
         disable 'InvalidPackage'
@@ -71,4 +78,6 @@ flutter {
 
 dependencies {
   implementation 'com.android.support:multidex:1.0.3'
+  implementation platform('com.google.firebase:firebase-bom:31.1.1')
+  implementation 'com.google.firebase:firebase-auth'
 }

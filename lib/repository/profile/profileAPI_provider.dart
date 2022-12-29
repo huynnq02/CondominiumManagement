@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -23,8 +24,9 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
 
   Future getProfilePictureAPIProvider() async {
     final res = await repository.getProfilePictureAPIRepository();
-    print(res.data['result']);
-    return res.data['result'];
+    String resBody = res.toString();
+    var jsonData = jsonDecode(resBody);
+    return jsonData['result'];
   }
 
   Future getCurrentUserProfileAPIProvider() async {
@@ -33,25 +35,40 @@ class ProfilePro extends BaseProvider<ProfileRepository> {
     return res.data;
   }
 
-  Future updateProfilePictureAPIProvider(File image) async {
-    final res = await repository.updateProfilePictureAPIRepository(image);
+  Future updateProfilePictureAPIProvider(String imageUrl) async {
+    final res = await repository.updateProfilePictureAPIRepository(imageUrl);
     return res.data;
   }
 
-  Future sendOTPToChangePhoneNumberAPIProvider(MDUser? mdUser) async {
-    final res =
-        await repository.sendOTPToChangePhoneNumberAPIRepository(mdUser);
+  Future sendOTPToChangeEmailAPIProvider(String email) async {
+    final res = await repository.sendOTPToChangeEmailAPIRepository(email);
     print("kq ne:");
     print(res.data);
     return res.data['success'];
   }
 
   Future changePhoneNumberAPIProvider(
-      MDUser? mdUser, String phoneNumber, String otp) async {
-    final res = await repository.changePhoneNumberAPIRepository(
-        mdUser, phoneNumber, otp);
+      MDUser? mdUser, String phoneNumber) async {
+    final res =
+        await repository.changePhoneNumberAPIRepository(mdUser, phoneNumber);
     print("kq neee:");
     print(res.data['success']);
     return res.data['success'];
+  }
+
+  Future changeEmailAPIProvider(MDUser? mdUser, String email) async {
+    final res = await repository.changeEmailAPIRepository(mdUser, email);
+    print("kq neee:");
+    print(res.data);
+    print(res.data['success']);
+    return res.data['success'];
+  }
+
+  Future checkOTPAPIProvider(String otp, String email) async {
+    final res = await repository.checkOTPAPIRepository(otp, email);
+    print("kq neee:");
+    print("check otp co thanh cong:");
+    print(res.data);
+    return res.data['result'];
   }
 }
