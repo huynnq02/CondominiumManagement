@@ -9,14 +9,6 @@ trigger:
   - main
   - sprint07
 
-schedule:
-  - cron: "0 8,23 * * *"
-    displayName: Daily build
-    branches:
-      include:
-      - main
-      - sprint07
-
 pool:
   vmImage: macOS-12
 
