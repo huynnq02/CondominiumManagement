@@ -10,14 +10,8 @@ trigger:
   - sprint07
 
 schedule:
-  - cron: "0 13 * * *"
-    displayName: Daily afternoon build
-    branches:
-      include:
-      - main
-      - sprint07
-  - cron: "0 22 * * *"
-    displayName: Daily midnight build
+  - cron: "0 8,23 * * *"
+    displayName: Daily build
     branches:
       include:
       - main
