@@ -4,10 +4,13 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-
-trigger:
-  - main
-  - sprint07
+schedules:
+- cron: "0 8,23 * * *"
+  displayName: Daily build
+  branches:
+    include:
+    - main
+    - sprint07
 
 pool:
   vmImage: macOS-12
