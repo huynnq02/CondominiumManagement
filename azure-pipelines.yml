@@ -4,7 +4,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
 schedules:
 - cron: "0 8,23 * * *"
   displayName: Daily build
