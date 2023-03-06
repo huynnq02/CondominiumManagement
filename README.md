@@ -1,20 +1,22 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Condominium Management App - Flutter Project
+This is a condominium management app built using the Flutter framework. It provides a range of features to help manage your condominium, including authentication, changing profile info, giving feedback to investors, viewing bills and paying them.
+
+# Features
+- Authentication: Users can sign up and log in to the app securely.
+- Profile management: Users can update their personal information such as name, profile picture, phone number, and email address.
+- Feedback: Users can give feedback to the investors about the condominium and see the reply.
+- Bill management: Users can view their bills and pay them securely within the app.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Prerequisites
+- Flutter installed on your computer.
+- An Android or iOS emulator to run the app. You can use Android Studio or Xcode to set up an emulator.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# Installing
+1. Clone the repository:
+git clone https://github.com/huyy802/CondominiumManagement
+2. Navigate to the project directory:
+cd CondominiumManagement
+3. Install the required packages:
+flutter pub get
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
