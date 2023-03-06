@@ -12,7 +12,7 @@ This is a condominium management app built using the Flutter framework. It provi
 - Flutter installed on your computer.
 - An Android or iOS emulator to run the app. You can use Android Studio or Xcode to set up an emulator.
 
-# Installing
+## Installing
 1. Clone the repository:
 git clone https://github.com/huyy802/CondominiumManagement
 2. Navigate to the project directory:
